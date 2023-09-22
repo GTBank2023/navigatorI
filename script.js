@@ -431,18 +431,8 @@ loadImages(HNIareaImages);
 loadImages(EntranceAreaImages);
 loadImages(CustomerInformationService);
 
-
-try {
-  // Load images from external URLs
-  loadImages(StaircaseImages);
-  loadImages(RelationshipDeskImages);
-  loadImages(OperationsAreaImages);
-  loadImages(LobbyAreaImages);
-  loadImages(HNIareaImages);
-  loadImages(EntranceAreaImages);
-  loadImages(CustomerInformationService);
-
-} catch (error) {
+}
+catch (error) {
   // Handle the network error
   console.error('Network error occurred while loading images:', error);
   // Optionally, display a user-friendly error message
