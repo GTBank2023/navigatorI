@@ -57,25 +57,8 @@ async function setupCamera() {
     });
 }
 
-async function detectObjectsFromCanvas(canvas, ctx) {
-    if (!cocoSsdModel) {
-        console.error('Model not loaded yet.');
-        return;
-    }
 
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const tensor = tf.browser.fromPixels(imgData).expandDims();
-
-    const predictions = await cocoSsdModel.detect(tensor);
-    console.log('Predictions:', predictions);
-
-    // Call your area detection function here
-    detectAreas(predictions);
-
-    requestAnimationFrame(() => detectObjects(canvas, ctx));
-}
-
-     function detectAreas(predictionsArray) {
+     function detectAreas(predictions) {
   
     for (const area in detectionRules) {
         const rules = detectionRules[area];
@@ -419,8 +402,6 @@ const loadOperationsAreaImages = [
 // Call the function to load images for each area
 loadImages(StaircaseImages);
 // Call this for other areas as well
-
-
 try {
   // Load images from external URLs
 loadImages(StaircaseImages);
@@ -431,8 +412,10 @@ loadImages(HNIareaImages);
 loadImages(EntranceAreaImages);
 loadImages(CustomerInformationService);
 
-}
-catch (error) {
+
+
+
+} catch (error) {
   // Handle the network error
   console.error('Network error occurred while loading images:', error);
   // Optionally, display a user-friendly error message
@@ -480,4 +463,3 @@ videoElement.addEventListener('loadeddata', async () => {
 document.addEventListener('DOMContentLoaded', () => {
   launchSystem();
 });
-
