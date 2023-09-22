@@ -6,6 +6,7 @@ function launchSystem() {
     // Add more actions if needed
 }
 
+
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const getStartedButton = document.querySelector('.get-started-button');
@@ -16,18 +17,47 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Function to detect objects using COCO-SSD
-async function detectObjects(tensor) {
-    if (!cocoSsdModel) {
-        console.error('Model not loaded yet.');
-        return [];
-    }
 
-    const predictions = await cocoSsdModel.detect(tensor);
-    return predictions;
+let cocoSsdModel;
+
+async function loadModel() {
+    try {
+        cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
+        launchSystem(); // Call launchSystem after the model is loaded
+    } catch (error) {
+        console.error('Error loading the object detection model:', error);
+        displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+    }
 }
 
-async function detectObjects(canvas, ctx) {
+async function setupCamera() {
+    const videoElement = document.createElement('video');
+    videoElement.id = 'video-feed';
+    document.body.appendChild(videoElement);
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
+        videoElement.srcObject = stream;
+        await videoElement.play();
+    } catch (error) {
+        console.error('Error accessing the camera:', error);
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.id = 'canvas';
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+
+    // Start object detection when video metadata is loaded
+    videoElement.addEventListener('loadedmetadata', async () => {
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        await detectObjects(canvas, ctx);
+    });
+}
+
+async function detectObjectsFromCanvas(canvas, ctx) {
     if (!cocoSsdModel) {
         console.error('Model not loaded yet.');
         return;
@@ -36,7 +66,7 @@ async function detectObjects(canvas, ctx) {
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const tensor = tf.browser.fromPixels(imgData).expandDims();
 
-    const predictions = await detectObjects(tensor); // Call the new detectObjects function
+    const predictions = await cocoSsdModel.detect(tensor);
     console.log('Predictions:', predictions);
 
     // Call your area detection function here
@@ -45,55 +75,244 @@ async function detectObjects(canvas, ctx) {
     requestAnimationFrame(() => detectObjects(canvas, ctx));
 }
 
+     function detectAreas(predictionsArray) {
+  
+    for (const area in detectionRules) {
+        const rules = detectionRules[area];
+
+        // Check if all rules for this area are satisfied
+        const areaDetected = rules.every(rule => {
+            const labelIndex = cocoSsdModel.classIndex[rule.label];
+            const confidence = predictionsArray[labelIndex];
+            return confidence >= rule.minConfidence;
+        });
+
+        if (areaDetected) {
+            // Instead of pushing just the area name, push an object with more information
+            detectedAreas.push({
+                area: area,
+                description: getDescriptionForArea(area),
+                benefits: getBenefitsForArea(area),
+            });
+        }
+    }
+
+    return detectedAreas;
+
+// Define a function to get area information (description and benefits)
+function getDescriptionAndBenefitsForArea(areaName) {
+    let areaInfo = {
+        description: '',
+        benefits: []
+    };
+
+    // Retrieve description and benefits based on the area name
+    switch (areaName) {
+        case 'Lobby Area':
+            areaInfo.description = "Welcome to GTBank Tanzania, You are currently at the Bank's Lobby Area which is your first point of contact as you enter the bank.";
+            areaInfo.benefits.push("This is where convenience meets knowledge. Here, you'll find ATMs for quick transactions and user-friendly tariff guides to help you navigate our services. It's your gateway to easy and informed banking.");
+            break;
+
+        case 'Relationship Desk':
+            areaInfo.description = "You are now at the relationship desk, a welcoming space where you can sit down with your dedicated account officer to discuss the well-being of your accounts and explore the intricate details of your financial journey. Here, we cherish the art of personalized banking, tailoring our services to your unique aspirations and needs.";
+            areaInfo.benefits.push("It's a welcoming space where you can sit down with your dedicated account officer to discuss the well-being of your accounts and explore the intricate details of your financial journey. Here, we cherish the art of personalized banking, tailoring our services to your unique aspirations and needs.");
+            break;
+
+        case 'Operations Area':
+            areaInfo.description = "You are now at the Operations area, This is the heart of our banking center, where your financial actions come to life. It's where you interact with your money, whether you're putting it in, taking it out, or making it work for you.";
+            areaInfo.benefits.push("It's where you can make deposits, withdrawals, handle foreign operations, and securely send and receive money globally through trusted services like Western Union, MoneyGram, and RIA Money Transfer. Your financial needs, both near and far, are well within reach here.");
+            break;
+
+        case 'Customer Information Service':
+            areaInfo.description = "You are now at the Customer Information Service; a designated area where you can access information and assistance regarding their accounts as well as general banking queries.";
+            areaInfo.benefits.push("The Customer Information Service area is your starting point for effortless banking solutions. It's a welcoming haven where you can seamlessly open accounts, obtain your banking card, reactivate dormant accounts, set up standing orders, and tailor your iBank profile.");
+            break;
+
+        case 'Entrance Area':
+            areaInfo.description = "You've arrived at GTBank Tanzania, and this is our welcoming entrance area.";
+            areaInfo.benefits.push("At the entrance area, a welcoming personnel awaits to receive you, marking the starting point of your journey. Here, your banking experience begins.");
+            break;
+
+        case 'Staircase Area':
+            areaInfo.description = "You are about to go up the stairs.";
+            areaInfo.benefits.push("This staircase is a gateway to personalized banking. To the left, it leads to the Customer Information Service area, a hub of information and assistance. To the right, it opens the door to the Relationship Desk area, where tailored financial guidance awaits. It's a path of options, each step revealing a distinct facet of your banking experience.");
+            break;
+
+        case 'hni Area':
+            areaInfo.description = "You are now at the HNI Banking area, an exclusive space, meticulously designed to cater to your distinctive financial needs with sophistication and tailored care that stands above the rest.";
+            areaInfo.benefits.push("Enjoy a dedicated relationship manager, access to exclusive opportunities, and a seamless banking experience that aligns with your unique goals, all while surrounded by an atmosphere of sophistication and discretion.");
+            break;
+
+        default:
+            areaInfo.description = 'Default description for the area.';
+            areaInfo.benefits.push('Default benefit 1 for the area');
+            areaInfo.benefits.push('Default benefit 2 for the area');
+    }
+
+    return areaInfo;
+}
+
+// Now, let's add the code for each area using the getDescriptionAndBenefitsForArea function
+
+
+const areas = ['Lobby Area', 'Relationship Desk', 'Operations Area', 'Customer Information Service', 'Entrance Area', 'Staircase Area', 'hni Area'];
+
+areas.forEach(areaName => {
+    const area = detectedAreas.find(area => area.area === areaName);
+    if (area) {
+        const areaInfoDiv = document.getElementById(`${areaName.replace(' ', '')}Info`);
+        areaInfoDiv.querySelector("h1").textContent = area.area;
+        const descriptionAndBenefits = getDescriptionAndBenefitsForArea(areaName);
+        areaInfoDiv.querySelector("p").textContent = descriptionAndBenefits.description;
+        textToSpeech(descriptionAndBenefits.description);
+    }
+});
+
+document.getElementById('get-started-button').addEventListener('click', () => {
+    console.log('Button clicked. System launching...');
+    detectAreas(predictions); // Call your area detection function here
+});
+
+// Call the async function to load the model
+loadModel();
+
+
+// Call launchSystem after loading the model
+launchSystem(); // Add this line to call launchSystem
+
+
+// Revised detectObjectsFromCanvas function
+async function detectObjectsFromCanvas(canvas, ctx) {
+  if (!cocoSsdModel) {
+    console.error('Model not loaded yet.');
+    return;
+  }
+
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const tensor = tf.browser.fromPixels(imgData).expandDims();
+
+  const predictions = await detectObjects(tensor); // Call the new detectObjects function
+  console.log('Predictions:', predictions);
+
+  // Call your area detection function here
+  detectAreas(predictions);
+
+  requestAnimationFrame(() => detectObjects(canvas, ctx));
+}
+
+
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const tensor = tf.browser.fromPixels(imgData).expandDims();
+
+  const predictions = await detectObjects(tensor); // Call the new detectObjects function
+  console.log('Predictions:', predictions);
+
+  // Call your area detection function here
+  detectAreas(predictions);
+
+  requestAnimationFrame(() => detectObjects(canvas, ctx));
+}
+
+
 // Function to process predictions from COCO-SSD
 async function processPredictions(predictions) {
-    const predictionsArray = predictions.map(prediction => prediction.score);
+  const predictionsArray = predictions.map(prediction => prediction.score);
 
-    // Call your area detection function here
-    detectAreas(predictions);
+  // Call your area detection function here
+  detectAreas(predictions);
 
-    // Handle the detected areas
-    handleDetectedAreas(predictionsArray);
+  // Handle the detected areas
+  handleDetectedAreas(predictionsArray);
 
-    // Continue video frame processing or rendering as needed...
+  // Continue video frame processing or rendering as needed...
 }
 
 // Function to detect objects using COCO-SSD
 async function detectObjects() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    ctx.drawImage(videoElement, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  ctx.drawImage(videoElement, 0, 0);
 
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const tensor = tf.browser.fromPixels(imgData).expandDims();
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const tensor = tf.browser.fromPixels(imgData).expandDims();
 
-    const predictions = await cocoSsdModel.detect(tensor);
+  const predictions = await cocoSsdModel.detect(tensor);
 
-    // Call your area detection function here
-    const detectedAreas = detectAreas(predictions);
+  // Call your area detection function here
+  const detectedAreas = detectAreas(predictions);
 
-    // Process the predictions
-    processPredictions(predictions);
+  // Process the predictions
+  processPredictions(predictions);
 
-    if (detectedAreas.length > 0) {
-        const detectedArea = detectedAreas[0]; // Assuming you want to use the first detected area
+   if (detectedAreas.length > 0) {
 
-        const areaInfoDiv = document.getElementById("area-info");
+    const detectedArea = detectedAreas[0]; // Assuming you want to use the first detected area
 
-        areaInfoDiv.querySelector("h1").textContent = detectedArea.area;
+    const areaInfoDiv = document.getElementById("areaInfo");
 
-        areaInfoDiv.querySelector("p").textContent = detectedArea.description;
+    areaInfoDiv.querySelector("h1").textContent = detectedArea.area;
 
-        // Call the text-to-speech function here if needed
-    }
+    areaInfoDiv.querySelector("p").textContent = detectedArea.description;
+
+    // Call the text-to-speech function here if needed
+
+  }
+
 }
+
+fetch('https://drive.google.com/uc?id=1uNDyaihSkeOFFU3zAivZByG4pa05fGMc')
+  .then(response => response.json())
+  .then(data => {
+      // Process the JSON data here (you'll need to define how to use the data)
+      console.log('Processed marker images data:', data);
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+
+
+// Call detectObjects when the video is loaded
+
+videoElement.addEventListener("loadeddata", () => {
+
+  videoElement.play();
+
+  detectObjects();
+
+});
+
+    // You will need to implement the textToSpeech function using your preferred TTS library.
+    // This function should take the message as input and read it aloud.
+ 
+
+// Function to perform text-to-speech
+function textToSpeech(message) {
+  // Check if the Web Speech API is supported
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(message);
+
+    // Get the list of available voices
+    const voices = speechSynthesis.getVoices();
+
+    // Select a voice (let's use the first available voice)
+    if (voices.length > 0) {
+      utterance.voice = voices[0];
+
+
+    }
+
+    // Speak the message
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
 
 // Function to load images
 function loadImages(imageUrls) {
-    for (const url of imageUrls) {
-        const img = document.createElement('img');
-        img.src = url;
-        document.body.appendChild(img); // You can append it to a different HTML element if needed
-    }
+  for (const url of imageUrls) {
+    const img = document.createElement('img');
+    img.src = url;
+    document.body.appendChild(img); // You can append it to a different HTML element if needed
+  }
 }
 
 // Define image URLs for each area
@@ -141,7 +360,6 @@ const loadOperationsAreaImages = [
     
 ];
 
-
   const LobbyAreaImagesURLs = [
     'https://drive.google.com/uc?id=1-FGQUzoNmUy3aNiUBVZDB2rQlETG2Mbe',
     'https://drive.google.com/uc?id=1icGYQJ8d4AAdjV2KrGL9NGN28vNZtKuR',
@@ -155,7 +373,6 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1JTnKcprY23TwFdL-C5_7PDIUPqLqUCmg',
 
 ];
-
 
   const HNIareaImagesURLs = [
     'https://drive.google.com/uc?id=1t7zXWKeufIUa7QxqkTLgyNUoko29L0TV',
@@ -197,17 +414,80 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1RwlE8rrpoJMlPVcwQ1_dPkaRM8Dx_AyO',
     'https://drive.google.com/uc?id=1lmc8-fshfwkMtDfIZDZevqsLSyBfZzG6',
 ];
+
+
 // Call the function to load images for each area
+loadImages(StaircaseImages);
+// Call this for other areas as well
+
+
+try {
+  // Load images from external URLs
 loadImages(StaircaseImages);
 loadImages(RelationshipDeskImages);
 loadImages(OperationsAreaImages);
 loadImages(LobbyAreaImages);
 loadImages(HNIareaImages);
 loadImages(EntranceAreaImages);
-loadImages(CustomerInformationServiceImages);
+loadImages(CustomerInformationService);
 
-// Call the async function to load the model
-loadModel();
 
-// Call launchSystem after loading the model
-launchSystem();
+try {
+  // Load images from external URLs
+  loadImages(StaircaseImages);
+  loadImages(RelationshipDeskImages);
+  loadImages(OperationsAreaImages);
+  loadImages(LobbyAreaImages);
+  loadImages(HNIareaImages);
+  loadImages(EntranceAreaImages);
+  loadImages(CustomerInformationService);
+
+} catch (error) {
+  // Handle the network error
+  console.error('Network error occurred while loading images:', error);
+  // Optionally, display a user-friendly error message
+  displayErrorMessageToUser('Failed to load images. Please check your internet connection.');
+}
+
+// Function to load the model
+async function loadModel() {
+  try {
+    cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
+    launchSystem(); // Call launchSystem after the model is loaded
+  } catch (error) {
+    console.error('Error loading the object detection model:', error);
+    displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+  }
+}
+
+
+// Function to predict from video
+async function predictFromVideo() {
+  if (!cocoSsdModel) {
+    console.error('Model not loaded yet.');
+    return;
+  }
+
+  ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const tensor = tf.browser.fromPixels(imgData).expandDims();
+
+  const predictions = await cocoSsdModel.detect(tensor);
+  const predictionsArray = await predictions.data();
+
+  handleDetectedAreas(predictionsArray);
+
+  requestAnimationFrame(predictFromVideo);
+}
+
+// Event listener to start prediction when video is loaded
+videoElement.addEventListener('loadeddata', async () => {
+  videoElement.play();
+  await predictFromVideo();
+});
+
+// Event listener for DOMContentLoaded to launch the system
+document.addEventListener('DOMContentLoaded', () => {
+  launchSystem();
+});
+
