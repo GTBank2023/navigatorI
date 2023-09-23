@@ -424,6 +424,8 @@ const OperationsAreaImages = [
 // Call the function to load images for each area
 try {
   // Load images for each area
+try {
+  // Call the function to load images for each area
   await loadImages(StaircaseImages);
   await loadImages(RelationshipDeskImages);
   await loadImages(OperationsAreaImages);
@@ -431,16 +433,17 @@ try {
   await loadImages(HNIareaImages);
   await loadImages(EntranceAreaImages);
   await loadImages(CustomerInformationServiceImages);
-
 } catch (error) {
+  // Handle the error for image loading
   console.error('Error loading images for areas:', error);
   displayErrorMessageToUser('Failed to load area images. Please try again later.');
 }
 
+try {
+  // Handle network errors if any
+  // Your code to handle network errors goes here
 } catch (error) {
-  // Handle the network error
   console.error('Network error occurred while loading images:', error);
-  // Optionally, display a user-friendly error message
   displayErrorMessageToUser('Failed to load images. Please check your internet connection.');
 }
 
