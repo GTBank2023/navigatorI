@@ -421,9 +421,7 @@ const OperationsAreaImages = [
 ];
 
 
-// Call the function to load images for each area
-try {
-  // Load images for each area
+
 try {
   // Call the function to load images for each area
   await loadImages(StaircaseImages);
