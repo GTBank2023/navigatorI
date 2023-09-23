@@ -289,20 +289,33 @@ function textToSpeech(message) {
 }
 
 
-// Function to load images
-function loadImages(imageUrls) {
-  for (const url of imageUrls) {
-    const img = document.createElement('img');
-    img.src = url;
-    document.body.appendChild(img); // You can append it to a different HTML element if needed
+// Updated function to load images asynchronously
+async function loadImages(imageUrls) {
+  try {
+    for (const url of imageUrls) {
+      // Create a promise for each image load
+      const loadImage = new Promise((resolve, reject) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('Image load error'));
+      });
+
+      // Wait for the image to load before appending to the body
+      const loadedImg = await loadImage;
+      document.body.appendChild(loadedImg);
+    }
+  } catch (error) {
+    console.error('Error loading images:', error);
+    displayErrorMessageToUser('Failed to load images. Please try again later.');
   }
 }
 
 // Define image URLs for each area
 const StaircaseImages = [
-    'https://drive.google.com/uc?id=1Du6Gs_XaEBdvP7rli4b7CVoY2LMEby-t',
-    'https://drive.google.com/uc?id=1ZZDhKY5p23KFPj8JWxOjjfap6qDZy66I',
-    'https://drive.google.com/uc?id=1WW34VQT-Ut9D1p167svHueh9cizFtLPU',
+  'https://drive.google.com/uc?id=1Du6Gs_XaEBdvP7rli4b7CVoY2LMEby-t',
+  'https://drive.google.com/uc?id=1ZZDhKY5p23KFPj8JWxOjjfap6qDZy66I',
+  'https://drive.google.com/uc?id=1WW34VQT-Ut9D1p167svHueh9cizFtLPU',
 ];
 
 const RelationshipDeskImages = [
@@ -343,6 +356,7 @@ const loadOperationsAreaImages = [
     
 ];
 
+
   const LobbyAreaImagesURLs = [
     'https://drive.google.com/uc?id=1-FGQUzoNmUy3aNiUBVZDB2rQlETG2Mbe',
     'https://drive.google.com/uc?id=1icGYQJ8d4AAdjV2KrGL9NGN28vNZtKuR',
@@ -356,6 +370,7 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1JTnKcprY23TwFdL-C5_7PDIUPqLqUCmg',
 
 ];
+
 
   const HNIareaImagesURLs = [
     'https://drive.google.com/uc?id=1t7zXWKeufIUa7QxqkTLgyNUoko29L0TV',
@@ -398,20 +413,16 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1lmc8-fshfwkMtDfIZDZevqsLSyBfZzG6',
 ];
 
-
 // Call the function to load images for each area
-loadImages(StaircaseImages);
-// Call this for other areas as well
 try {
-  // Load images from external URLs
-loadImages(StaircaseImages);
-loadImages(RelationshipDeskImages);
-loadImages(OperationsAreaImages);
-loadImages(LobbyAreaImages);
-loadImages(HNIareaImages);
-loadImages(EntranceAreaImages);
-loadImages(CustomerInformationService);
-
+  // Load images from external URLs for each area
+  await loadImages(StaircaseImages);
+  await loadImages(RelationshipDeskImages);
+  await loadImages  
+} catch (error) {
+  console.error('Error loading images for areas:', error);
+  displayErrorMessageToUser('Failed to load area images. Please try again later.');
+}
 
 
 
