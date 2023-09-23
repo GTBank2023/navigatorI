@@ -420,22 +420,30 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1lmc8-fshfwkMtDfIZDZevqsLSyBfZzG6',
 ];
 
-// Call the function to load images for each area
-try {
-  // Load images from external URLs for each area
-  await loadImages(StaircaseImages);
-  await loadImages(RelationshipDeskImages);
-  await loadImages (OperationsAreaImages);
-  await loadImages (LobbyAreaImages);
-  await loadImages (HNIareaImages);
-  await loadImages (EntranceAreaImages);
-  await loadImages (CustomerInformationServiceImages);
-    
-} catch (error) {
-  console.error('Error loading images for areas:', error);
-  displayErrorMessageToUser('Failed to load area images. Please try again later.');
+// Define an async function to use await
+async function loadAreaImages() {
+  try {
+    // Load images from external URLs for each area
+    await loadImages(StaircaseImages);
+    await loadImages(RelationshipDeskImages);
+    await loadImages(OperationsAreaImages);
+    await loadImages(LobbyAreaImages);
+    await loadImages(HNIareaImages);
+    await loadImages(EntranceAreaImages);
+    await loadImages(CustomerInformationServiceImages);
+  } catch (error) {
+    console.error('Error loading images for areas:', error);
+    displayErrorMessageToUser('Failed to load area images. Please try again later.');
+  }
 }
 
+// Call the function
+try {
+  await loadAreaImages();
+} catch (error) {
+  console.error('Error loading area images:', error);
+  displayErrorMessageToUser('Failed to load area images. Please try again later.');
+}
 
 
 } catch (error) {
