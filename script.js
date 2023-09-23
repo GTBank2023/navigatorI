@@ -297,33 +297,13 @@ function textToSpeech(message) {
 
 
 // Function to load images asynchronously
-async function loadImages(imageUrls) {
+async function loadImageAreas() {
   try {
-    for (const url of imageUrls) {
-      // Create a promise for each image load
-      const loadImage = new Promise((resolve, reject) => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error('Image load error'));
-      });
-
-      // Wait for the image to load before appending to the body
-      const loadedImg = await loadImage;
-      document.body.appendChild(loadedImg);
-    }
-  } catch (error) {
-    console.error('Error loading images:', error);
-    displayErrorMessageToUser('Failed to load images. Please try again later.');
-  }
-}
-
-// Define image URLs for each area
-const StaircaseImages = [
-  'https://drive.google.com/uc?id=1Du6Gs_XaEBdvP7rli4b7CVoY2LMEby-t',
-  'https://drive.google.com/uc?id=1ZZDhKY5p23KFPj8JWxOjjfap6qDZy66I',
-  'https://drive.google.com/uc?id=1WW34VQT-Ut9D1p167svHueh9cizFtLPU',
-];
+    const StaircaseImages = [
+      'https://drive.google.com/uc?id=1Du6Gs_XaEBdvP7rli4b7CVoY2LMEby-t',
+      'https://drive.google.com/uc?id=1ZZDhKY5p23KFPj8JWxOjjfap6qDZy66I',
+      'https://drive.google.com/uc?id=1WW34VQT-Ut9D1p167svHueh9cizFtLPU',
+    ];
 
 const RelationshipDeskImages = [
     'https://drive.google.com/uc?id=1b6Vqo8EoYP-9LI9jOpTzOXo7CeQ5AWGp',
@@ -345,7 +325,7 @@ const RelationshipDeskImages = [
     
 ];
 
-const OperationsAreaImages = [
+const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1Kw-RTbqRFJlvjwpi8DwBWjIwImbW3P1E',
     'https://drive.google.com/uc?id=1zUhR1xbN29J5ni9W9oVDng52fBAE6akc',
     'https://drive.google.com/uc?id=1GyR98xAhZksa6alQ3GT-HAMCQVxUAwJd',
@@ -420,30 +400,32 @@ const OperationsAreaImages = [
     'https://drive.google.com/uc?id=1lmc8-fshfwkMtDfIZDZevqsLSyBfZzG6',
 ];
 
+    // Call the function to load images for each area
+    await loadImages(StaircaseImages);
+    await loadImages(RelationshipDeskImages);
+    await loadImages(OperationsAreaImages);
+    await loadImages(LobbyAreaImages);
+    await loadImages(HNIareaImages);
+    await loadImages(EntranceAreaImages);
+    await loadImages(CustomerInformationServiceImages);
+  } catch (error) {
+    // Handle the error for image loading
+    console.error('Error loading images for areas:', error);
+    displayErrorMessageToUser('Failed to load area images. Please try again later.');
+  }
 
-
-try {
-  // Call the function to load images for each area
-  await loadImages(StaircaseImages);
-  await loadImages(RelationshipDeskImages);
-  await loadImages(OperationsAreaImages);
-  await loadImages(LobbyAreaImages);
-  await loadImages(HNIareaImages);
-  await loadImages(EntranceAreaImages);
-  await loadImages(CustomerInformationServiceImages);
-} catch (error) {
-  // Handle the error for image loading
-  console.error('Error loading images for areas:', error);
-  displayErrorMessageToUser('Failed to load area images. Please try again later.');
+  try {
+    // Handle network errors if any
+    // Your code to handle network errors goes here
+  } catch (error) {
+    console.error('Network error occurred while loading images:', error);
+    displayErrorMessageToUser('Failed to load images. Please check your internet connection.');
+  }
 }
 
-try {
-  // Handle network errors if any
-  // Your code to handle network errors goes here
-} catch (error) {
-  console.error('Network error occurred while loading images:', error);
-  displayErrorMessageToUser('Failed to load images. Please check your internet connection.');
-}
+// Call the async function
+loadImageAreas();
+
 
 // Function to load the model
 async function loadModel() {
