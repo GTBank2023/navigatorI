@@ -425,7 +425,12 @@ try {
   // Load images from external URLs for each area
   await loadImages(StaircaseImages);
   await loadImages(RelationshipDeskImages);
-  await loadImages  
+  await loadImages (OperationsAreaImages);
+  await loadImages (LobbyAreaImages);
+  await loadImages (HNIareaImages);
+  await loadImages (EntranceAreaImages);
+  await loadImages (CustomerInformationServiceImages);
+    
 } catch (error) {
   console.error('Error loading images for areas:', error);
   displayErrorMessageToUser('Failed to load area images. Please try again later.');
