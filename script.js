@@ -296,7 +296,7 @@ function textToSpeech(message) {
 }
 
 
-// Updated function to load images asynchronously
+// Function to load images asynchronously
 async function loadImages(imageUrls) {
   try {
     for (const url of imageUrls) {
@@ -345,7 +345,7 @@ const RelationshipDeskImages = [
     
 ];
 
-const loadOperationsAreaImages = [
+const OperationsAreaImages = [
     'https://drive.google.com/uc?id=1Kw-RTbqRFJlvjwpi8DwBWjIwImbW3P1E',
     'https://drive.google.com/uc?id=1zUhR1xbN29J5ni9W9oVDng52fBAE6akc',
     'https://drive.google.com/uc?id=1GyR98xAhZksa6alQ3GT-HAMCQVxUAwJd',
@@ -420,31 +420,22 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1lmc8-fshfwkMtDfIZDZevqsLSyBfZzG6',
 ];
 
-// Define an async function to use await
-async function loadAreaImages() {
-  try {
-    // Load images from external URLs for each area
-    await loadImages(StaircaseImages);
-    await loadImages(RelationshipDeskImages);
-    await loadImages(OperationsAreaImages);
-    await loadImages(LobbyAreaImages);
-    await loadImages(HNIareaImages);
-    await loadImages(EntranceAreaImages);
-    await loadImages(CustomerInformationServiceImages);
-  } catch (error) {
-    console.error('Error loading images for areas:', error);
-    displayErrorMessageToUser('Failed to load area images. Please try again later.');
-  }
-}
 
-// Call the function
+// Call the function to load images for each area
 try {
-  await loadAreaImages();
+  // Load images for each area
+  await loadImages(StaircaseImages);
+  await loadImages(RelationshipDeskImages);
+  await loadImages(OperationsAreaImages);
+  await loadImages(LobbyAreaImages);
+  await loadImages(HNIareaImages);
+  await loadImages(EntranceAreaImages);
+  await loadImages(CustomerInformationServiceImages);
+
 } catch (error) {
-  console.error('Error loading area images:', error);
+  console.error('Error loading images for areas:', error);
   displayErrorMessageToUser('Failed to load area images. Please try again later.');
 }
-
 
 } catch (error) {
   // Handle the network error
