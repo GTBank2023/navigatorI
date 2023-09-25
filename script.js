@@ -57,7 +57,6 @@ async function setupCamera() {
     });
 }
 
-WHERE WE ENDED 
      function detectAreas(predictions) {
   
     for (const area in detectionRules) {
