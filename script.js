@@ -470,7 +470,4 @@ document.addEventListener('DOMContentLoaded', () => {
   launchSystem();
 });
 
-// This is a dummy code to potentially fix syntax error
-const dummyCode = 1; // A simple assignment statement that doesn't affect the program
-
-console.log('Dummy code executed:', dummyCode);
+     }
