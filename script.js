@@ -57,7 +57,7 @@ async function setupCamera() {
     });
 }
 
-
+WHERE WE ENDED 
      function detectAreas(predictions) {
   
     for (const area in detectionRules) {
@@ -451,13 +451,12 @@ async function predictFromVideo() {
   const tensor = tf.browser.fromPixels(imgData).expandDims();
 
   const predictions = await cocoSsdModel.detect(tensor);
-  const predictionsArray = predictions.map(prediction => prediction.score);
+  const predictionsArray = await predictions.data();
 
   handleDetectedAreas(predictionsArray);
 
   requestAnimationFrame(predictFromVideo);
 }
-
 
 // Event listener to start prediction when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
@@ -470,4 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
   launchSystem();
 });
 
-     }
+// This is a dummy code to potentially fix syntax error
+const dummyCode = 1; // A simple assignment statement that doesn't affect the program
+
+console.log('Dummy code executed:', dummyCode);
