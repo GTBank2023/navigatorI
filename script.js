@@ -451,12 +451,13 @@ async function predictFromVideo() {
   const tensor = tf.browser.fromPixels(imgData).expandDims();
 
   const predictions = await cocoSsdModel.detect(tensor);
-  const predictionsArray = await predictions.data();
+  const predictionsArray = predictions.map(prediction => prediction.score);
 
   handleDetectedAreas(predictionsArray);
 
   requestAnimationFrame(predictFromVideo);
 }
+
 
 // Event listener to start prediction when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
