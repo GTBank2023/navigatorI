@@ -438,6 +438,17 @@ const loadOperationsAreaImages = [
 // Call the async function
 loadImageAreas();
 
+// Function to load the model
+async function loadModel() {
+  try {
+    cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
+    launchSystem(); // Call launchSystem after the model is loaded
+  } catch (error) {
+    console.error('Error loading the object detection model:', error);
+    displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+  }
+}
+
 
 // Function to predict from video
 async function predictFromVideo() {
