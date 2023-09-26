@@ -1,3 +1,5 @@
+THE JS WE EDITING
+
 // Function to launch the system
 function launchSystem() {
     // Add actions you want to perform when the system is launched
@@ -50,36 +52,36 @@ async function setupCamera() {
     const ctx = canvas.getContext('2d');
 
     // Start object detection when video metadata is loaded
-    videoElement.addEventListener('loadedmetadata', async () => {
-        canvas.width = videoElement.videoWidth;
-        canvas.height = videoElement.videoHeight;
-        await detectObjects(canvas, ctx);
-    });
+
+videoElement.addEventListener('loadedmetadata', async () => {
+  canvas.width = videoElement.videoWidth;
+  canvas.height = videoElement.videoHeight;
+  await detectObjectsFromCanvas(canvas, ctx);
+});
+
+
+ async function detectAreas(predictions) {
+  for (const area in detectionRules) {
+    const rules = detectionRules[area];
+    const labelIndex = cocoSsdModel.classIndex[area];
+    const confidence = predictions[labelIndex].score;
+    
+    // Check if all rules for this area are satisfied
+    const areaDetected = confidence >= rules.minConfidence;
+
+    if (areaDetected) {
+      detectedAreas.push({
+        area: area,
+        description: getDescriptionAndBenefitsForArea(area).description,
+        benefits: getDescriptionAndBenefitsForArea(area).benefits,
+      });
+    }
+  }
+
+  // Update the detected areas display
+  updateDetectedAreasDisplay(detectedAreas);
 }
 
-     function detectAreas(predictions) {
-  
-    for (const area in detectionRules) {
-        const rules = detectionRules[area];
-
-        // Check if all rules for this area are satisfied
-        const areaDetected = rules.every(rule => {
-            const labelIndex = cocoSsdModel.classIndex[rule.label];
-            const confidence = predictionsArray[labelIndex];
-            return confidence >= rule.minConfidence;
-        });
-
-        if (areaDetected) {
-            // Instead of pushing just the area name, push an object with more information
-            detectedAreas.push({
-                area: area,
-                description: getDescriptionForArea(area),
-                benefits: getBenefitsForArea(area),
-            });
-        }
-    }
-
-    return detectedAreas;
 
 // Define a function to get area information (description and benefits)
 function getDescriptionAndBenefitsForArea(areaName) {
@@ -170,6 +172,21 @@ async function detectObjectsFromCanvas(canvas, ctx) {
     return;
   }
 
+  //  code for object detection ...
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  ctx.drawImage(videoElement, 0, 0);
+
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const tensor = tf.browser.fromPixels(imgData).expandDims();
+
+  const predictions = await cocoSsdModel.detect(tensor);
+
+  // Call your updated area detection function here
+  detectAreas(predictions);
+}
+
+
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const tensor = tf.browser.fromPixels(imgData).expandDims();
 
@@ -181,7 +198,6 @@ async function detectObjectsFromCanvas(canvas, ctx) {
 
   requestAnimationFrame(() => detectObjects(canvas, ctx));
 }
-
 
  async function processImage() {
   // Assuming canvas and ctx are properly defined
@@ -200,8 +216,6 @@ async function detectObjectsFromCanvas(canvas, ctx) {
 
   requestAnimationFrame(() => processImage());
 }
-
-
 
 // Function to process predictions from COCO-SSD
 async function processPredictions(predictions) {
@@ -467,8 +481,3 @@ videoElement.addEventListener('loadeddata', async () => {
 document.addEventListener('DOMContentLoaded', () => {
   launchSystem();
 });
-
-// This is a dummy code to potentially fix syntax error
-const dummyCode = 1; // A simple assignment statement that doesn't affect the program
-
-console.log('Dummy code executed:', dummyCode);
