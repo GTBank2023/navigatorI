@@ -284,15 +284,24 @@ fetch('https://raw.githubusercontent.com/GTBank2023/navigatorI/main/marker_data%
   });
 
 
-// Call detectObjects when the video is loaded
+function startDetection() {
+  // Ensure videoElement is defined and ready
+  if (!videoElement) {
+    console.error('Video element not defined.');
+    return;
+  }
 
-videoElement.addEventListener("loadeddata", () => {
+  // Play the video and start object detection
+  videoElement.play().then(() => {
+    detectObjects();
+  }).catch(error => {
+    console.error('Error playing video:', error);
+  });
+}
 
-  videoElement.play();
+// Event listener to start detection when video is loaded
+videoElement.addEventListener("loadeddata", startDetection);
 
-  detectObjects();
-
-});
 
     // You will need to implement the textToSpeech function using your preferred TTS library.
     // This function should take the message as input and read it aloud.
