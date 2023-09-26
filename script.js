@@ -1,12 +1,10 @@
 
 // Function to launch the system
 function launchSystem() {
-    // Add actions you want to perform when the system is launched
-    setupCamera(); // For setting up the camera
-    loadModel();   // For loading the COCO SSD model
+    setupCamera(); // Move this here to ensure setupCamera is called before using videoElement
+    loadModel();
     // Add more actions if needed
 }
-
 
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,9 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     getStartedButton.addEventListener('click', () => {
         console.log('Button clicked. System launching...');
-        launchSystem(); // Call the launchSystem function when the button is clicked
+        launchSystem();
     });
 });
+
+// Event listener to start detection when video is loaded
+videoElement.addEventListener('loadeddata', async () => {
+    // Ensure videoElement is defined and ready
+    if (!videoElement) {
+        console.error('Video element not defined.');
+        return;
+    }
+
+    // Play the video and start object detection
+    videoElement.play();
+    await detectObjects();
+});
+
 
 
 let cocoSsdModel;
