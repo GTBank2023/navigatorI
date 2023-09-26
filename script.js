@@ -1,4 +1,3 @@
-THE JS WE EDITING
 
 // Function to launch the system
 function launchSystem() {
