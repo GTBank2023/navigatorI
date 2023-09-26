@@ -102,10 +102,19 @@
     </header>
 
 
-<div id="area-info">
-  <h1 id="area-name">Area Name</h1>
-  <p id="area-description">Area Description</p>
+<div class="container">
+    <div class="video-section">
+        <video id="video-feed" autoplay playsinline></video>
+    </div>
+
+    <div class="info-section">
+        <h2>Detected Objects:</h2>
+        <ul id="object-list">
+            <!-- Detected objects will be dynamically added here -->
+        </ul>
+    </div>
 </div>
+
 
   <script type="module" src="script.js"></script>
 
