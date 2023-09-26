@@ -261,7 +261,7 @@ async function detectObjects() {
 
 }
 
-fetch('https://drive.google.com/uc?id=1uNDyaihSkeOFFU3zAivZByG4pa05fGMc')
+fetch('https://raw.githubusercontent.com/GTBank2023/navigatorI/main/marker_data%20(1).json')
   .then(response => response.json())
   .then(data => {
       // Process the JSON data here (you'll need to define how to use the data)
