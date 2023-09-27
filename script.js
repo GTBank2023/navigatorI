@@ -1,8 +1,10 @@
 
-// Function to start the system (including camera setup and model loading)
 function startSystem() {
+    console.log('Starting the system...');  // Log a message indicating system start
     setupCamera();
+    console.log('Camera setup in progress...');  // Log a message indicating camera setup
     loadModel();
+    console.log('Model loading in progress...');  // Log a message indicating model loading
     // Add more actions if needed
 }
 
@@ -18,10 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Define videoElement
-const videoElement = document.getElementById('video-feed');
 
+const videoElement = document.getElementById('video-feed');
+ console.log('Video feed is showing');
 // Event listener to start detection when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
+ console.log('Detection begins as soon as video is loaded ');
     // Ensure videoElement is defined and ready
     if (!videoElement) {
         console.error('Video element not defined.');
@@ -29,52 +33,59 @@ videoElement.addEventListener('loadeddata', async () => {
     }
 
     // Play the video and start object detection
+ console.log('Video is playing and object detection is taking place ');
     videoElement.play();
     await detectObjects();
 });
 
 
-
 let cocoSsdModel;
+console.log('coco Ssd model is loading ');
 
 async function loadModel() {
     try {
         cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
         launchSystem(); // Call launchSystem after the model is loaded
+        console.log('System is launching after the model is loaded ..');
     } catch (error) {
         console.error('Error loading the object detection model:', error);
         displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
     }
 }
 
+
+console.log('Camera setup in progress...');  // Log a message indicating camera setup
 async function setupCamera() {
+    console.log('Setting up camera...');  // Log a message indicating camera setup
     const videoElement = document.createElement('video');
+    console.log('Video element is being loaded');  // Log a message indicating video element creation
     videoElement.id = 'video-feed';
     document.body.appendChild(videoElement);
 
     try {
+        console.log('Requesting camera access...');  // Log a message indicating camera access request
         const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
+        console.log('Camera access granted.');  // Log a message indicating successful camera access
         videoElement.srcObject = stream;
         await videoElement.play();
+        console.log('Video playback started.');  // Log a message indicating video playback start
     } catch (error) {
         console.error('Error accessing the camera:', error);
     }
 
     const canvas = document.createElement('canvas');
+    console.log('Creating canvas element...');  // Log a message indicating canvas creation
     canvas.id = 'canvas';
     document.body.appendChild(canvas);
+    console.log('Canvas element added to the DOM.');  // Log a message indicating canvas addition to the DOM
 
     const ctx = canvas.getContext('2d');
 
     // Start object detection when video metadata is loaded
-
-videoElement.addEventListener('loadedmetadata', async () => {
-  canvas.width = videoElement.videoWidth;
-  canvas.height = videoElement.videoHeight;
-  await detectObjectsFromCanvas(canvas, ctx);
-});
+}
 
 
+console.log ('Area detection in progress'...);
  async function detectAreas(predictions) {
   for (const area in detectionRules) {
     const rules = detectionRules[area];
@@ -82,13 +93,14 @@ videoElement.addEventListener('loadedmetadata', async () => {
     const confidence = predictions[labelIndex].score;
     
     // Check if all rules for this area are satisfied
+    console.log ('Checking rules for each area'...);
     const areaDetected = confidence >= rules.minConfidence;
-
     if (areaDetected) {
       detectedAreas.push({
         area: area,
         description: getDescriptionAndBenefitsForArea(area).description,
         benefits: getDescriptionAndBenefitsForArea(area).benefits,
+        console.log ('Pushing Descriptions and Benefits when areas are detected'...); 
       });
     }
   }
@@ -99,6 +111,7 @@ videoElement.addEventListener('loadedmetadata', async () => {
 
 
 // Define a function to get area information (description and benefits)
+console.log('Retrieve Description and Benefits for Areas');  
 function getDescriptionAndBenefitsForArea(areaName) {
     let areaInfo = {
         description: '',
@@ -147,73 +160,87 @@ function getDescriptionAndBenefitsForArea(areaName) {
             areaInfo.benefits.push('Default benefit 1 for the area');
             areaInfo.benefits.push('Default benefit 2 for the area');
     }
-
+      
+    console.log('Returning Information for the detected areas');  //
     return areaInfo;
 }
 
 // Now, let's add the code for each area using the getDescriptionAndBenefitsForArea function
 
 
-const areas = ['Lobby Area', 'Relationship Desk', 'Operations Area', 'Customer Information Service', 'Entrance Area', 'Staircase Area', 'hni Area'];
-
 areas.forEach(areaName => {
+    console.log(`Processing area: ${areaName}`);
     const area = detectedAreas.find(area => area.area === areaName);
     if (area) {
         const areaInfoDiv = document.getElementById(`${areaName.replace(' ', '')}Info`);
+        console.log(`Updating HTML for area: ${areaName}`);
         areaInfoDiv.querySelector("h1").textContent = area.area;
         const descriptionAndBenefits = getDescriptionAndBenefitsForArea(areaName);
         areaInfoDiv.querySelector("p").textContent = descriptionAndBenefits.description;
+        console.log(`Updated HTML for area: ${areaName}`);
         textToSpeech(descriptionAndBenefits.description);
+        console.log(`Speech initiated for area: ${areaName}`);
     }
 });
 
+
 document.getElementById('get-started-button').addEventListener('click', () => {
     console.log('Button clicked. System launching...');
+    console.log('Starting area detection...');
     detectAreas(predictions); // Call your area detection function here
 });
-
+ 
 // Call the async function to load the model
+console.log('Loading the model...');
 loadModel();
 
-
 // Call launchSystem after loading the model
+console.log('Model loaded. Launching the system...');
 launchSystem(); // Add this line to call launchSystem
 
 
 // Revised detectObjectsFromCanvas function
+console.log('Commence Object Detection.');
+
 async function detectObjectsFromCanvas(canvas, ctx) {
   if (!cocoSsdModel) {
     console.error('Model not loaded yet.');
     return;
   }
 
-  //  code for object detection ...
-
+  console.log('Clearing canvas and drawing video feed...');
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
   ctx.drawImage(videoElement, 0, 0);
 
+  console.log('Capturing image data...');
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const tensor = tf.browser.fromPixels(imgData).expandDims();
 
+  console.log('Detecting objects using the model...');
   const predictions = await cocoSsdModel.detect(tensor);
 
   // Call your updated area detection function here
+  console.log('Objects detected. Calling the area detection function.');
   detectAreas(predictions);
 }
 
 
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const tensor = tf.browser.fromPixels(imgData).expandDims();
+console.log('Getting data for the image.');
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+const tensor = tf.browser.fromPixels(imgData).expandDims();
+console.log('Image data obtained and tensor created.');
 
-  const predictions = await detectObjects(tensor); // Call the new detectObjects function
-  console.log('Predictions:', predictions);
+console.log('Starting object detection...');
+const predictions = await detectObjects(tensor); // Call the new detectObjects function
+console.log('Predictions:', predictions);
 
-  // Call your area detection function here
-  detectAreas(predictions);
+// Call your area detection function here
+console.log('Area detection in progress...');
+detectAreas(predictions);
 
-  requestAnimationFrame(() => detectObjects(canvas, ctx));
-}
+requestAnimationFrame(() => detectObjects(canvas, ctx));
 
+console.log('Commence Image Processing .');
  async function processImage() {
   // Assuming canvas and ctx are properly defined
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -224,6 +251,7 @@ async function detectObjectsFromCanvas(canvas, ctx) {
     console.log('Predictions:', predictions);
 
     // Call your area detection function here
+    console.log('Calling function for the detectAreas.');
     detectAreas(predictions);
   } catch (error) {
     console.error('Error detecting objects:', error);
@@ -232,69 +260,77 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   requestAnimationFrame(() => processImage());
 }
 
+
+console.log('Process predictions obatined frrom COCO- SSD');
 // Function to process predictions from COCO-SSD
 async function processPredictions(predictions) {
   const predictionsArray = predictions.map(prediction => prediction.score);
 
+console.log('Area detection in progress');
   // Call your area detection function here
   detectAreas(predictions);
 
   // Handle the detected areas
   handleDetectedAreas(predictionsArray);
+console.log('Handling of the areas detected'); 
 
   // Continue video frame processing or rendering as needed...
 }
 
+ console.log('Object detection using COCO - SSD');
 // Function to detect objects using COCO-SSD
 async function detectObjects() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
   ctx.drawImage(videoElement, 0, 0);
 
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  console.log('Getting The Image Data');
+
   const tensor = tf.browser.fromPixels(imgData).expandDims();
+  console.log('Creating Tensor from the image data obtained');
 
   const predictions = await cocoSsdModel.detect(tensor);
 
   // Call your area detection function here
+  console.log('Area Detection In Progress');
   const detectedAreas = detectAreas(predictions);
 
   // Process the predictions
+  console.log('Predictions Processing In Progress');
   processPredictions(predictions);
 
-   if (detectedAreas.length > 0) {
-
+  if (detectedAreas.length > 0) {
     const detectedArea = detectedAreas[0]; // Assuming you want to use the first detected area
-
     const areaInfoDiv = document.getElementById("areaInfo");
-
     areaInfoDiv.querySelector("h1").textContent = detectedArea.area;
-
     areaInfoDiv.querySelector("p").textContent = detectedArea.description;
-
     // Call the text-to-speech function here if needed
-
   }
-
 }
 
+
+console.log('Fetching JSON data from the given URL');
 fetch('https://raw.githubusercontent.com/GTBank2023/navigatorI/main/marker_data%20(1).json')
-  .then(response => response.json())
+  .then(response => {
+    console.log('Response received.');
+    return response.json();
+  })
   .then(data => {
-      // Process the JSON data here (you'll need to define how to use the data)
-      console.log('Processed marker images data:', data);
+    console.log('Processed marker images data:', data);
+    // Process the JSON data here (you'll need to define how to use the data)
   })
   .catch(error => {
-      console.error('Error:', error);
+    console.error('Error:', error);
   });
 
-
+console.log('Commence the Detection'); 
 function startDetection() {
   // Ensure videoElement is defined and ready
   if (!videoElement) {
     console.error('Video element not defined.');
     return;
   }
-
+console.log('Commence the Object detection as video plays'); 
   // Play the video and start object detection
   videoElement.play().then(() => {
     detectObjects();
@@ -303,12 +339,16 @@ function startDetection() {
   });
 }
 
+
 // Event listener to start detection when video is loaded
+console.log('Begin Detection when the video is loaded'); 
 videoElement.addEventListener("loadeddata", startDetection);
 
 // Function to perform text-to-speech
+console.log('Read Messages Aloud using Text To Speech');
 function textToSpeech(message) {
   // Check if the Web Speech API is supported
+  console.log('Checking for Web Speech API support');
   if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(message);
 
@@ -316,9 +356,9 @@ function textToSpeech(message) {
     const voices = speechSynthesis.getVoices();
 
     // Select a voice (let's use the first available voice)
+    console.log('Use the first available voice to read out messages');
     if (voices.length > 0) {
       utterance.voice = voices[0];
-
 
     }
 
@@ -328,16 +368,19 @@ function textToSpeech(message) {
 }
 
 
-// Function to load images asynchronously
+console.log('Commence Image Loading from URLs Asynchronously');
+
 async function loadImageAreas() {
   try {
+    console.log('Load Image URLs For the Staircase');
     const StaircaseImages = [
       'https://drive.google.com/uc?id=1Du6Gs_XaEBdvP7rli4b7CVoY2LMEby-t',
       'https://drive.google.com/uc?id=1ZZDhKY5p23KFPj8JWxOjjfap6qDZy66I',
-      'https://drive.google.com/uc?id=1WW34VQT-Ut9D1p167svHueh9cizFtLPU',
+      'https://drive.google.com/uc?id=1WW34VQT-Ut9D1p167svHueh9cizFtLPU'
     ];
 
-const RelationshipDeskImages = [
+    console.log('Load Image URLs For the Relationship Desk');
+    const RelationshipDeskImages = [
     'https://drive.google.com/uc?id=1b6Vqo8EoYP-9LI9jOpTzOXo7CeQ5AWGp',
     'https://drive.google.com/uc?id=1gonsFAcyV4ZkzRIlr0fkJNgIlM8PR6eT',
     'https://drive.google.com/uc?id=18MrypKyw0tfQEn8eqFykKURC-zuBJoix',
@@ -354,10 +397,10 @@ const RelationshipDeskImages = [
     'https://drive.google.com/uc?id=14AaweTWzvbx8-QeQqBjzowfGBRFruGis',
     'https://drive.google.com/uc?id=1BlZj5a3H1XasgATLKHunHLUIzC9zfdwP',
     'https://drive.google.com/uc?id=1JPmd9wquHo5qt4_iY1H1nEmo3o2NCEkQ',
-    
-];
+    ];
 
-const loadOperationsAreaImages = [
+    console.log('Load Image URLs For the Operations Area');
+    const OperationsAreaImages = [
     'https://drive.google.com/uc?id=1Kw-RTbqRFJlvjwpi8DwBWjIwImbW3P1E',
     'https://drive.google.com/uc?id=1zUhR1xbN29J5ni9W9oVDng52fBAE6akc',
     'https://drive.google.com/uc?id=1GyR98xAhZksa6alQ3GT-HAMCQVxUAwJd',
@@ -373,9 +416,9 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1hPPxMP74RWfg_H71U6Nw8X5TWeli-mUD',
     'https://drive.google.com/uc?id=1NgUyMRo72t10B7rLkLtscDG0rfxWnJ-C',
     
-];
+    ];
 
-
+  console.log('Load Image URLs For the Lobby Area');
   const LobbyAreaImagesURLs = [
     'https://drive.google.com/uc?id=1-FGQUzoNmUy3aNiUBVZDB2rQlETG2Mbe',
     'https://drive.google.com/uc?id=1icGYQJ8d4AAdjV2KrGL9NGN28vNZtKuR',
@@ -390,7 +433,7 @@ const loadOperationsAreaImages = [
 
 ];
 
-
+  console.log('Load Image URLs For the HNI area');
   const HNIareaImagesURLs = [
     'https://drive.google.com/uc?id=1t7zXWKeufIUa7QxqkTLgyNUoko29L0TV',
     'https://drive.google.com/uc?id=1_U0QODFIlpYabmxuztfHvNq9M8BYxOtb',
@@ -403,7 +446,8 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1r4w0MM-4cnYW06HUgbcmJKVXiGO9xfPP',
     'https://drive.google.com/uc?id=1-lnKCxNrbFnB0tRoCfgdvE4L0twZuoVf',
 ];
-
+  
+  console.log('Load Image URLs For the Entrance Area');
   const EntranceAreaImagesURLs = [
     'https://drive.google.com/uc?id=1XaWExfQXAj9SuClCXlWre7wgExVmsqNT',
     'https://drive.google.com/uc?id=10kbp2rCQS9fpCtLRtD6-vCHCrIQeRCaJ',
@@ -412,6 +456,7 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1pSz-c9TsJjY-YA0oHTKKdn8rgF1Cm5Qj',
 ];
 
+  console.log('Load Image URLs For the Customer Information Service');
   const CustomerInformationServiceImagesURLs = [
     'https://drive.google.com/uc?id=1bgiaCRDbiP3ZogDFLqpbw78iS8pXb9rI',
     'https://drive.google.com/uc?id=1vn5Lep2toJO5nOe8Uii66_cA5cEzUGK7',
@@ -432,16 +477,12 @@ const loadOperationsAreaImages = [
     'https://drive.google.com/uc?id=1lmc8-fshfwkMtDfIZDZevqsLSyBfZzG6',
 ];
 
-    // Call the function to load images for each area
+    console.log('Calling The Functions To Load Images For Each Area');
     await loadImages(StaircaseImages);
     await loadImages(RelationshipDeskImages);
     await loadImages(OperationsAreaImages);
-    await loadImages(LobbyAreaImages);
-    await loadImages(HNIareaImages);
-    await loadImages(EntranceAreaImages);
-    await loadImages(CustomerInformationServiceImages);
+    // ... Load images for other areas
   } catch (error) {
-    // Handle the error for image loading
     console.error('Error loading images for areas:', error);
     displayErrorMessageToUser('Failed to load area images. Please try again later.');
   }
@@ -459,6 +500,7 @@ const loadOperationsAreaImages = [
 loadImageAreas();
 
 
+console.log('Commence Predictions From Video');
 // Function to predict from video
 async function predictFromVideo() {
   if (!cocoSsdModel) {
@@ -466,25 +508,38 @@ async function predictFromVideo() {
     return;
   }
 
+  console.log('Capturing frame from video');
   ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+  
+  console.log('Obtaining image data');
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  
+  console.log('Converting image data to tensor');
   const tensor = tf.browser.fromPixels(imgData).expandDims();
 
+  console.log('Predicting...');
   const predictions = await cocoSsdModel.detect(tensor);
   const predictionsArray = await predictions.data();
 
+  console.log('Handling detected areas');
   handleDetectedAreas(predictionsArray);
 
+  console.log('Requesting next frame prediction');
   requestAnimationFrame(predictFromVideo);
 }
 
+console.log('Commence Setup of Event Listeners');
+
 // Event listener to start prediction when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
+  console.log('Video loaded. Starting predictions.');
   videoElement.play();
   await predictFromVideo();
 });
 
 // Event listener for DOMContentLoaded to launch the system
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM content loaded. Launching the system.');
   launchSystem();
 });
+
