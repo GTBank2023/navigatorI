@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Define videoElement
+const videoElement = document.getElementById('video-feed');
+
 // Event listener to start detection when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
     // Ensure videoElement is defined and ready
