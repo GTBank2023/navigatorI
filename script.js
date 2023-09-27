@@ -109,8 +109,6 @@ async function detectAreas(predictions) {
 
   // Update the detected areas display
   updateDetectedAreasDisplay(detectedAreas);
-}
-
 
 // Define a function to get area information (description and benefits)
 console.log('Retrieve Description and Benefits for Areas');  
