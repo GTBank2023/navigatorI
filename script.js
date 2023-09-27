@@ -1,4 +1,3 @@
-THE JAVASCRIPT WITH CONSOLE LOG MESSAGES: 
 
 function startSystem() {
     console.log('Starting the system...');  // Log a message indicating system start
