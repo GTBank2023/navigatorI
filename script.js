@@ -84,26 +84,28 @@ async function setupCamera() {
     // Start object detection when video metadata is loaded
 }
 
-
-console.log ('Area detection in progress'...);
- async function detectAreas(predictions) {
+console.log('Area detection in progress');
+async function detectAreas(predictions) {
   for (const area in detectionRules) {
     const rules = detectionRules[area];
     const labelIndex = cocoSsdModel.classIndex[area];
     const confidence = predictions[labelIndex].score;
-    
+
     // Check if all rules for this area are satisfied
-    console.log ('Checking rules for each area'...);
+    console.log('Checking rules for each area');
     const areaDetected = confidence >= rules.minConfidence;
     if (areaDetected) {
+      const description = getDescriptionAndBenefitsForArea(area).description;
+      const benefits = getDescriptionAndBenefitsForArea(area).benefits;
+      console.log('Pushing Descriptions and Benefits when areas are detected', description, benefits);
       detectedAreas.push({
         area: area,
-        description: getDescriptionAndBenefitsForArea(area).description,
-        benefits: getDescriptionAndBenefitsForArea(area).benefits,
-        console.log ('Pushing Descriptions and Benefits when areas are detected'...); 
+        description: description,
+        benefits: benefits
       });
     }
   }
+}
 
   // Update the detected areas display
   updateDetectedAreasDisplay(detectedAreas);
