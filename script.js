@@ -1,7 +1,7 @@
 
-// Function to launch the system
-function launchSystem() {
-    setupCamera(); // Move this here to ensure setupCamera is called before using videoElement
+// Function to start the system (including camera setup and model loading)
+function startSystem() {
+    setupCamera();
     loadModel();
     // Add more actions if needed
 }
@@ -12,9 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     getStartedButton.addEventListener('click', () => {
         console.log('Button clicked. System launching...');
-        launchSystem();
+        startSystem();  // Call startSystem when the button is clicked
     });
 });
+
 
 // Define videoElement
 const videoElement = document.getElementById('video-feed');
