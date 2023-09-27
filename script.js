@@ -306,11 +306,6 @@ function startDetection() {
 // Event listener to start detection when video is loaded
 videoElement.addEventListener("loadeddata", startDetection);
 
-
-    // You will need to implement the textToSpeech function using your preferred TTS library.
-    // This function should take the message as input and read it aloud.
- 
-
 // Function to perform text-to-speech
 function textToSpeech(message) {
   // Check if the Web Speech API is supported
