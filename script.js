@@ -86,6 +86,8 @@ async function setupCamera() {
 
 console.log('Area detection in progress');
 async function detectAreas(predictions) {
+  const detectedAreas = [];  // Create an array to store detected areas
+
   for (const area in detectionRules) {
     const rules = detectionRules[area];
     const labelIndex = cocoSsdModel.classIndex[area];
@@ -105,10 +107,13 @@ async function detectAreas(predictions) {
       });
     }
   }
+
+  // Call the function to update the detected areas display
+  updateDetectedAreasDisplay(detectedAreas);
+
+  return detectedAreas;
 }
 
-  // Update the detected areas display
-  updateDetectedAreasDisplay(detectedAreas);
 
 // Define a function to get area information (description and benefits)
 console.log('Retrieve Description and Benefits for Areas');  
