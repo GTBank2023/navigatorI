@@ -114,44 +114,19 @@ async function detectAreas(predictions) {
 
 // Usage of detectAreas
 console.log('Starting area detection...');
-const detectedAreas = await detectAreas(predictions); // Call your area detection function here
-console.log('Detected Areas:', detectedAreas);
+const detectedAreasResult = await detectAreas(predictions); // Call your area detection function here
+console.log('Detected Areas:', detectedAreasResult);
 
 // Now you can use the detectedAreas array in your code as needed
 // For example, you can process each detected area using a loop
-detectedAreas.forEach(area => {
+detectedAreasResult.forEach(area => {
   console.log('Processing area:', area);
   // Process the area information as needed
 });
 
 // Call the function to update the detected areas display
-updateDetectedAreasDisplay(detectedAreas);
+updateDetectedAreasDisplay(detectedAreasResult);
 
-// Original detectAreas logic to detect areas
-const detectedAreas = [];  // Create an array to store detected areas
-
-for (const area in detectionRules) {
-  const rules = detectionRules[area];
-  const labelIndex = cocoSsdModel.classIndex[area];
-  const confidence = predictions[labelIndex].score;
-
-  // Check if all rules for this area are satisfied
-  console.log('Checking rules for each area');
-  const areaDetected = confidence >= rules.minConfidence;
-  if (areaDetected) {
-    const description = getDescriptionAndBenefitsForArea(area).description;
-    const benefits = getDescriptionAndBenefitsForArea(area).benefits;
-    console.log('Pushing Descriptions and Benefits when areas are detected', description, benefits);
-    detectedAreas.push({
-      area: area,
-      description: description,
-      benefits: benefits
-    });
-  }
-}
-
-// Return the detected areas
-return detectedAreas;
 
 
 // Define a function to get area information (description and benefits)
