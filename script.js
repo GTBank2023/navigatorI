@@ -124,12 +124,35 @@ detectedAreas.forEach(area => {
   // Process the area information as needed
 });
 
+// Call the function to update the detected areas display
+updateDetectedAreasDisplay(detectedAreas);
 
-  // Call the function to update the detected areas display
-  updateDetectedAreasDisplay(detectedAreas);
+// Original detectAreas logic to detect areas
+const detectedAreas = [];  // Create an array to store detected areas
 
-  return detectedAreas;
+for (const area in detectionRules) {
+  const rules = detectionRules[area];
+  const labelIndex = cocoSsdModel.classIndex[area];
+  const confidence = predictions[labelIndex].score;
+
+  // Check if all rules for this area are satisfied
+  console.log('Checking rules for each area');
+  const areaDetected = confidence >= rules.minConfidence;
+  if (areaDetected) {
+    const description = getDescriptionAndBenefitsForArea(area).description;
+    const benefits = getDescriptionAndBenefitsForArea(area).benefits;
+    console.log('Pushing Descriptions and Benefits when areas are detected', description, benefits);
+    detectedAreas.push({
+      area: area,
+      description: description,
+      benefits: benefits
+    });
+  }
 }
+
+// Return the detected areas
+return detectedAreas;
+
 
 // Define a function to get area information (description and benefits)
 console.log('Retrieve Description and Benefits for Areas');  
