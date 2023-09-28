@@ -108,6 +108,23 @@ async function detectAreas(predictions) {
     }
   }
 
+  // Return the detected areas
+  return detectedAreas;
+}
+
+// Usage of detectAreas
+console.log('Starting area detection...');
+const detectedAreas = await detectAreas(predictions); // Call your area detection function here
+console.log('Detected Areas:', detectedAreas);
+
+// Now you can use the detectedAreas array in your code as needed
+// For example, you can process each detected area using a loop
+detectedAreas.forEach(area => {
+  console.log('Processing area:', area);
+  // Process the area information as needed
+});
+
+
   // Call the function to update the detected areas display
   updateDetectedAreasDisplay(detectedAreas);
 
