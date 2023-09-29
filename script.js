@@ -250,6 +250,9 @@ function getDescriptionAndBenefitsForArea(areaName) {
 // Now, let's add the code for each area using the getDescriptionAndBenefitsForArea function
 
 
+// Initialize detectedAreas as an empty array
+let detectedAreas = [];
+
 const areas = ['Lobby Area', 'Relationship Desk', 'Operations Area', 'Customer Information Service', 'Entrance Area', 'Staircase Area', 'hni Area'];
 areas.forEach(areaName => {
     console.log(`Processing area: ${areaName}`);
@@ -265,6 +268,7 @@ areas.forEach(areaName => {
         console.log(`Speech initiated for area: ${areaName}`);
     }
 });
+
 
 
 document.getElementById('get-started-button').addEventListener('click', () => {
