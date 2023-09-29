@@ -144,12 +144,33 @@ async function callDetectAreas() {
   }
 }
 
-// Now you can use the detectedAreas array in your code as needed
-// For example, you can process each detected area using a loop
-detectedAreasResult.forEach(area => {
-  console.log('Processing area:', area);
-  // Process the area information as needed
-});
+// Usage of detectAreas
+console.log('Starting area detection...');
+let detectedAreasResult;  // Define detectedAreasResult
+
+try {
+  // Call detectAreas if predictions is defined
+  if (predictions) {
+    detectedAreasResult = await detectAreas(predictions);
+    console.log('Detected Areas:', detectedAreasResult);
+  } else {
+    console.error('Predictions not available.');
+  }
+} catch (error) {
+  console.error('Error detecting areas:', error);
+}
+
+// Now you can use the detectedAreasResult array in your code as needed
+if (detectedAreasResult) {
+  detectedAreasResult.forEach(area => {
+    // Process the area information as needed
+  });
+
+  // Call the function to update the detected areas display
+  updateDetectedAreasDisplay(detectedAreasResult);
+} else {
+  console.error('No detected areas.');
+}
 
 // Call the function to update the detected areas display
 updateDetectedAreasDisplay(detectedAreasResult);
