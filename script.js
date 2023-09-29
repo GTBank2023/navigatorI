@@ -279,7 +279,6 @@ document.getElementById('get-started-button').addEventListener('click', () => {
  
 // Call the async function to load the model
 console.log('Loading the model...');
-let cocoSsdModel; // Define cocoSsdModel within this block
 
 async function loadModel() {
     try {
