@@ -185,8 +185,6 @@ if (detectedAreasResult.length > 0) {
 updateDetectedAreasDisplay(detectedAreasResult);
 
 
-
-
 // Define a function to get area information (description and benefits)
 console.log('Retrieve Description and Benefits for Areas');  
 function getDescriptionAndBenefitsForArea(areaName) {
