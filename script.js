@@ -278,7 +278,7 @@ const tensor = tf.browser.fromPixels(imgData).expandDims();
 console.log('Image data obtained and tensor created.');
 
 console.log('Starting object detection...');
-const predictions = await detectObjects(tensor); // Call the new detectObjects function
+predictions = await detectObjects(tensor);
 console.log('Predictions:', predictions);
 
 // Call your area detection function here
