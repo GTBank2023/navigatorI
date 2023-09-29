@@ -167,8 +167,10 @@ videoElement.addEventListener("loadeddata", async () => {
 });
 
 
+let detectedAreasResult = [];  // Define detectedAreasResult as an empty array
+
 // Now you can use the detectedAreasResult array in your code as needed
-if (detectedAreasResult) {
+if (detectedAreasResult.length > 0) {
   detectedAreasResult.forEach(area => {
     // Process the area information as needed
   });
@@ -181,6 +183,7 @@ if (detectedAreasResult) {
 
 // Call the function to update the detected areas display
 updateDetectedAreasDisplay(detectedAreasResult);
+
 
 
 
