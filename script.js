@@ -167,6 +167,14 @@ videoElement.addEventListener("loadeddata", async () => {
 });
 
 
+// Define the function to update the detected areas display
+function updateDetectedAreasDisplay(areas) {
+  // Implement the logic to update the detected areas display
+  // For example:
+  console.log('Updating detected areas display with:', areas);
+}
+
+// Rest of your code
 let detectedAreasResult = [];  // Define detectedAreasResult as an empty array
 
 // Now you can use the detectedAreasResult array in your code as needed
@@ -183,7 +191,6 @@ if (detectedAreasResult.length > 0) {
 
 // Call the function to update the detected areas display
 updateDetectedAreasDisplay(detectedAreasResult);
-
 
 // Define a function to get area information (description and benefits)
 console.log('Retrieve Description and Benefits for Areas');  
