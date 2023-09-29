@@ -112,10 +112,37 @@ async function detectAreas(predictions) {
   return detectedAreas;
 }
 
-// Usage of detectAreas
-console.log('Starting area detection...');
-const detectedAreasResult = await detectAreas(predictions); // Call your area detection function here
-console.log('Detected Areas:', detectedAreasResult);
+// Define predictions variable
+let predictions;
+
+// Event listener to start detection when video is loaded
+videoElement.addEventListener("loadeddata", async () => {
+  // Play the video and start object detection
+  videoElement.play();
+  // Call detectObjects and set predictions
+  predictions = await detectObjects();
+  console.log('Predictions set:', predictions);
+
+  // Now that predictions are set, call detectAreas
+  callDetectAreas();
+});
+
+// Function to call detectAreas if predictions is defined
+async function callDetectAreas() {
+  // Usage of detectAreas
+  console.log('Starting area detection...');
+  try {
+    // Call detectAreas if predictions is defined
+    if (predictions) {
+      const detectedAreasResult = await detectAreas(predictions);
+      console.log('Detected Areas:', detectedAreasResult);
+    } else {
+      console.error('Predictions not available.');
+    }
+  } catch (error) {
+    console.error('Error detecting areas:', error);
+  }
+}
 
 // Now you can use the detectedAreas array in your code as needed
 // For example, you can process each detected area using a loop
