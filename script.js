@@ -279,9 +279,9 @@ document.getElementById('get-started-button').addEventListener('click', () => {
  
 // Call the async function to load the model
 console.log('Loading the model...');
-(async () => {
-    let cocoSsdModel; // Define cocoSsdModel within this block
+let cocoSsdModel; // Define cocoSsdModel within this block
 
+async function loadModel() {
     try {
         cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
         console.log('Model loaded successfully.');
@@ -290,7 +290,9 @@ console.log('Loading the model...');
         console.error('Error loading the object detection model:', error);
         displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
     }
-})();
+}
+
+loadModel();
 
 // Call launchSystem after loading the model
 console.log('Model loaded. Launching the system...');
