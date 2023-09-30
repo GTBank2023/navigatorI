@@ -1,3 +1,4 @@
+let cocoSsdModel; // Declare cocoSsdModel as a global variable
 
 function startSystem() {
     console.log('Starting the system...');  // Log a message indicating system start
