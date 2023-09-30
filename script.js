@@ -292,6 +292,12 @@ try {
 
 loadModel();
 
+function displayErrorMessageToUser(message) {
+    // Implement how you want to display the error message to the user, e.g., using an alert
+    alert('Error: ' + message);
+}
+
+
 // Call the async function to load the model and start the system
 console.log('Loading the model and starting the system...');
 loadModelAndStartSystem();
