@@ -39,8 +39,7 @@ videoElement.addEventListener('loadeddata', async () => {
 });
 
 
-let cocoSsdModel;
-console.log('coco Ssd model is loading ');
+console.log('Loading the model...');
 
 async function loadModelAndStartSystem() {
     try {
@@ -52,6 +51,9 @@ async function loadModelAndStartSystem() {
         displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
     }
 }
+
+loadModelAndStartSystem(); // Call the async function to load the model and start the system
+
 
 
 
