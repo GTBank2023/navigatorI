@@ -1,11 +1,9 @@
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
 
 function startSystem() {
-    console.log('Starting the system...');  // Log a message indicating system start
     setupCamera();
-    console.log('Camera setup in progress...');  // Log a message indicating camera setup
-    loadModelAndStartSystem();  // Call the combined function to load the model and start the system
-    // Add more actions if needed
+    // Start the system directly, as the model is already loaded
+    // Call any additional actions needed to start the system
 }
 
 
@@ -284,7 +282,7 @@ console.log('Loading the model...');
 try {
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
-    launchSystem(); // Call launchSystem after the model is loaded
+    startSystem (); // Call startSystem  after the model is loaded
 } catch (error) {
     console.error('Error loading the object detection model:', error);
     displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
@@ -649,6 +647,6 @@ videoElement.addEventListener('loadeddata', async () => {
 // Event listener for DOMContentLoaded to launch the system
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM content loaded. Launching the system.');
-  launchSystem();
+  startSystem ();
 });
 
