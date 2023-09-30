@@ -290,7 +290,7 @@ try {
     displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
 }
 
-loadModel();
+loadModelAndStartSystem(); // Corrected function call
 
 function displayErrorMessageToUser(message) {
     // Implement how you want to display the error message to the user, e.g., using an alert
