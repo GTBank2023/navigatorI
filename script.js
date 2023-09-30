@@ -3,10 +3,10 @@ function startSystem() {
     console.log('Starting the system...');  // Log a message indicating system start
     setupCamera();
     console.log('Camera setup in progress...');  // Log a message indicating camera setup
-    loadModel();
-    console.log('Model loading in progress...');  // Log a message indicating model loading
+    loadModelAndStartSystem();  // Call the combined function to load the model and start the system
     // Add more actions if needed
 }
+
 
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     getStartedButton.addEventListener('click', () => {
         console.log('Button clicked. System launching...');
-        startSystem();  // Call startSystem when the button is clicked
+        loadModelAndStartSystem();  // Call the combined function to load the model and start the system
     });
 });
 
@@ -42,16 +42,17 @@ videoElement.addEventListener('loadeddata', async () => {
 let cocoSsdModel;
 console.log('coco Ssd model is loading ');
 
-async function loadModel() {
+async function loadModelAndStartSystem() {
     try {
         cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
-        launchSystem(); // Call launchSystem after the model is loaded
-        console.log('System is launching after the model is loaded ..');
+        console.log('Model loaded successfully.');
+        startSystem(); // Call startSystem after the model is loaded
     } catch (error) {
         console.error('Error loading the object detection model:', error);
         displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
     }
 }
+
 
 
 console.log('Camera setup in progress...');  // Log a message indicating camera setup
@@ -277,10 +278,9 @@ document.getElementById('get-started-button').addEventListener('click', () => {
     detectAreas(predictions); // Call your area detection function here
 });
  
-// Call the async function to load the model
 console.log('Loading the model...');
 
-async function loadModel() {
+async function loadModelAndStartSystem() {
     try {
         cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
         console.log('Model loaded successfully.');
@@ -293,9 +293,10 @@ async function loadModel() {
 
 loadModel();
 
-// Call launchSystem after loading the model
-console.log('Model loaded. Launching the system...');
-launchSystem(); // Add this line to call launchSystem
+// Call the async function to load the model and start the system
+console.log('Loading the model and starting the system...');
+loadModelAndStartSystem();
+
 
 
 // Revised detectObjectsFromCanvas function
@@ -580,7 +581,11 @@ async function loadImageAreas() {
     await loadImages(StaircaseImages);
     await loadImages(RelationshipDeskImages);
     await loadImages(OperationsAreaImages);
-    // ... Load images for other areas
+    await loadImages(LobbyAreaImages);
+    await loadImages(HNIareaImages);
+    await loadImages(EntranceAreaImages);
+    await loadImages(CustomerInformationServiceImages);
+      
   } catch (error) {
     console.error('Error loading images for areas:', error);
     displayErrorMessageToUser('Failed to load area images. Please try again later.');
