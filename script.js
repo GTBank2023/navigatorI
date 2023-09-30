@@ -279,7 +279,6 @@ document.getElementById('get-started-button').addEventListener('click', () => {
 });
  
 console.log('Loading the model...');
-
 async function loadModelAndStartSystem() {
     try {
         cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
