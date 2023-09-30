@@ -42,10 +42,10 @@ videoElement.addEventListener('loadeddata', async () => {
 
 console.log('Loading the model...');
 
-async function loadModelAndStartSystem() {
+async function loadCocoSsdModel() {
     try {
-        cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
-        console.log('Model loaded successfully.');
+        cocoSsdModel = await cocoSsd.load();
+        console.log('Coco-SSD model loaded successfully.');
         startSystem(); // Call startSystem after the model is loaded
     } catch (error) {
         console.error('Error loading the object detection model:', error);
@@ -53,9 +53,7 @@ async function loadModelAndStartSystem() {
     }
 }
 
-loadModelAndStartSystem(); // Call the async function to load the model and start the system
-
-
+loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
 
 console.log('Camera setup in progress...');  // Log a message indicating camera setup
