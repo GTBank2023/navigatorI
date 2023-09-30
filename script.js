@@ -282,14 +282,13 @@ document.getElementById('get-started-button').addEventListener('click', () => {
  
 console.log('Loading the model...');
 
-    try {
-        cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
-        console.log('Model loaded successfully.');
-        launchSystem(); // Call launchSystem after the model is loaded
-    } catch (error) {
-        console.error('Error loading the object detection model:', error);
-        displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
-    }
+try {
+    cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
+    console.log('Model loaded successfully.');
+    launchSystem(); // Call launchSystem after the model is loaded
+} catch (error) {
+    console.error('Error loading the object detection model:', error);
+    displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
 }
 
 loadModel();
