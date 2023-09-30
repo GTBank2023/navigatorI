@@ -1,11 +1,12 @@
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
 
 function startSystem() {
-    setupCamera();
+    setupCamera();  // Set up the camera
     // Start the system directly, as the model is already loaded
     // Call any additional actions needed to start the system
+    // For example, you could call a function to begin object detection
+    detectObjects();
 }
-
 
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadModelAndStartSystem();  // Call the combined function to load the model and start the system
     });
 });
-
 
 // Define videoElement
 
