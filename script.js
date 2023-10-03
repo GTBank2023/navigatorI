@@ -54,6 +54,7 @@ async function loadCocoSsdModel() {
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
 
+console.log('Camera setup in progress...');  // Log a message indicating camera setup
 async function setupCamera() {
     console.log('Setting up camera...');  // Log a message indicating camera setup
     const videoElement = document.createElement('video');
@@ -61,8 +62,7 @@ async function setupCamera() {
     videoElement.id = 'video-feed';
     document.body.appendChild(videoElement);
 
-
-  try {
+    try {
         console.log('Requesting camera access...');  // Log a message indicating camera access request
         const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
         console.log('Camera access granted.');  // Log a message indicating successful camera access
@@ -81,40 +81,8 @@ async function setupCamera() {
 
     const ctx = canvas.getContext('2d');
 
-
-
-// Update the video element with the current camera frames in real time
-function updateVideo() {
-    if (!videoElement.paused && !videoElement.ended) {
-        // Draw the video frame on the canvas
-        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
-        // Call object detection and get predictions
-        detectObjects().then(predictions => {
-            // Process the predictions (e.g., display information)
-            processPredictions(predictions);
-
-            // Update the detected areas display
-            updateDetectedAreasDisplay(predictions);
-        });
-
-        // Update the video element with the current frame
-        requestAnimationFrame(updateVideo);
-    }
+    // Start object detection when video metadata is loaded
 }
-
-// Function to process predictions from COCO-SSD
-async function processPredictions(predictions) {
-    // Call your area detection function here
-    const detectedAreas = await detectAreas(predictions);
-
-    // Process the predictions
-    console.log('Predictions Processing In Progress');
-    // Handle the detected areas
-    handleDetectedAreas(predictions);
-    console.log('Handling of the areas detected');
-}
-
 
 console.log('Area detection in progress');
 async function detectAreas(predictions) {
