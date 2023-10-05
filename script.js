@@ -410,6 +410,8 @@ console.log('Handling of the areas detected');
   // Continue video frame processing or rendering as needed...
 }
 
+let detectedAreas = []; // Declare detectedAreas as a global variable
+
 // Function to detect objects using COCO-SSD
 async function detectObjects() {
   const canvas = document.getElementById('canvas');
@@ -434,7 +436,7 @@ async function detectObjects() {
   console.log('Creating Tensor from the image data obtained');
 
   // Call your area detection function here
-  detectAreas(tensor);
+  detectedAreas = detectAreas(tensor);
 }
 
 // Event listener to start detection when video is loaded
@@ -444,11 +446,6 @@ videoElement.addEventListener('loadeddata', async () => {
 
   // Call detectObjects and set predictions
   await detectObjects();
-});
-
-  // Call your area detection function here
-  console.log('Area Detection In Progress');
-  const detectedAreas = detectAreas(predictions);
 
   // Process the predictions
   console.log('Predictions Processing In Progress');
@@ -461,7 +458,8 @@ videoElement.addEventListener('loadeddata', async () => {
     areaInfoDiv.querySelector("p").textContent = detectedArea.description;
     // Call the text-to-speech function here if needed
   }
-}
+});
+
 
 console.log('Fetching JSON data from the given URL');
 fetch('https://raw.githubusercontent.com/GTBank2023/navigatorI/main/marker_data%20(1).json')
