@@ -410,8 +410,6 @@ console.log('Handling of the areas detected');
   // Continue video frame processing or rendering as needed...
 }
 
-let detectedAreas = []; // Declare detectedAreas as a global variable
-
 // Function to detect objects using COCO-SSD
 async function detectObjects() {
   const canvas = document.getElementById('canvas');
