@@ -427,22 +427,24 @@ async function detectObjects() {
   // Draw the video frame on the canvas
   ctx.drawImage(videoElement, 0, 0);
 
-}
-
-// Event listener to start detection when video is loaded
-videoElement.addEventListener('loadeddata', async () => {
-  // Play the video and start object detection
-  videoElement.play();
-  await detectObjects();
-});
-
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   console.log('Getting The Image Data');
 
   const tensor = tf.browser.fromPixels(imgData).expandDims();
   console.log('Creating Tensor from the image data obtained');
 
-  const predictions = await cocoSsdModel.detect(tensor);
+  // Call your area detection function here
+  detectAreas(tensor);
+}
+
+// Event listener to start detection when video is loaded
+videoElement.addEventListener('loadeddata', async () => {
+  // Play the video and start object detection
+  videoElement.play();
+
+  // Call detectObjects and set predictions
+  await detectObjects();
+});
 
   // Call your area detection function here
   console.log('Area Detection In Progress');
