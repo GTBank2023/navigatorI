@@ -360,9 +360,11 @@ if (!canvas) {
   }
 }
 
-
 console.log('Starting object detection...');
-const tensor = ...; // Properly defined tensor
+const tensor = tf.tensor([
+  [0.1, 0.2],
+  [0.3, 0.4]
+]); // Properly defined tensor (replace with your actual image data)
 predictions = await detectObjects(tensor);
 console.log('Predictions:', predictions);
 
