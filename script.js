@@ -436,8 +436,6 @@ videoElement.addEventListener('loadeddata', async () => {
   await detectObjects();
 });
 
- 
-
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   console.log('Getting The Image Data');
 
