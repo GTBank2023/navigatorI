@@ -410,11 +410,33 @@ console.log('Handling of the areas detected');
   // Continue video frame processing or rendering as needed...
 }
 
- console.log('Object detection using COCO - SSD');
 // Function to detect objects using COCO-SSD
 async function detectObjects() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d'); // Define ctx here
+
+  // Ensure ctx is defined
+  if (!ctx) {
+    console.error('Canvas 2D context not found.');
+    return;
+  }
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw the video frame on the canvas
   ctx.drawImage(videoElement, 0, 0);
+
+}
+
+// Event listener to start detection when video is loaded
+videoElement.addEventListener('loadeddata', async () => {
+  // Play the video and start object detection
+  videoElement.play();
+  await detectObjects();
+});
+
+ 
 
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   console.log('Getting The Image Data');
