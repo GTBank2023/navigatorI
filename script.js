@@ -339,10 +339,27 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   detectAreas(predictions);
 } 
 
-console.log('Getting data for the image.');
-const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-const tensor = tf.browser.fromPixels(imgData).expandDims();
-console.log('Image data obtained and tensor created.');
+const canvas = document.getElementById('canvas');
+
+if (!canvas) {
+  console.error('Canvas element not found.');
+} else {
+  // Obtain the 2D drawing context
+  const ctx = canvas.getContext('2d');
+
+  if (!ctx) {
+    console.error('Failed to obtain 2D drawing context.');
+  } else {
+    console.log('Getting data for the image.');
+    
+    // Now you can use ctx for drawing operations
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const tensor = tf.browser.fromPixels(imgData).expandDims();
+
+    console.log('Image data obtained and tensor created.');
+  }
+}
+
 
 console.log('Starting object detection...');
 predictions = await detectObjects(tensor);
