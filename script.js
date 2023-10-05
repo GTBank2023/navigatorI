@@ -362,6 +362,7 @@ if (!canvas) {
 
 
 console.log('Starting object detection...');
+const tensor = ...; // Properly defined tensor
 predictions = await detectObjects(tensor);
 console.log('Predictions:', predictions);
 
