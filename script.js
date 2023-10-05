@@ -279,28 +279,40 @@ document.getElementById('get-started-button').addEventListener('click', () => {
  
 console.log('Loading the model...');
 
+async function loadModelAndStartSystem() {
+    try {
+        // Add the logic to start the system after the model is loaded
+        console.log('System starting...');
+    } catch (error) {
+        // Handle any errors that occur while starting the system
+        console.error('Error starting the system:', error);
+        displayErrorMessageToUser('Failed to start the system. Please try again later.');
+    }
+}
+
+// Call the function to load the COCO-SSD model and start the system
 try {
+    // Load the COCO-SSD model
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
-    startSystem (); // Call startSystem  after the model is loaded
+
+    // Call the function to start the system after the model is loaded
+    loadModelAndStartSystem();
 } catch (error) {
+    // Handle the error if model loading fails
     console.error('Error loading the object detection model:', error);
     displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
 }
 
-loadModelAndStartSystem(); // Corrected function call
-
+// Function to display error message to the user
 function displayErrorMessageToUser(message) {
     // Implement how you want to display the error message to the user, e.g., using an alert
     alert('Error: ' + message);
 }
 
-
 // Call the async function to load the model and start the system
 console.log('Loading the model and starting the system...');
 loadModelAndStartSystem();
-
-
 
 // Revised detectObjectsFromCanvas function
 console.log('Commence Object Detection.');
@@ -325,8 +337,7 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   // Call your updated area detection function here
   console.log('Objects detected. Calling the area detection function.');
   detectAreas(predictions);
-}
-
+} 
 
 console.log('Getting data for the image.');
 const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -362,7 +373,6 @@ console.log('Commence Image Processing .');
 
   requestAnimationFrame(() => processImage());
 }
-
 
 console.log('Process predictions obatined frrom COCO- SSD');
 // Function to process predictions from COCO-SSD
@@ -411,7 +421,6 @@ async function detectObjects() {
   }
 }
 
-
 console.log('Fetching JSON data from the given URL');
 fetch('https://raw.githubusercontent.com/GTBank2023/navigatorI/main/marker_data%20(1).json')
   .then(response => {
@@ -442,7 +451,6 @@ console.log('Commence the Object detection as video plays');
   });
 }
 
-
 // Event listener to start detection when video is loaded
 console.log('Begin Detection when the video is loaded'); 
 videoElement.addEventListener("loadeddata", startDetection);
@@ -469,7 +477,6 @@ function textToSpeech(message) {
     window.speechSynthesis.speak(utterance);
   }
 }
-
 
 console.log('Commence Image Loading from URLs Asynchronously');
 
