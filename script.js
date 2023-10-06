@@ -1,124 +1,7 @@
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
 
-function startSystem() {
-    setupCamera();  // Set up the camera
-    // Start the system directly, as the model is already loaded
-    // Call any additional actions needed to start the system
-    // For example, you could call a function to begin object detection
-    detectObjects();
-}
-
-// Event listener to start the system when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const getStartedButton = document.querySelector('.get-started-button');
-
-    getStartedButton.addEventListener('click', () => {
-        console.log('Button clicked. System launching...');
-        loadModelAndStartSystem();  // Call the combined function to load the model and start the system
-    });
-});
-
-// Define videoElement
-
-const videoElement = document.getElementById('video-feed');
- console.log('Video feed is showing');
-// Event listener to start detection when video is loaded
-videoElement.addEventListener('loadeddata', async () => {
- console.log('Detection begins as soon as video is loaded ');
-    // Ensure videoElement is defined and ready
-    if (!videoElement) {
-        console.error('Video element not defined.');
-        return;
-    }
-
-    // Play the video and start object detection
- console.log('Video is playing and object detection is taking place ');
-    videoElement.play();
-    await detectObjects();
-});
-
-
-console.log('Loading the model...');
-
-async function loadCocoSsdModel() {
-    try {
-        cocoSsdModel = await cocoSsd.load();
-        console.log('Coco-SSD model loaded successfully.');
-        startSystem(); // Call startSystem after the model is loaded
-    } catch (error) {
-        console.error('Error loading the object detection model:', error);
-        displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
-    }
-}
-
-loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
-
-
-console.log('Camera setup in progress...');  // Log a message indicating camera setup
-async function setupCamera() {
-    console.log('Setting up camera...');  // Log a message indicating camera setup
-    const videoElement = document.createElement('video');
-    console.log('Video element is being loaded');  // Log a message indicating video element creation
-    videoElement.id = 'video-feed';
-    document.body.appendChild(videoElement);
-
-    try {
-        console.log('Requesting camera access...');  // Log a message indicating camera access request
-        const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
-        console.log('Camera access granted.');  // Log a message indicating successful camera access
-        videoElement.srcObject = stream;
-        await videoElement.play();
-        console.log('Video playback started.');  // Log a message indicating video playback start
-    } catch (error) {
-        console.error('Error accessing the camera:', error);
-    }
-
-    const canvas = document.createElement('canvas');
-    console.log('Creating canvas element...');  // Log a message indicating canvas creation
-    canvas.id = 'canvas';
-    document.body.appendChild(canvas);
-    console.log('Canvas element added to the DOM.');  // Log a message indicating canvas addition to the DOM
-
-    const ctx = canvas.getContext('2d');
-
-    // Start object detection when video metadata is loaded
-}
-
-async function detectAreas(predictions) {
-  const detectedAreas = [];
-
-  for (const area in detectionRules) {
-    const rules = detectionRules[area];
-    const labelIndex = cocoSsdModel.classIndex[area];
-    const confidence = predictions[labelIndex].score;
-
-    // Rest of your detection logic using rules and confidence
-
-    // Check if all rules for this area are satisfied
-    const areaDetected = confidence >= rules.minConfidence;
-    if (areaDetected) {
-      const description = getDescriptionAndBenefitsForArea(area).description;
-      const benefits = getDescriptionAndBenefitsForArea(area).benefits;
-      detectedAreas.push({
-        area: area,
-        description: description,
-        benefits: benefits
-      });
-    }
-  }
-
-  return detectedAreas; // Return the detected areas
-}
-
-async function detectAreasFromPredictions(predictions) {
-  const detectedAreas = [];
-
-  for (const area in detectionRules) {
-    const rules = detectionRules[area];
-    const labelIndex = cocoSsdModel.classIndex[area];
-    const confidence = predictions[labelIndex].score;
-
- // Define the threshold for detection confidence
+ // THRESHOLD DETECTION
+    // Define the threshold for detection confidence
     const threshold = 0.5;
 
     // Define the rules for each area
@@ -223,7 +106,6 @@ async function detectAreasFromPredictions(predictions) {
 
     };
 
-
     // Function to detect areas based on rules
     function detectAreas(predictionsArray) {
     const detectedAreas = [];
@@ -249,23 +131,94 @@ async function detectAreasFromPredictions(predictions) {
     }
 
     return detectedAreas;
+
+function startSystem() {
+    setupCamera();  // Set up the camera
+    // Start the system directly, as the model is already loaded
+    // Call any additional actions needed to start the system
+    // For example, you could call a function to begin object detection
+    detectObjects();
 }
 
-    // Check if all rules for this area are satisfied
-    const areaDetected = confidence >= rules.minConfidence;
-    if (areaDetected) {
-      const description = getDescriptionAndBenefitsForArea(area).description;
-      const benefits = getDescriptionAndBenefitsForArea(area).benefits;
-      detectedAreas.push({
-        area: area,
-        description: description,
-        benefits: benefits
-      });
-    }
-  }
+// Event listener to start the system when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const getStartedButton = document.querySelector('.get-started-button');
 
-async function detectAreasFromPredictions(predictions) {
-  const detectedAreas = [];
+    getStartedButton.addEventListener('click', () => {
+        console.log('Button clicked. System launching...');
+        loadModelAndStartSystem();  // Call the combined function to load the model and start the system
+    });
+});
+
+// Define videoElement
+
+const videoElement = document.getElementById('video-feed');
+ console.log('Video feed is showing');
+// Event listener to start detection when video is loaded
+videoElement.addEventListener('loadeddata', async () => {
+ console.log('Detection begins as soon as video is loaded ');
+    // Ensure videoElement is defined and ready
+    if (!videoElement) {
+        console.error('Video element not defined.');
+        return;
+    }
+
+    // Play the video and start object detection
+ console.log('Video is playing and object detection is taking place ');
+    videoElement.play();
+    await detectObjects();
+});
+
+
+console.log('Loading the model...');
+
+async function loadCocoSsdModel() {
+    try {
+        cocoSsdModel = await cocoSsd.load();
+        console.log('Coco-SSD model loaded successfully.');
+        startSystem(); // Call startSystem after the model is loaded
+    } catch (error) {
+        console.error('Error loading the object detection model:', error);
+        displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+    }
+}
+
+loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
+
+
+console.log('Camera setup in progress...');  // Log a message indicating camera setup
+async function setupCamera() {
+    console.log('Setting up camera...');  // Log a message indicating camera setup
+    const videoElement = document.createElement('video');
+    console.log('Video element is being loaded');  // Log a message indicating video element creation
+    videoElement.id = 'video-feed';
+    document.body.appendChild(videoElement);
+
+    try {
+        console.log('Requesting camera access...');  // Log a message indicating camera access request
+        const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
+        console.log('Camera access granted.');  // Log a message indicating successful camera access
+        videoElement.srcObject = stream;
+        await videoElement.play();
+        console.log('Video playback started.');  // Log a message indicating video playback start
+    } catch (error) {
+        console.error('Error accessing the camera:', error);
+    }
+
+    const canvas = document.createElement('canvas');
+    console.log('Creating canvas element...');  // Log a message indicating canvas creation
+    canvas.id = 'canvas';
+    document.body.appendChild(canvas);
+    console.log('Canvas element added to the DOM.');  // Log a message indicating canvas addition to the DOM
+
+    const ctx = canvas.getContext('2d');
+
+    // Start object detection when video metadata is loaded
+}
+
+console.log('Area detection in progress');
+async function detectAreas(predictions) {
+  const detectedAreas = [];  // Create an array to store detected areas
 
   for (const area in detectionRules) {
     const rules = detectionRules[area];
@@ -273,10 +226,12 @@ async function detectAreasFromPredictions(predictions) {
     const confidence = predictions[labelIndex].score;
 
     // Check if all rules for this area are satisfied
-    const areaDetected = confidence >= threshold;
+    console.log('Checking rules for each area');
+    const areaDetected = confidence >= rules.minConfidence;
     if (areaDetected) {
-      const description = getDescriptionForArea(area);
-      const benefits = getBenefitsForArea(area);
+      const description = getDescriptionAndBenefitsForArea(area).description;
+      const benefits = getDescriptionAndBenefitsForArea(area).benefits;
+      console.log('Pushing Descriptions and Benefits when areas are detected', description, benefits);
       detectedAreas.push({
         area: area,
         description: description,
@@ -285,10 +240,12 @@ async function detectAreasFromPredictions(predictions) {
     }
   }
 
-  return detectedAreas; // Return the detected areas
+  // Return the detected areas
+  return detectedAreas;
 }
 
-
+// Define predictions variable
+let predictions;
 
 // Event listener to start detection when video is loaded
 videoElement.addEventListener("loadeddata", async () => {
