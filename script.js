@@ -84,22 +84,21 @@ async function setupCamera() {
     // Start object detection when video metadata is loaded
 }
 
-console.log('Area detection in progress');
 async function detectAreas(predictions) {
-  const detectedAreas = [];  // Create an array to store detected areas
+  const detectedAreas = [];
 
   for (const area in detectionRules) {
     const rules = detectionRules[area];
     const labelIndex = cocoSsdModel.classIndex[area];
     const confidence = predictions[labelIndex].score;
 
+    // Rest of your detection logic using rules and confidence
+
     // Check if all rules for this area are satisfied
-    console.log('Checking rules for each area');
     const areaDetected = confidence >= rules.minConfidence;
     if (areaDetected) {
       const description = getDescriptionAndBenefitsForArea(area).description;
       const benefits = getDescriptionAndBenefitsForArea(area).benefits;
-      console.log('Pushing Descriptions and Benefits when areas are detected', description, benefits);
       detectedAreas.push({
         area: area,
         description: description,
@@ -108,12 +107,191 @@ async function detectAreas(predictions) {
     }
   }
 
-  // Return the detected areas
-  return detectedAreas;
+  return detectedAreas; // Return the detected areas
 }
 
-// Define predictions variable
-let predictions;
+async function detectAreasFromPredictions(predictions) {
+  const detectedAreas = [];
+
+  for (const area in detectionRules) {
+    const rules = detectionRules[area];
+    const labelIndex = cocoSsdModel.classIndex[area];
+    const confidence = predictions[labelIndex].score;
+
+ // Define the threshold for detection confidence
+    const threshold = 0.5;
+
+    // Define the rules for each area
+    const detectionRules = {
+    'Entrance Area': [
+        {
+            label: "African Tribal Painting",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Metal Wall Decoration",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Wooden Reception Desk",
+            minConfidence: 0.5,
+        }
+    ],
+    'Customer Information Service': [
+        {
+            label: "Customer Information Service on an A4 poster Stainless steel stand",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Black Chair With Wheels",
+            minConfidence: 0.5,
+        },
+        {
+            label: "City Scape Painting",
+            minConfidence: 0.5,
+        }
+    ],
+    'Relationship Desk ': [
+        {
+            label: "Black Swivel Chair",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Black Leather Sofas",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Tambour Cupboard",
+            minConfidence: 0.5,
+        }
+    ],
+    'Lobby Area ': [
+        {
+            label: "ATM Machine Mounted On the Wall",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Proudly African Banner",
+            minConfidence: 0.5,
+        },
+        {
+            label: "It's Banking, Only Easier Banner",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Revolving Doors",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Kinara Account Banners",
+            minConfidence: 0.5,
+        }
+    ],
+    'Operations Area ': [
+        {
+            label: "Please Wait Here Metal Stand",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Jibakishie Banner",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Person Behind Wooden Reception Desk",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Orange Wall with Flower Pot",
+            minConfidence: 0.5,
+        }
+    ],
+    'hni Area': [
+        {
+            label: "Abstract Painting",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Seaside Bridge Painting",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Metal Decorative Grill",
+            minConfidence: 0.5,
+        }
+    ]
+};
+
+    };
+
+
+    // Function to detect areas based on rules
+    function detectAreas(predictionsArray) {
+    const detectedAreas = [];
+
+    for (const area in detectionRules) {
+        const rules = detectionRules[area];
+
+        // Check if all rules for this area are satisfied
+        const areaDetected = rules.every(rule => {
+            const labelIndex = cocoSsdModel.classIndex[rule.label];
+            const confidence = predictionsArray[labelIndex];
+            return confidence >= rule.minConfidence;
+        });
+
+        if (areaDetected) {
+            // Instead of pushing just the area name, push an object with more information
+            detectedAreas.push({
+                area: area,
+                description: getDescriptionForArea(area),
+                benefits: getBenefitsForArea(area),
+            });
+        }
+    }
+
+    return detectedAreas;
+}
+
+    // Check if all rules for this area are satisfied
+    const areaDetected = confidence >= rules.minConfidence;
+    if (areaDetected) {
+      const description = getDescriptionAndBenefitsForArea(area).description;
+      const benefits = getDescriptionAndBenefitsForArea(area).benefits;
+      detectedAreas.push({
+        area: area,
+        description: description,
+        benefits: benefits
+      });
+    }
+  }
+
+  return detectedAreas; // Return the detected areas
+}
+
+async function detectAreasFromPredictions(predictions) {
+  const detectedAreas = [];
+
+  for (const area in detectionRules) {
+    const rules = detectionRules[area];
+    const labelIndex = cocoSsdModel.classIndex[area];
+    const confidence = predictions[labelIndex].score;
+
+    // Check if all rules for this area are satisfied
+    const areaDetected = confidence >= threshold;
+    if (areaDetected) {
+      const description = getDescriptionForArea(area);
+      const benefits = getBenefitsForArea(area);
+      detectedAreas.push({
+        area: area,
+        description: description,
+        benefits: benefits
+      });
+    }
+  }
+
+  return detectedAreas; // Return the detected areas
+}
+
+
 
 // Event listener to start detection when video is loaded
 videoElement.addEventListener("loadeddata", async () => {
