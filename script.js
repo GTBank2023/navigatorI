@@ -102,8 +102,6 @@
     ]
 };
 
-    };
-
     // Function to detect areas based on rules
     function detectAreas(predictionsArray) {
     const detectedAreas = [];
