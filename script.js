@@ -251,9 +251,6 @@ console.log('Area detection in progress');
     }
   }
 
-  // Return the detected areas
-  return detectedAreas;
-}
 
 // Define predictions variable
 let predictions;
