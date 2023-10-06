@@ -1,5 +1,153 @@
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
 
+// THRESHOLD DETECTION
+const threshold = 0.5;
+
+// Define the rules for each area
+    const detectionRules = {
+    'Entrance Area': [
+        {
+            label: "African Tribal Painting",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Metal Wall Decoration",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Wooden Reception Desk",
+            minConfidence: 0.5,
+        }
+    ],
+    'Customer Information Service': [
+        {
+            label: "Customer Information Service on an A4 poster Stainless steel stand",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Black Chair With Wheels",
+            minConfidence: 0.5,
+        },
+        {
+            label: "City Scape Painting",
+            minConfidence: 0.5,
+        }
+    ],
+    'Relationship Desk ': [
+        {
+            label: "Black Swivel Chair",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Black Leather Sofas",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Tambour Cupboard",
+            minConfidence: 0.5,
+        }
+    ],
+    'Lobby Area ': [
+        {
+            label: "ATM Machine Mounted On the Wall",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Proudly African Banner",
+            minConfidence: 0.5,
+        },
+        {
+            label: "It's Banking, Only Easier Banner",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Revolving Doors",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Kinara Account Banners",
+            minConfidence: 0.5,
+        }
+    ],
+    'Operations Area ': [
+        {
+            label: "Please Wait Here Metal Stand",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Jibakishie Banner",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Person Behind Wooden Reception Desk",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Orange Wall with Flower Pot",
+            minConfidence: 0.5,
+        }
+    ],
+    'hni Area': [
+        {
+            label: "Abstract Painting",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Seaside Bridge Painting",
+            minConfidence: 0.5,
+        },
+        {
+            label: "Metal Decorative Grill",
+            minConfidence: 0.5,
+        }
+    ]
+};
+
+    };
+
+
+function detectAreas(predictionsArray) {
+  const detectedAreas = [];
+
+  for (const area in detectionRules) {
+    const rules = detectionRules[area];
+
+    // Check if all rules for this area are satisfied
+    const areaDetected = rules.every(rule => {
+      const labelIndex = cocoSsdModel.classIndex[rule.label];
+      const confidence = predictionsArray[labelIndex];
+      return confidence >= rule.minConfidence;
+    });
+
+    console.log(`Area: ${area}, Detected: ${areaDetected}`); // Log area detection
+
+    if (areaDetected) {
+      detectedAreas.push({
+        area: area,
+        description: getDescriptionForArea(area),
+        benefits: getBenefitsForArea(area),
+      });
+    }
+  }
+
+  console.log('Detected Areas:', detectedAreas); // Log detected areas
+
+  return detectedAreas;
+}
+
+// Event listener to start detection when video is loaded
+videoElement.addEventListener('loadeddata', async () => {
+  console.log('Video loaded, starting detection...'); // Log video load
+  videoElement.play();
+
+  // Call detectObjects and set predictions
+  predictions = await detectObjects();
+
+  // Now that predictions are set, call detectAreas
+  callDetectAreas();
+});
+
+
 function startSystem() {
     setupCamera();  // Set up the camera
     // Start the system directly, as the model is already loaded
