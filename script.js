@@ -371,13 +371,13 @@ console.log('Predictions:', predictions);
 let ctx;  // Define ctx
 
 // Assuming you have the canvas element available
-const canvas = document.getElementById('canvas');
+let canvas = document.getElementById('canvas');  // Use let instead of const
 
 if (!canvas) {
   console.error('Canvas element not found.');
 } else {
   // Obtain the 2D drawing context
-  ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');  // Declare ctx using const
 
   if (!ctx) {
     console.error('Failed to obtain 2D drawing context.');
