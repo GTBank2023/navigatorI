@@ -385,7 +385,6 @@ function getDescriptionAndBenefitsForArea(areaName) {
 
 
 // Initialize detectedAreas as an empty array
-let detectedAreas = [];
 
 const areas = ['Lobby Area', 'Relationship Desk', 'Operations Area', 'Customer Information Service', 'Entrance Area', 'Staircase Area', 'hni Area'];
 areas.forEach(areaName => {
