@@ -103,9 +103,6 @@ const threshold = 0.5;
     ]
 };
 
-    };
-
-
 function detectAreas(predictionsArray) {
   const detectedAreas = [];
 
