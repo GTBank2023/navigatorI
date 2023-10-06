@@ -215,7 +215,6 @@ async function setupCamera() {
 }
 
 console.log('Area detection in progress');
-async function detectAreas(predictions) {
   const detectedAreas = [];  // Create an array to store detected areas
 
   for (const area in detectionRules) {
