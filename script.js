@@ -397,7 +397,6 @@ async function processImage() {
 }
 
 console.log('Commence Image Processing .');
- async function processImage() {
   // Assuming canvas and ctx are properly defined
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const tensor = tf.browser.fromPixels(imgData).expandDims();
