@@ -104,8 +104,6 @@ let cocoSsdModel; // Declare cocoSsdModel as a global variable
     ]
 };
 
-    };
-
     // Function to detect areas based on rules
     function detectAreas(predictionsArray) {
     const detectedAreas = [];
