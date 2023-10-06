@@ -625,15 +625,33 @@ async function loadImageAreas() {
     'https://drive.google.com/uc?id=1lmc8-fshfwkMtDfIZDZevqsLSyBfZzG6',
 ];
 
-    console.log('Calling The Functions To Load Images For Each Area');
-    await loadImages(StaircaseImages);
-    await loadImages(RelationshipDeskImages);
-    await loadImages(OperationsAreaImages);
-    await loadImages(LobbyAreaImages);
-    await loadImages(HNIareaImages);
-    await loadImages(EntranceAreaImages);
-    await loadImages(CustomerInformationServiceImages);
-      
+ // Define a function to load images for a given area
+async function loadImages(areaImages) {
+  // Assume areaImages is an array of image URLs for the specified area
+
+  const imagePromises = areaImages.map(async (imageUrl) => {
+    const image = new Image();
+    return new Promise((resolve, reject) => {
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = imageUrl;
+    });
+  });
+
+  // Wait for all images to load
+  const loadedImages = await Promise.all(imagePromises);
+  return loadedImages;
+}
+
+console.log('Calling The Functions To Load Images For Each Area');
+await loadImages(StaircaseImages);
+await loadImages(RelationshipDeskImages);
+await loadImages(OperationsAreaImages);
+await loadImages(LobbyAreaImages);
+await loadImages(HNIareaImages);
+await loadImages(EntranceAreaImages);
+await loadImages(CustomerInformationServiceImages);
+
   } catch (error) {
     console.error('Error loading images for areas:', error);
     displayErrorMessageToUser('Failed to load area images. Please try again later.');
