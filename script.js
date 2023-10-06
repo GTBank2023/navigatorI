@@ -264,9 +264,6 @@ async function detectAreasFromPredictions(predictions) {
     }
   }
 
-  return detectedAreas; // Return the detected areas
-}
-
 async function detectAreasFromPredictions(predictions) {
   const detectedAreas = [];
 
