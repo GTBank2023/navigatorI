@@ -371,8 +371,6 @@ console.log('Predictions:', predictions);
 let ctx;  // Define ctx
 
 // Assuming you have the canvas element available
-let canvas = document.getElementById('canvas');  // Use let instead of const
-
 if (!canvas) {
   console.error('Canvas element not found.');
 } else {
