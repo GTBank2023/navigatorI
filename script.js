@@ -340,19 +340,18 @@ async function detectObjectsFromCanvas(canvas, ctx) {
 } 
 
 const canvas = document.getElementById('canvas');
-let ctx;
 
 if (!canvas) {
   console.error('Canvas element not found.');
 } else {
   // Obtain the 2D drawing context
-  ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
 
   if (!ctx) {
     console.error('Failed to obtain 2D drawing context.');
   } else {
     console.log('Getting data for the image.');
-
+    
     // Now you can use ctx for drawing operations
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const tensor = tf.browser.fromPixels(imgData).expandDims();
@@ -376,27 +375,7 @@ detectAreas(predictions);
 requestAnimationFrame(() => detectObjects(canvas, ctx));
 
 console.log('Commence Image Processing .');
-
-async function processImage() {
-  // Assuming canvas and ctx are properly defined
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const tensor = tf.browser.fromPixels(imgData).expandDims();
-
-  try {
-    const predictions = await detectObjects(tensor); // Call the new detectObjects function
-    console.log('Predictions:', predictions);
-
-    // Call your area detection function here
-    console.log('Calling function for the detectAreas.');
-    detectAreas(predictions);
-  } catch (error) {
-    console.error('Error detecting objects:', error);
-  }
-
-  requestAnimationFrame(() => processImage());
-}
-
-console.log('Commence Image Processing .');
+ async function processImage() {
   // Assuming canvas and ctx are properly defined
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const tensor = tf.browser.fromPixels(imgData).expandDims();
