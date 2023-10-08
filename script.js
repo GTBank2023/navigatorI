@@ -368,29 +368,11 @@ const tensor = tf.tensor([
 predictions = await detectObjects(tensor);
 console.log('Predictions:', predictions);
 
-let ctx;  // Define ctx
+// Call your area detection function here
+console.log('Area detection in progress...');
+detectAreas(predictions);
 
-// Assuming you have the canvas element available
-if (!canvas) {
-  console.error('Canvas element not found.');
-} else {
-  // Obtain the 2D drawing context
-  const ctx = canvas.getContext('2d');  // Declare ctx using const
-
-  if (!ctx) {
-    console.error('Failed to obtain 2D drawing context.');
-  } else {
-    console.log('Getting data for the image.');
-
-    // Now you can use ctx for drawing operations
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const tensor = tf.browser.fromPixels(imgData).expandDims();
-
-    console.log('Image data obtained and tensor created.');
-  }
-}
-
-console.log('Starting object detection...');
+requestAnimationFrame(() => detectObjects(canvas, ctx));
 
 console.log('Commence Image Processing .');
  async function processImage() {
