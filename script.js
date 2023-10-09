@@ -1,4 +1,3 @@
-NOW THIS CODE IS HALF PERFECT BAE , IT HAS CONSOLE LOG MESSAGES 
 
 let detectionRules = {}; // Define detectionRules as a global variable
 
