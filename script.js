@@ -464,10 +464,13 @@ if (!canvas) {
 }
 
 console.log('Starting object detection...');
-const tensor = tf.tensor([
-  [0.1, 0.2],
-  [0.3, 0.4]
-]); // Properly defined tensor (replace with your actual image data)
+
+// Now you can use ctx for drawing operations
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+const tensorFromPixels = tf.browser.fromPixels(imgData).expandDims();
+
+console.log('Image data obtained and tensor created.');
+
 
 async function startObjectDetection() {
   predictions = await detectObjects(tensor);
