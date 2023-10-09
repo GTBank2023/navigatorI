@@ -1,15 +1,15 @@
+NOW THIS CODE IS HALF PERFECT BAE , IT HAS CONSOLE LOG MESSAGES 
+
 let detectionRules = {}; // Define detectionRules as a global variable
 
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
-
-let detectedAreas; // Define detectedAreas in the appropriate scope
 
 function startSystem() {
     setupCamera();  // Set up the camera
     // Start the system directly, as the model is already loaded
     // Call any additional actions needed to start the system
     // For example, you could call a function to begin object detection
-    detectObjects(detectedAreas); // Pass detectedAreas as an argument
+    detectObjects();
 }
 
 // Event listener to start the system when the DOM is fully loaded
@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Button clicked. System launching...');
         loadModelAndStartSystem();  // Call the combined function to load the model and start the system
     });
+});
 
 // Define videoElement
 
@@ -809,4 +810,4 @@ videoElement.addEventListener('loadeddata', async () => {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM content loaded. Launching the system.');
   startSystem ();
-});
+}); 
