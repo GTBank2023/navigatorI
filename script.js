@@ -438,9 +438,6 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const tensor = tf.browser.fromPixels(imgData).expandDims();
 
-  console.log('Detecting objects using the model...');
-  const predictions = await cocoSsdModel.detect(tensor);
-
   // Call your updated area detection function here
   console.log('Objects detected. Calling the area detection function.');
   detectAreas(predictions);
