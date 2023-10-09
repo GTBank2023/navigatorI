@@ -217,11 +217,11 @@ function initializeDetectionRules() {
             minConfidence: 0.5,
         }
     ]
-};
+  };
+}
 
 // Call the function to initialize detectionRules
 initializeDetectionRules();
-
 
 // Event listener to start detection when video is loaded
 videoElement.addEventListener("loadeddata", async () => {
