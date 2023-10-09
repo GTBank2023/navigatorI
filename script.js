@@ -398,24 +398,20 @@ async function loadModelAndStartSystem() {
     }
 }
 
-// Call the function to load the COCO-SSD model and start the system
-try {
+// Define an async function to load the COCO-SSD model and start the system
+async function loadModelAndStartSystem() {
+  try {
     // Load the COCO-SSD model
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
 
     // Call the function to start the system after the model is loaded
-    loadModelAndStartSystem();
-} catch (error) {
+    startSystem();
+  } catch (error) {
     // Handle the error if model loading fails
     console.error('Error loading the object detection model:', error);
     displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
-}
-
-// Function to display error message to the user
-function displayErrorMessageToUser(message) {
-    // Implement how you want to display the error message to the user, e.g., using an alert
-    alert('Error: ' + message);
+  }
 }
 
 // Call the async function to load the model and start the system
