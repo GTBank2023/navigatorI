@@ -1,4 +1,3 @@
-
 let detectionRules = {}; // Define detectionRules as a global variable
 
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
