@@ -112,8 +112,7 @@ function detectAreas(predictionsArray, detectionRules) {
     return detectedAreas;
 }
 
-// Call the function to initialize detectionRules and store the result
-const detectionRules = initializeDetectionRules();
+const areasDetected = detectAreas(predictions, detectionRules);
 
 // Call the detectAreas function with predictions and detectionRules as arguments
 const areasDetected = detectAreas(predictions, detectionRules);
