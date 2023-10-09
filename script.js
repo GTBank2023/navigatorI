@@ -3,12 +3,16 @@ let detectionRules = {}; // Define detectionRules as a global variable
 
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
 
+let detectedAreas;  // Initialize the variable
+
 function startSystem() {
     setupCamera();  // Set up the camera
-    // Start the system directly, as the model is already loaded
+    
     // Call any additional actions needed to start the system
     // For example, you could call a function to begin object detection
-    detectObjects();
+    
+    // Now you can call detectObjects() after initializing the variable
+    detectedAreas = detectObjects();
 }
 
 // Event listener to start the system when the DOM is fully loaded
@@ -43,11 +47,17 @@ videoElement.addEventListener('loadeddata', async () => {
 
 console.log('Loading the model...');
 
+// Assuming detectedAreas is already globally declared elsewhere in your code
+
 async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
         console.log('Coco-SSD model loaded successfully.');
-        startSystem(); // Call startSystem after the model is loaded
+
+        // Assuming detectObjects() returns a Promise that resolves to the detected areas
+        detectedAreas = await detectObjects();  // Initialize detectedAreas
+
+        startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
     } catch (error) {
         console.error('Error loading the object detection model:', error);
         displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
@@ -410,10 +420,19 @@ loadModelAndStartSystem();
 console.log('Commence Object Detection.');
 
 async function detectObjectsFromCanvas(canvas, ctx) {
-  if (!cocoSsdModel) {
-    console.error('Model not loaded yet.');
-    return;
-  }
+  return new Promise(async (resolve, reject) => {
+    if (!cocoSsdModel) {
+      reject('Model not loaded yet.');
+    }
+
+    try {
+      const detectedAreas = await detectObjects();  // Assuming detectObjects() returns the detected areas
+      resolve(detectedAreas);  // Resolve the detected areas
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
   console.log('Clearing canvas and drawing video feed...');
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
@@ -522,18 +541,20 @@ async function detectObjects() {
   // Clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw the video frame on the canvas
-  ctx.drawImage(videoElement, 0, 0);
+let detectedAreas; // Define detectedAreas in the appropriate scope
 
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  console.log('Getting The Image Data');
+// Draw the video frame on the canvas
+ctx.drawImage(videoElement, 0, 0);
 
-  const tensor = tf.browser.fromPixels(imgData).expandDims();
-  console.log('Creating Tensor from the image data obtained');
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+console.log('Getting The Image Data');
 
-  // Call your area detection function here
-  detectedAreas = detectAreas(tensor);
-}
+const tensor = tf.browser.fromPixels(imgData).expandDims();
+console.log('Creating Tensor from the image data obtained');
+
+// Call your area detection function here
+detectedAreas = detectAreas(tensor);
+
 
 // Event listener to start detection when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
