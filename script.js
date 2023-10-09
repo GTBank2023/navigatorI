@@ -441,7 +441,6 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   // Call your updated area detection function here
   console.log('Objects detected. Calling the area detection function.');
   detectAreas(predictions);
-} 
 
 const canvas = document.getElementById('canvas');
 
