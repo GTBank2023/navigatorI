@@ -112,12 +112,9 @@ function detectAreas(predictionsArray, detectionRules) {
     return detectedAreas;
 }
 
-const areasDetected = detectAreas(predictions, detectionRules);
-
 // Call the detectAreas function with predictions and detectionRules as arguments
 const areasDetected = detectAreas(predictions, detectionRules);
-
-console.log('Detected Areas:', areasDetected); // Output the detected areas
+console.log('Detected Areas:', areasDetected);
 
 // Define predictions variable
 let predictions;
