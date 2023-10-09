@@ -469,14 +469,20 @@ const tensor = tf.tensor([
   [0.1, 0.2],
   [0.3, 0.4]
 ]); // Properly defined tensor (replace with your actual image data)
-predictions = await detectObjects(tensor);
-console.log('Predictions:', predictions);
 
-// Call your area detection function here
-console.log('Area detection in progress...');
-detectAreas(predictions);
+async function startObjectDetection() {
+  predictions = await detectObjects(tensor);
+  console.log('Predictions:', predictions);
 
-requestAnimationFrame(() => detectObjects(canvas, ctx));
+  // Call your area detection function here
+  console.log('Area detection in progress...');
+  detectAreas(predictions);
+
+  requestAnimationFrame(() => detectObjects(canvas, ctx));
+}
+
+// Call the async function to start object detection
+startObjectDetection();
 
 console.log('Commence Image Processing .');
  async function processImage() {
