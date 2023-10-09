@@ -386,19 +386,6 @@ document.getElementById('get-started-button').addEventListener('click', () => {
 });
  
 console.log('Loading the model...');
-
-async function loadModelAndStartSystem() {
-    try {
-        // Add the logic to start the system after the model is loaded
-        console.log('System starting...');
-    } catch (error) {
-        // Handle any errors that occur while starting the system
-        console.error('Error starting the system:', error);
-        displayErrorMessageToUser('Failed to start the system. Please try again later.');
-    }
-}
-
-// Define an async function to load the COCO-SSD model and start the system
 async function loadModelAndStartSystem() {
   try {
     // Load the COCO-SSD model
