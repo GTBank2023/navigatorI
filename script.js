@@ -525,8 +525,6 @@ async function detectObjects() {
   // Clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-let detectedAreas; // Define detectedAreas in the appropriate scope
-
 // Draw the video frame on the canvas
 ctx.drawImage(videoElement, 0, 0);
 
