@@ -113,7 +113,7 @@ const areasDetected = detectAreas(predictions, detectionRules);
 console.log('Detected Areas:', areasDetected);
 
 async function detectAreas(predictionsArray, detectionRules) {
-  const detectedAreas = [];
+  const areas = [];
 
   for (const area in detectionRules) {
     const rules = detectionRules[area];
@@ -126,7 +126,7 @@ async function detectAreas(predictionsArray, detectionRules) {
     });
 
     if (areaDetected) {
-      detectedAreas.push({
+      areas.push({
         area: area,
         description: getDescriptionForArea(area),
         benefits: getBenefitsForArea(area),
@@ -134,7 +134,7 @@ async function detectAreas(predictionsArray, detectionRules) {
     }
   }
 
-  return detectedAreas;
+  return areas;
 }
 
 function initializeDetectionRules() {
