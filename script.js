@@ -112,27 +112,28 @@ function detectAreas(predictionsArray, detectionRules) {
 const areasDetected = detectAreas(predictions, detectionRules);
 console.log('Detected Areas:', areasDetected);
 
-async function detectAreas(predictionsArray, detectionRules) {
-  const areas = [];
+const areas = [];
 
-  for (const area in detectionRules) {
-    const rules = detectionRules[area];
+for (const area in detectionRules) {
+  const rules = detectionRules[area];
 
-    // Check if all rules for this area are satisfied
-    const areaDetected = rules.every(rule => {
-      const labelIndex = cocoSsdModel.classIndex[rule.label];
-      const confidence = predictionsArray[labelIndex].score; // Updated to use score
-      return confidence >= rule.minConfidence;
+  // Check if all rules for this area are satisfied
+  const areaDetected = rules.every(rule => {
+    const labelIndex = cocoSsdModel.classIndex[rule.label];
+    const confidence = predictionsArray[labelIndex].score; // Updated to use score
+    return confidence >= rule.minConfidence;
+  });
+
+  if (areaDetected) {
+    areas.push({
+      area: area,
+      description: getDescriptionForArea(area),
+      benefits: getBenefitsForArea(area),
     });
-
-    if (areaDetected) {
-      areas.push({
-        area: area,
-        description: getDescriptionForArea(area),
-        benefits: getBenefitsForArea(area),
-      });
-    }
   }
+}
+
+console.log('Detected Areas:', areas); // For testing
 
   return areas;
 }
