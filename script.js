@@ -101,34 +101,37 @@ async function setupCamera() {
 function detectAreas(predictionsArray, detectionRules) {
     const detectedAreas = [];
 
-    for (const area in detectionRules) {
-        const rules = detectionRules[area];
-
-        // Check if all rules for this area are satisfied
-        const areaDetected = rules.every(rule => {
-            const labelIndex = cocoSsdModel.classIndex[rule.label];
-            const confidence = predictionsArray[labelIndex].score; // Updated to use score
-            return confidence >= rule.minConfidence;
-        });
-
-        if (areaDetected) {
-            detectedAreas.push({
-                area: area,
-                description: getDescriptionForArea(area),
-                benefits: getBenefitsForArea(area),
-            });
-        }
-    }
-
-    return detectedAreas;
-}
+// Define predictions variable
+let predictions;
 
 // Call the detectAreas function with predictions and detectionRules as arguments
 const areasDetected = detectAreas(predictions, detectionRules);
 console.log('Detected Areas:', areasDetected);
 
-// Define predictions variable
-let predictions;
+async function detectAreas(predictionsArray, detectionRules) {
+  const detectedAreas = [];
+
+  for (const area in detectionRules) {
+    const rules = detectionRules[area];
+
+    // Check if all rules for this area are satisfied
+    const areaDetected = rules.every(rule => {
+      const labelIndex = cocoSsdModel.classIndex[rule.label];
+      const confidence = predictionsArray[labelIndex].score; // Updated to use score
+      return confidence >= rule.minConfidence;
+    });
+
+    if (areaDetected) {
+      detectedAreas.push({
+        area: area,
+        description: getDescriptionForArea(area),
+        benefits: getBenefitsForArea(area),
+      });
+    }
+  }
+
+  return detectedAreas;
+}
 
 function initializeDetectionRules() {
     detectionRules = {
