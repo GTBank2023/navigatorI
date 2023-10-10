@@ -101,8 +101,13 @@ async function setupCamera() {
 function detectAreas(predictionsArray, detectionRules) {
     const detectedAreas = [];
 
-// Define predictions variable
-let predictions;
+    // Define predictions variable
+    let predictions;
+
+    return detectedAreas;
+}
+
+
 // Call the detectAreas function with predictions and detectionRules as arguments
 const areasDetected = detectAreas(predictions, detectionRules);
 console.log('Detected Areas:', areasDetected);
