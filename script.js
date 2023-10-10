@@ -171,8 +171,8 @@ predictions = {
 };
 
 // Call the function to initialize DetectionRules
-initializeDetectionRules();
-console.log('Initializing DetectionRules'); 
+initializeDetectionRules(); // Call the function to initialize detectionRules
+console.log('Initializing detectionRules');
 
 // Call the detectAreas function with predictions and detectionRules as arguments
 const areasDetected = detectAreas(predictions, detectionRules);
