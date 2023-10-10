@@ -146,14 +146,14 @@ predictions = {
     { label: 'Tambour Cupboard', score: 0.5 },
   ],
 
-  'Lobby Area': [
-    { label: 'ATM Machine Mounted On the Wall', score: 0.5},
-    { label: 'Proudly African Banner', score: 0.5 },
-    { label: 'It's Banking, Only Easier Banner', score: 0.5 },
-    { label: 'Revolving Doors', score: 0.5},
-    { label: 'Kinara Account Banners', score: 0.5 },
-  ],
-
+'Lobby Area': [
+  { label: 'ATM Machine Mounted On the Wall', score: 0.5},
+  { label: 'Proudly African Banner', score: 0.5 },
+  { label: 'It\'s Banking, Only Easier Banner', score: 0.5 },
+  { label: 'Revolving Doors', score: 0.5},
+  { label: 'Kinara Account Banners', score: 0.5 },
+],
+    
   'Operations Area': [
     { label: 'Please Wait Here Metal Stand', score: 0.5},
     { label: 'Jibakishie Banner', score: 0.5 },
