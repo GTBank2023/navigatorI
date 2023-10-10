@@ -97,17 +97,6 @@ async function setupCamera() {
     // Start object detection when video metadata is loaded
 }
 
-// Function to detect areas based on rules
-function detectAreas(predictionsArray, detectionRules) {
-    const detectedAreas = [];
-
-    // Define predictions variable
-    let predictions;
-
-    return detectedAreas;
-}
-
-
 function detectAreas(predictionsArray, detectionRules) {
   const areas = [];
 
