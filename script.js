@@ -521,7 +521,6 @@ async function detectObjects() {
     console.error('Canvas 2D context not found.');
     return;
   }
-
   // Clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
