@@ -124,113 +124,58 @@ function detectAreas(predictionsArray, detectionRules) {
   return areas;
 }
 
-// Call the detectAreas function with predictions and detectionRules as arguments
-const areasDetected = detectAreas(predictions, detectionRules);
-console.log('Detected Areas:', areasDetected);
+let predictions; // Declare predictions
 
-function initializeDetectionRules() {
-    detectionRules = {
-    'Entrance Area': [
-        {
-            label: "African Tribal Painting",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Metal Wall Decoration",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Wooden Reception Desk",
-            minConfidence: 0.5,
-        }
-    ],
-    'Customer Information Service': [
-        {
-            label: "Customer Information Service on an A4 poster Stainless steel stand",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Black Chair With Wheels",
-            minConfidence: 0.5,
-        },
-        {
-            label: "City Scape Painting",
-            minConfidence: 0.5,
-        }
-    ],
-    'Relationship Desk ': [
-        {
-            label: "Black Swivel Chair",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Black Leather Sofas",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Tambour Cupboard",
-            minConfidence: 0.5,
-        }
-    ],
-    'Lobby Area ': [
-        {
-            label: "ATM Machine Mounted On the Wall",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Proudly African Banner",
-            minConfidence: 0.5,
-        },
-        {
-            label: "It's Banking, Only Easier Banner",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Revolving Doors",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Kinara Account Banners",
-            minConfidence: 0.5,
-        }
-    ],
-    'Operations Area ': [
-        {
-            label: "Please Wait Here Metal Stand",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Jibakishie Banner",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Person Behind Wooden Reception Desk",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Orange Wall with Flower Pot",
-            minConfidence: 0.5,
-        }
-    ],
-    'hni Area': [
-        {
-            label: "Abstract Painting",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Seaside Bridge Painting",
-            minConfidence: 0.5,
-        },
-        {
-            label: "Metal Decorative Grill",
-            minConfidence: 0.5,
-        }
-    ]
-  };
-}
+// Define predictions data
+predictions = {
+  'Entrance Area': [
+    { label: 'African Tribal Painting', score: 0.5 },
+    { label: 'Metal Wall Decoration', score: 0.5 },
+    {label:  'Wooden Reception Desk', score: 0.5 },
+  ],
+
+  'Customer Information Service': [
+    { label: 'Customer Information Service on an A4 poster Stainless steel stand', score: 0.5},
+    { label: 'Black Chair With Wheels', score: 0.5 },
+    { label: 'City Scape Painting', score: 0.5 },
+  ],
+
+  'Relationship Desk': [
+    { label: 'Black Swivel Chair', score: 0.5},
+    { label: 'Black Leather Sofas', score: 0.5 },
+    { label: 'Tambour Cupboard', score: 0.5 },
+  ],
+
+  'Lobby Area': [
+    { label: 'ATM Machine Mounted On the Wall', score: 0.5},
+    { label: 'Proudly African Banner', score: 0.5 },
+    { label: 'It's Banking, Only Easier Banner', score: 0.5 },
+    { label: 'Revolving Doors', score: 0.5},
+    { label: 'Kinara Account Banners', score: 0.5 },
+  ],
+
+  'Operations Area': [
+    { label: 'Please Wait Here Metal Stand', score: 0.5},
+    { label: 'Jibakishie Banner', score: 0.5 },
+    { label: 'Person Behind Wooden Reception Desk', score: 0.5 },
+    { label: 'Orange Wall with Flower Pot', score: 0.5},
+
+  ],
+
+  'hni Area': [
+    { label: 'Abstract Painting', score: 0.5},
+    { label: 'Seaside Bridge Painting', score: 0.5 },
+    { label: 'Metal Decorative Grill', score: 0.5 },
+  ],
+
+};
 
 // Call the function to initialize detectionRules
 initializeDetectionRules();
+
+// Call the detectAreas function with predictions and detectionRules as arguments
+const areasDetected = detectAreas(predictions, detectionRules);
+console.log('Detected Areas:', areasDetected);
 
 // Event listener to start detection when video is loaded
 videoElement.addEventListener("loadeddata", async () => {
