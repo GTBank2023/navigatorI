@@ -1,5 +1,5 @@
 
-let detectionRules = {}; // Define detectionRules as a global variable
+let DetectionRules = {}; // Define DetectionRules as a global variable
 
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
 
@@ -170,7 +170,7 @@ predictions = {
 
 };
 
-// Call the function to initialize detectionRules
+// Call the function to initialize DetectionRules
 initializeDetectionRules();
 
 // Call the detectAreas function with predictions and detectionRules as arguments
