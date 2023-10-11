@@ -57,6 +57,9 @@ async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
 
+        // Print the model object to console for debugging
+        console.log('Loaded COCO-SSD model:', cocoSsdModel);
+
         // Check if the model provides classes
         if (cocoSsdModel && cocoSsdModel.cocoSsd && cocoSsdModel.cocoSsd.getClasses) {
             const classes = cocoSsdModel.cocoSsd.getClasses();
