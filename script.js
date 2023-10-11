@@ -51,11 +51,20 @@ console.log('Loading the model...');
 
 // Assuming detectedAreas is already globally declared elsewhere in your code
 
+let classIndexMap = {};  // This will store the mapping of class names to indices
+
 async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
-        console.log('Coco-SSD model loaded successfully.');
 
+        // Build the class index map
+        const classes = cocoSsdModel.cocoSsd.getClasses();
+        classes.forEach((className, index) => {
+            classIndexMap[className] = index;
+        });
+
+        console.log('Coco-SSD model loaded successfully.');
+        
         // Assuming detectObjects() returns a Promise that resolves to the detected areas
         detectedAreas = await detectObjects();  // Initialize detectedAreas
 
