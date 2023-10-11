@@ -57,18 +57,25 @@ async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
 
-        // Build the class index map
-        const classes = cocoSsdModel.cocoSsd.getClasses();
-        classes.forEach((className, index) => {
-            classIndexMap[className] = index;
-        });
+        // Check if the model provides classes
+        if (cocoSsdModel && cocoSsdModel.cocoSsd && cocoSsdModel.cocoSsd.getClasses) {
+            const classes = cocoSsdModel.cocoSsd.getClasses();
 
-        console.log('Coco-SSD model loaded successfully.');
-        
-        // Assuming detectObjects() returns a Promise that resolves to the detected areas
-        detectedAreas = await detectObjects();  // Initialize detectedAreas
+            // Build the class index map
+            classes.forEach((className, index) => {
+                classIndexMap[className] = index;
+            });
 
-        startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
+            console.log('Coco-SSD model loaded successfully.');
+            
+            // Assuming detectObjects() returns a Promise that resolves to the detected areas
+            detectedAreas = await detectObjects();  // Initialize detectedAreas
+
+            startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
+        } else {
+            console.error('Error: COCO-SSD model does not provide classes.');
+            displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+        }
     } catch (error) {
         console.error('Error loading the object detection model:', error);
         displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
@@ -76,7 +83,6 @@ async function loadCocoSsdModel() {
 }
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
-
 
 console.log('Camera setup in progress...');  // Log a message indicating camera setup
 async function setupCamera() {
