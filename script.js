@@ -349,7 +349,7 @@ function getDescriptionAndBenefitsForArea(areaName) {
 const areas = ['Lobby Area', 'Relationship Desk', 'Operations Area', 'Customer Information Service', 'Entrance Area', 'Staircase Area', 'hni Area'];
 areas.forEach(areaName => {
     console.log(`Processing area: ${areaName}`);
-    const area = detectedAreas.find(area => area.area === areaName);
+    const area = detectedAreas ? detectedAreas.find(area => area.area === areaName) : undefined;
     if (area) {
         const areaInfoDiv = document.getElementById(`${areaName.replace(' ', '')}Info`);
         console.log(`Updating HTML for area: ${areaName}`);
@@ -359,10 +359,10 @@ areas.forEach(areaName => {
         console.log(`Updated HTML for area: ${areaName}`);
         textToSpeech(descriptionAndBenefits.description);
         console.log(`Speech initiated for area: ${areaName}`);
+    } else {
+        console.log(`Area not found: ${areaName}`);
     }
 });
-
-
 
 document.getElementById('get-started-button').addEventListener('click', () => {
     console.log('Button clicked. System launching...');
