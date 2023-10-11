@@ -97,38 +97,17 @@ async function setupCamera() {
     // Start object detection when video metadata is loaded
 }
 
-function detectAreas(predictionsArray, DetectionRules) {
-  const areas = [];
-
-  for (const area in DetectionRules) {
-    const rules = DetectionRules[area];
-
-    // Check if all rules for this area are satisfied
-    const areaDetected = rules.every(rule => {
-      const labelIndex = cocoSsdModel.classIndex[rule.label];
-      const confidence = predictions[labelIndex].score; // Use predictions instead of predictionsArray
-      return confidence >= rule.minConfidence;
-    });
-
-    if (areaDetected) {
-      areas.push({
-        area: area,
-        description: getDescriptionForArea(area),
-        benefits: getBenefitsForArea(area),
-      });
-    }
+// Function to initialize DetectionRules
+function initializeDetectionRules() {
+  // Check if DetectionRules is already populated
+  if (Object.keys(DetectionRules).length !== 0) {
+    console.log('DetectionRules is already populated.');
+    return;
   }
 
-  console.log('Detected Areas:', areas); // For testing
-
-  return areas;
-}
-
-let predictions; // Declare predictions
-
-// Define predictions data
-predictions = {
-  'Entrance Area': [
+  // Initialize DetectionRules based on your predictions logic
+  DetectionRules = {
+ 'Entrance Area': [
     { label: 'African Tribal Painting', score: 0.5 },
     { label: 'Metal Wall Decoration', score: 0.5 },
     {label:  'Wooden Reception Desk', score: 0.5 },
@@ -170,8 +149,36 @@ predictions = {
 
 };
 
+/// Existing detectAreas function (assuming it's defined elsewhere)
+function detectAreas(predictionsArray, DetectionRules) {
+  const areas = [];
+
+  for (const area in DetectionRules) {
+    const rules = DetectionRules[area];
+
+    // Check if all rules for this area are satisfied
+    const areaDetected = rules.every(rule => {
+      const labelIndex = cocoSsdModel.classIndex[rule.label];
+      const confidence = predictions[labelIndex].score; // Use predictions instead of predictionsArray
+      return confidence >= rule.minConfidence;
+    });
+
+    if (areaDetected) {
+      areas.push({
+        area: area,
+        description: getDescriptionForArea(area),
+        benefits: getBenefitsForArea(area),
+      });
+    }
+  }
+
+  console.log('Detected Areas:', areas); // For testing
+
+  return areas;
+}
+
 // Call the function to initialize DetectionRules
-initializeDetectionRules(); // Call the function to initialize DetectionRules
+initializeDetectionRules();
 console.log('Initializing DetectionRules');
 
 // Call the detectAreas function with predictions and DetectionRules as arguments
