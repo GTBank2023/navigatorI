@@ -97,7 +97,6 @@ async function setupCamera() {
     // Start object detection when video metadata is loaded
 }
 
-// Function to initialize DetectionRules
 function initializeDetectionRules() {
   // Check if DetectionRules is already populated
   if (Object.keys(DetectionRules).length !== 0) {
@@ -148,6 +147,9 @@ function initializeDetectionRules() {
   ],
 
 };
+
+} 
+
 
 /// Existing detectAreas function (assuming it's defined elsewhere)
 function detectAreas(predictionsArray, DetectionRules) {
