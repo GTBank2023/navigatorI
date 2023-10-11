@@ -489,16 +489,30 @@ console.log('Handling of the areas detected');
   // Continue video frame processing or rendering as needed...
 }
 
-// Function to detect objects using COCO-SSD
 async function detectObjects() {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d'); // Define ctx here
-  
+
   // Ensure ctx is defined
   if (!ctx) {
     console.error('Canvas 2D context not found.');
     return;
   }
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw the video frame on the canvas
+  ctx.drawImage(videoElement, 0, 0);
+
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  console.log('Getting The Image Data');
+
+  const tensor = tf.browser.fromPixels(imgData).expandDims();
+  console.log('Creating Tensor from the image data obtained');
+
+  // Call your area detection function here
+  detectedAreas = detectAreas(tensor);
 }
 
 function clearCanvas() {
@@ -509,19 +523,6 @@ function clearCanvas() {
 
 // Call this function whenever you want to clear the canvas
 clearCanvas();
-
-// Draw the video frame on the canvas
-ctx.drawImage(videoElement, 0, 0);
-
-const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-console.log('Getting The Image Data');
-
-const tensor = tf.browser.fromPixels(imgData).expandDims();
-console.log('Creating Tensor from the image data obtained');
-
-// Call your area detection function here
-detectedAreas = detectAreas(tensor);
-
 
 // Event listener to start detection when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
