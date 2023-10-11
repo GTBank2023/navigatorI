@@ -57,9 +57,6 @@ async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
 
-        // Print the model object to console for debugging
-        console.log('Loaded COCO-SSD model:', cocoSsdModel);
-
         // Check if the model provides classes
         if (cocoSsdModel && cocoSsdModel.getClasses) {
             const classes = await cocoSsdModel.getClasses();
@@ -69,7 +66,7 @@ async function loadCocoSsdModel() {
                     classIndexMap[className] = index;
                 });
                 console.log('Coco-SSD model loaded successfully.');
-                
+
                 // Assuming detectObjects() returns a Promise that resolves to the detected areas
                 detectedAreas = await detectObjects();  // Initialize detectedAreas
 
