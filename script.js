@@ -97,11 +97,11 @@ async function setupCamera() {
     // Start object detection when video metadata is loaded
 }
 
-function detectAreas(predictionsArray, detectionRules) {
+function detectAreas(predictionsArray, DetectionRules) {
   const areas = [];
 
-  for (const area in detectionRules) {
-    const rules = detectionRules[area];
+  for (const area in DetectionRules) {
+    const rules = DetectionRules[area];
 
     // Check if all rules for this area are satisfied
     const areaDetected = rules.every(rule => {
@@ -171,11 +171,11 @@ predictions = {
 };
 
 // Call the function to initialize DetectionRules
-initializeDetectionRules(); // Call the function to initialize detectionRules
-console.log('Initializing detectionRules');
+initializeDetectionRules(); // Call the function to initialize DetectionRules
+console.log('Initializing DetectionRules');
 
-// Call the detectAreas function with predictions and detectionRules as arguments
-const areasDetected = detectAreas(predictions, detectionRules);
+// Call the detectAreas function with predictions and DetectionRules as arguments
+const areasDetected = detectAreas(predictions, DetectionRules);
 console.log('Detected Areas:', areasDetected);
 
 // Event listener to start detection when video is loaded
