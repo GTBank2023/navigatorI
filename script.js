@@ -171,32 +171,37 @@ function initializeDetectionRules() {
 } 
 
 
-/// Existing detectAreas function (assuming it's defined elsewhere)
 function detectAreas(predictionsArray, DetectionRules) {
-  const areas = [];
+    const areas = [];
 
-  for (const area in DetectionRules) {
-    const rules = DetectionRules[area];
+    for (const area in DetectionRules) {
+        const rules = DetectionRules[area];
 
-    // Check if all rules for this area are satisfied
-    const areaDetected = rules.every(rule => {
-      const labelIndex = cocoSsdModel.classIndex[rule.label];
-      const confidence = predictions[labelIndex].score; // Use predictions instead of predictionsArray
-      return confidence >= rule.minConfidence;
-    });
+        // Check if all rules for this area are satisfied
+        const areaDetected = rules.every(rule => {
+            // Check if cocoSsdModel and classIndex are defined
+            if (cocoSsdModel && cocoSsdModel.classIndex) {
+                const labelIndex = cocoSsdModel.classIndex[rule.label];
+                if (predictionsArray[labelIndex]) {
+                    const confidence = predictionsArray[labelIndex].score;
+                    return confidence >= rule.minConfidence;
+                }
+            }
+            return false;
+        });
 
-    if (areaDetected) {
-      areas.push({
-        area: area,
-        description: getDescriptionForArea(area),
-        benefits: getBenefitsForArea(area),
-      });
+        if (areaDetected) {
+            areas.push({
+                area: area,
+                description: getDescriptionForArea(area),
+                benefits: getBenefitsForArea(area),
+            });
+        }
     }
-  }
 
-  console.log('Detected Areas:', areas); // For testing
+    console.log('Detected Areas:', areas); // For testing
 
-  return areas;
+    return areas;
 }
 
 // Call the function to initialize DetectionRules
