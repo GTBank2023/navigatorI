@@ -528,7 +528,7 @@ async function detectObjects() {
 }
 
 function clearCanvas() {
-  const canvas = document.getElementById('yourCanvasId'); // Replace with your actual canvas ID
+  const canvas = document.getElementById('CanvasId'); // Replace with your actual canvas ID
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -1317,7 +1317,7 @@ async function detectObjects() {
 }
 
 function clearCanvas() {
-  const canvas = document.getElementById('yourCanvasId'); // Replace with your actual canvas ID
+  const canvas = document.getElementById('CanvasId'); // Replace with your actual canvas ID
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
