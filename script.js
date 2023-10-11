@@ -60,29 +60,27 @@ async function loadCocoSsdModel() {
         // Print the model object to console for debugging
         console.log('Loaded COCO-SSD model:', cocoSsdModel);
 
-        // Check if the model provides classes
-        if (cocoSsdModel && cocoSsdModel.cocoSsd && cocoSsdModel.cocoSsd.getClasses) {
-            const classes = cocoSsdModel.cocoSsd.getClasses();
+// Check if the model provides classes
+if (cocoSsdModel && cocoSsdModel.getClasses) {
+    const classes = await cocoSsdModel.getClasses();
+    if (classes) {
+        // Build the class index map
+        classes.forEach((className, index) => {
+            classIndexMap[className] = index;
+        });
+        console.log('Coco-SSD model loaded successfully.');
+        
+        // Assuming detectObjects() returns a Promise that resolves to the detected areas
+        detectedAreas = await detectObjects();  // Initialize detectedAreas
 
-            // Build the class index map
-            classes.forEach((className, index) => {
-                classIndexMap[className] = index;
-            });
-
-            console.log('Coco-SSD model loaded successfully.');
-            
-            // Assuming detectObjects() returns a Promise that resolves to the detected areas
-            detectedAreas = await detectObjects();  // Initialize detectedAreas
-
-            startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
-        } else {
-            console.error('Error: COCO-SSD model does not provide classes.');
-            displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
-        }
-    } catch (error) {
-        console.error('Error loading the object detection model:', error);
+        startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
+    } else {
+        console.error('Error: COCO-SSD model did not provide classes.');
         displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
     }
+} else {
+    console.error('Error: COCO-SSD model does not provide classes.');
+    displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
 }
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
