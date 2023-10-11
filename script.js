@@ -500,8 +500,15 @@ async function detectObjects() {
     return;
   }
 }
-  // Clear the canvas
+
+function clearCanvas() {
+  const canvas = document.getElementById('yourCanvasId'); // Replace with your actual canvas ID
+  const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Call this function whenever you want to clear the canvas
+clearCanvas();
 
 // Draw the video frame on the canvas
 ctx.drawImage(videoElement, 0, 0);
