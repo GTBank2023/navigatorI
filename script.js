@@ -1321,7 +1321,6 @@ async function detectObjects(tensor) {
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   console.log('Getting The Image Data');
 
-  // Define your tensor here
   console.log('Creating Tensor from the image data obtained');
 
   // Call your area detection function here
