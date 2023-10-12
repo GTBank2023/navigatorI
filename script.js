@@ -1228,7 +1228,6 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   });
 }
 
-const canvas = document.getElementById('canvas');
 
 if (!canvas) {
   console.error('Canvas element not found.');
