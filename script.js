@@ -1235,16 +1235,17 @@ if (!canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(videoElement, 0, 0);
 
-  // Assuming canvas and ctx are properly defined
-const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-const tensor = tf.browser.fromPixels(imgData).expandDims();
+    // Assuming canvas and ctx are properly defined
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const tensor = tf.browser.fromPixels(imgData).expandDims();
 
-// Call your updated area detection function here
-console.log('Objects detected. Calling the area detection function.');
-detectAreas(predictions);
+    // Call your updated area detection function here
+    console.log('Objects detected. Calling the area detection function.');
+    detectAreas(tensor);
 
-console.log('Starting object detection...');
-
+    console.log('Starting object detection...');
+  }
+}
 
 
 async function startObjectDetection(tensor) {
