@@ -1248,7 +1248,7 @@ if (!canvas) {
 }
 
 
-async function startObjectDetection(tensor) {
+async function startObjectDetection(tensor, ctx) {
   try {
     predictions = await detectObjects(tensor);
     console.log('Predictions:', predictions);
@@ -1263,9 +1263,8 @@ async function startObjectDetection(tensor) {
   }
 }
 
-
 // Call the async function to start object detection
-startObjectDetection();
+startObjectDetection(tensor, ctx);
 
 console.log('Commence Image Processing .');
 async function processImage() {
