@@ -1247,7 +1247,7 @@ if (!canvas) {
   }
 }
 
-
+const tensor = tf.browser.fromPixels(imgData).expandDims();
 async function startObjectDetection(tensor, ctx) {
   try {
     predictions = await detectObjects(tensor);
@@ -1265,6 +1265,7 @@ async function startObjectDetection(tensor, ctx) {
 
 // Call the async function to start object detection
 startObjectDetection(tensor, ctx);
+
 
 console.log('Commence Image Processing .');
 async function processImage() {
