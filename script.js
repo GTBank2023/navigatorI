@@ -1186,13 +1186,13 @@ async function loadModelAndStartSystem() {
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
 
-    // Assuming tensor is properly defined
-    startObjectDetection(tensor);
-  } catch (error) {
-    // Handle the error if model loading fails
-    console.error('Error loading the object detection model:', error);
-    displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
-  }
+try {
+  const tensor = tf.browser.fromPixels(imgData).expandDims();
+  startObjectDetection(tensor, ctx);
+} catch (error) {
+  // Handle the error if model loading fails
+  console.error('Error loading the object detection model:', error);
+  displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
 }
 
 // Call the async function to load the model and start the system
