@@ -1247,29 +1247,27 @@ if (!canvas) {
   }
 }
 
+// Assuming canvas and ctx are properly defined
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-
-// Assuming canvas and ctx are properly defined
 const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-const tensor = tf.browser.fromPixels(imgData).expandDims();
 
 async function startObjectDetection(tensor, ctx) {
   try {
-    predictions = await detectObjects(tensor);
+    const predictions = await detectObjects(tensor);
     console.log('Predictions:', predictions);
 
     // Call your area detection function here
     console.log('Area detection in progress...');
     detectAreas(predictions);
 
-    requestAnimationFrame(() => detectObjects(canvas, ctx));
+    requestAnimationFrame(() => startObjectDetection(tensor, ctx));
   } catch (error) {
     console.error('Error in object detection:', error);
   }
 }
 
-// Call the async function to start object detection
+// Assuming tensor is properly defined elsewhere in your code
 startObjectDetection(tensor, ctx);
 
 
