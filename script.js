@@ -1257,9 +1257,15 @@ if (!canvas) {
   }
 }
 
+// Assuming canvas and ctx are properly defined
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height); // Define imgData here
+
 // Define your tensor here
 const tensor = tf.browser.fromPixels(imgData).expandDims();
 console.log('Creating Tensor from the image data obtained');
+
 
 // Assuming canvas and ctx are properly defined
 const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
