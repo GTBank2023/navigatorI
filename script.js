@@ -182,7 +182,6 @@ function initializeDetectionRules() {
 
 } 
 
-
 function detectAreas(predictionsArray, DetectionRules) {
     const areas = [];
 
@@ -445,28 +444,37 @@ if (!canvas) {
 
     // Call your updated area detection function here
     console.log('Objects detected. Calling the area detection function.');
-    detectAreas(predictions);
+    detectAreas(tensor);
   }
 }
 
 console.log('Starting object detection...');
-
-async function startObjectDetection() {
-  predictions = await detectObjects(tensor);
-  console.log('Predictions:', predictions);
-
-  // Call your area detection function here
-  console.log('Area detection in progress...');
-  detectAreas(predictions);
-
-  requestAnimationFrame(() => detectObjects(canvas, ctx));
+// Assuming tensor is properly defined
+async function startObjectDetection(tensor) {
+  try {
+    // Assuming detectObjects is a function that takes tensor as an argument
+    predictions = await detectObjects(tensor);
+    console.log('Predictions:', predictions);
+  } catch (error) {
+    console.error('Error in object detection:', error);
+  }
 }
+
+// Assuming predictions is properly defined
+function detectAreas(predictions) {
+  // Your code to detect areas using predictions
+}
+
+// Call your area detection function here
+console.log('Area detection in progress...');
+detectAreas(predictions);
+requestAnimationFrame(() => detectObjects(canvas, ctx));
 
 // Call the async function to start object detection
 startObjectDetection();
 
 console.log('Commence Image Processing .');
- async function processImage() {
+async function processImage() {
   // Assuming canvas and ctx are properly defined
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const tensor = tf.browser.fromPixels(imgData).expandDims();
@@ -484,7 +492,7 @@ console.log('Commence Image Processing .');
 
   requestAnimationFrame(() => processImage());
 }
-
+    
 console.log('Process predictions obatined frrom COCO- SSD');
 // Function to process predictions from COCO-SSD
 async function processPredictions(predictions) {
@@ -521,10 +529,10 @@ async function detectObjects() {
   console.log('Getting The Image Data');
 
   const tensor = tf.browser.fromPixels(imgData).expandDims();
-  console.log('Creating Tensor from the image data obtained');
+console.log('Creating Tensor from the image data obtained');
 
-  // Call your area detection function here
-  detectedAreas = detectAreas(tensor);
+// Call your area detection function here
+detectedAreas = detectAreas(tensor);
 }
 
 function clearCanvas() {
@@ -783,13 +791,13 @@ async function predictFromVideo() {
   console.log('Obtaining image data');
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   
-  console.log('Converting image data to tensor');
-  const tensor = tf.browser.fromPixels(imgData).expandDims();
+ console.log('Converting image data to tensor');
+const tensor = tf.browser.fromPixels(imgData).expandDims();
 
-  console.log('Predicting...');
-  const predictions = await cocoSsdModel.detect(tensor);
-  const predictionsArray = await predictions.data();
-
+ console.log('Predicting...');
+const predictions = await cocoSsdModel.detect(tensor);
+const predictionsArray = await predictions.data()
+    
   console.log('Handling detected areas');
   handleDetectedAreas(predictionsArray);
 
@@ -1178,8 +1186,8 @@ async function loadModelAndStartSystem() {
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
 
-    // Call the function to start the system after the model is loaded
-    startSystem();
+    // Assuming tensor is properly defined
+    startObjectDetection(tensor);
   } catch (error) {
     // Handle the error if model loading fails
     console.error('Error loading the object detection model:', error);
@@ -1227,35 +1235,39 @@ if (!canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(videoElement, 0, 0);
 
-    // Capture image data
-    console.log('Capturing image data...');
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const tensor = tf.browser.fromPixels(imgData).expandDims();
+  // Assuming canvas and ctx are properly defined
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+const tensor = tf.browser.fromPixels(imgData).expandDims();
 
-    // Call your updated area detection function here
-    console.log('Objects detected. Calling the area detection function.');
-    detectAreas(predictions);
-  }
-}
+// Call your updated area detection function here
+console.log('Objects detected. Calling the area detection function.');
+detectAreas(predictions);
 
 console.log('Starting object detection...');
 
-async function startObjectDetection() {
-  predictions = await detectObjects(tensor);
-  console.log('Predictions:', predictions);
 
-  // Call your area detection function here
-  console.log('Area detection in progress...');
-  detectAreas(predictions);
 
-  requestAnimationFrame(() => detectObjects(canvas, ctx));
+async function startObjectDetection(tensor) {
+  try {
+    predictions = await detectObjects(tensor);
+    console.log('Predictions:', predictions);
+
+    // Call your area detection function here
+    console.log('Area detection in progress...');
+    detectAreas(predictions);
+
+    requestAnimationFrame(() => detectObjects(canvas, ctx));
+  } catch (error) {
+    console.error('Error in object detection:', error);
+  }
 }
+
 
 // Call the async function to start object detection
 startObjectDetection();
 
 console.log('Commence Image Processing .');
- async function processImage() {
+async function processImage() {
   // Assuming canvas and ctx are properly defined
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const tensor = tf.browser.fromPixels(imgData).expandDims();
@@ -1290,7 +1302,7 @@ console.log('Handling of the areas detected');
   // Continue video frame processing or rendering as needed...
 }
 
-async function detectObjects() {
+async function detectObjects(tensor) {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d'); // Define ctx here
 
@@ -1309,13 +1321,14 @@ async function detectObjects() {
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   console.log('Getting The Image Data');
 
+  // Define your tensor here
   const tensor = tf.browser.fromPixels(imgData).expandDims();
   console.log('Creating Tensor from the image data obtained');
 
   // Call your area detection function here
   detectedAreas = detectAreas(tensor);
 }
-
+      
 function clearCanvas() {
   const canvas = document.getElementById('CanvasId'); // Replace with your actual canvas ID
   const ctx = canvas.getContext('2d');
@@ -1572,15 +1585,20 @@ async function predictFromVideo() {
   console.log('Obtaining image data');
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   
-  console.log('Converting image data to tensor');
+  // Define your tensor here
   const tensor = tf.browser.fromPixels(imgData).expandDims();
+  console.log('Converting image data to tensor');
 
-  console.log('Predicting...');
-  const predictions = await cocoSsdModel.detect(tensor);
-  const predictionsArray = await predictions.data();
+  try {
+    console.log('Predicting...');
+    const predictions = await cocoSsdModel.detect(tensor);
+    const predictionsArray = await predictions.data();
 
-  console.log('Handling detected areas');
-  handleDetectedAreas(predictionsArray);
+    console.log('Handling detected areas');
+    handleDetectedAreas(predictionsArray);
+  } catch (error) {
+    console.error('Error in prediction:', error);
+  }
 
   console.log('Requesting next frame prediction');
   requestAnimationFrame(predictFromVideo);
