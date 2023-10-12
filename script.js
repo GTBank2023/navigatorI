@@ -1185,6 +1185,11 @@ async function loadModelAndStartSystem() {
     // Load the COCO-SSD model
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
+  } catch (error) {
+    console.error('Error loading the object detection model:', error);
+    displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+  }
+}
 
 try {
   const tensor = tf.browser.fromPixels(imgData).expandDims();
