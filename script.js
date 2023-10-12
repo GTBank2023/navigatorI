@@ -1247,7 +1247,13 @@ if (!canvas) {
   }
 }
 
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Assuming canvas and ctx are properly defined
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 const tensor = tf.browser.fromPixels(imgData).expandDims();
+
 async function startObjectDetection(tensor, ctx) {
   try {
     predictions = await detectObjects(tensor);
