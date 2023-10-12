@@ -1264,10 +1264,6 @@ const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height); // Define i
 const tensor = tf.browser.fromPixels(imgData).expandDims();
 console.log('Creating Tensor from the image data obtained');
 
-
-// Assuming canvas and ctx are properly defined
-const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
 async function startObjectDetection(tensor, ctx) {
   try {
     const predictions = await detectObjects(tensor);
