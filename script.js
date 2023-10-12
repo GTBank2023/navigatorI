@@ -1257,6 +1257,10 @@ if (!canvas) {
   }
 }
 
+// Define your tensor here
+const tensor = tf.browser.fromPixels(imgData).expandDims();
+console.log('Creating Tensor from the image data obtained');
+
 // Assuming canvas and ctx are properly defined
 const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
@@ -1277,7 +1281,6 @@ async function startObjectDetection(tensor, ctx) {
 
 // Assuming tensor is properly defined elsewhere in your code
 startObjectDetection(tensor, ctx);
-
 
 console.log('Commence Image Processing .');
 async function processImage() {
