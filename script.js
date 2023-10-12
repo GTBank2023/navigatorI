@@ -1180,27 +1180,30 @@ document.getElementById('get-started-button').addEventListener('click', () => {
 });
  
 console.log('Loading the model...');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d'); // Define ctx here
+
 async function loadModelAndStartSystem() {
   try {
     // Load the COCO-SSD model
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
+
+    try {
+      // Assuming you are properly obtaining imgData
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      const tensor = tf.browser.fromPixels(imgData).expandDims();
+      startObjectDetection(tensor, ctx);
+    } catch (error) {
+      // Handle the error if model loading fails
+      console.error('Error loading the object detection model:', error);
+      displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+    }
   } catch (error) {
     console.error('Error loading the object detection model:', error);
     displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
   }
-}
-
-try {
-  // Assuming you are properly obtaining imgData
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-  const tensor = tf.browser.fromPixels(imgData).expandDims();
-  startObjectDetection(tensor, ctx);
-} catch (error) {
-  // Handle the error if model loading fails
-  console.error('Error loading the object detection model:', error);
-  displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
 }
 
 // Call the async function to load the model and start the system
