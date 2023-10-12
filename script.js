@@ -1322,7 +1322,6 @@ async function detectObjects(tensor) {
   console.log('Getting The Image Data');
 
   // Define your tensor here
-  const tensor = tf.browser.fromPixels(imgData).expandDims();
   console.log('Creating Tensor from the image data obtained');
 
   // Call your area detection function here
