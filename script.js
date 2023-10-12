@@ -1258,7 +1258,6 @@ if (!canvas) {
 }
 
 // Assuming canvas and ctx are properly defined
-const ctx = canvas.getContext('2d');
 const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 async function startObjectDetection(tensor, ctx) {
