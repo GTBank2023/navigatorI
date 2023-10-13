@@ -1,6 +1,10 @@
+
 let DetectionRules = {}; // Define DetectionRules as a global variable
+
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
+
 let detectedAreas;  // Initialize the variable
+
 let predictions;  // Initialize the predictions variable at a global scope
 
 function startSystem() {
@@ -42,9 +46,11 @@ videoElement.addEventListener('loadeddata', async () => {
     await detectObjects();
 });
 
+
 console.log('Loading the model...');
 
 let classIndexMap = {};  // This will store the mapping of class names to indices
+
 async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
@@ -78,6 +84,7 @@ async function loadCocoSsdModel() {
 }
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
+
 console.log('Camera setup in progress...');  // Log a message indicating camera setup
 async function setupCamera() {
     console.log('Setting up camera...');  // Log a message indicating camera setup
@@ -160,6 +167,7 @@ function initializeDetectionRules() {
 };
 
 } 
+
 
 function detectAreas(predictionsArray, DetectionRules) {
     const areas = [];
@@ -274,6 +282,12 @@ if (detectedAreasResult.length > 0) {
   console.error('No detected areas.');
 }
 
+  // Call the function to update the detected areas display
+  updateDetectedAreasDisplay(detectedAreasResult);
+} else {
+  console.error('No detected areas.');
+}
+
 // Call the function to update the detected areas display
 updateDetectedAreasDisplay(detectedAreasResult);
 
@@ -360,32 +374,20 @@ document.getElementById('get-started-button').addEventListener('click', () => {
 });
  
 console.log('Loading the model...');
-const canvas = document.getElementById('CanvasId');
-const ctx = canvas.getContext('2d'); // Define ctx here
-
 async function loadModelAndStartSystem() {
   try {
     // Load the COCO-SSD model
     cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
     console.log('Model loaded successfully.');
 
-    try {
-      // Assuming you are properly obtaining imgData
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-      const tensor = tf.browser.fromPixels(imgData).expandDims();
-      startObjectDetection(tensor, ctx);
-    } catch (error) {
-      // Handle the error if model loading fails
-      console.error('Error loading the object detection model:', error);
-      displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
-    }
+    // Call the function to start the system after the model is loaded
+    startSystem();
   } catch (error) {
+    // Handle the error if model loading fails
     console.error('Error loading the object detection model:', error);
     displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
   }
 }
-
 
 // Call the async function to load the model and start the system
 console.log('Loading the model and starting the system...');
@@ -410,6 +412,7 @@ async function detectObjectsFromCanvas(canvas, ctx) {
 }
 
 
+  const canvas = document.getElementById('CanvasId');
 
 if (!canvas) {
   console.error('Canvas element not found.');
@@ -439,7 +442,6 @@ if (!canvas) {
 }
 
 console.log('Starting object detection...');
-
 // Assuming tensor is properly defined
 async function startObjectDetection(tensor) {
   try {
@@ -452,7 +454,9 @@ async function startObjectDetection(tensor) {
 }
 
 // Assuming predictions is properly defined
+function detectAreas(predictions) {
   // Your code to detect areas using predictions
+}
 
 // Call your area detection function here
 console.log('Area detection in progress...');
@@ -482,6 +486,8 @@ async function processImage() {
   requestAnimationFrame(() => processImage());
 }
 
+
+
 console.log('Process predictions obatined frrom COCO- SSD');
 // Function to process predictions from COCO-SSD
 async function processPredictions(predictions) {
@@ -497,6 +503,8 @@ console.log('Handling of the areas detected');
 
   // Continue video frame processing or rendering as needed...
 }
+
+
 
 async function detectObjects() {
 const canvas = document.getElementById('CanvasId');
@@ -718,6 +726,7 @@ async function loadImageAreas() {
     'https://drive.google.com/uc?id=1KOWnc9kEr0LjOycPLVcbJAQryoiI5bW7',
     'https://drive.google.com/uc?id=1Acx3vnTlB1MALcDIfQ937UNYaTZApfqM',
     'https://drive.google.com/uc?id=1RwlE8rrpoJMlPVcwQ1_dPkaRM8Dx_AyO',
+    'https://drive.google.com/uc?id=1l
 
  // Define a function to load images for a given area
 async function loadImages(areaImages) {
@@ -737,6 +746,7 @@ async function loadImages(areaImages) {
   return loadedImages;
 }
 
+console.log('Calling The Functions To Load Images For Each Area');
 await loadImages(StaircaseImages);
 await loadImages(RelationshipDeskImages);
 await loadImages(OperationsAreaImages);
@@ -805,3 +815,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM content loaded. Launching the system.');
   startSystem ();
 }); 
+
+
+DONE SO FAR
