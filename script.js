@@ -811,7 +811,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Now you can call detectObjects() after initializing the variable
     detectedAreas = detectObjects();
-}
 
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
