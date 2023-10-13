@@ -282,12 +282,6 @@ if (detectedAreasResult.length > 0) {
   console.error('No detected areas.');
 }
 
-  // Call the function to update the detected areas display
-  updateDetectedAreasDisplay(detectedAreasResult);
-} else {
-  console.error('No detected areas.');
-}
-
 // Call the function to update the detected areas display
 updateDetectedAreasDisplay(detectedAreasResult);
 
