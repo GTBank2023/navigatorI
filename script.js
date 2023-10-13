@@ -454,25 +454,8 @@ if (typeof detectAreas === 'undefined') {
 
 // Call your area detection function here
 console.log('Area detection in progress...');
-
-// Assuming you have access to the canvas element
-const canvas = document.getElementById('CanvasId');
-
-// Ensure the canvas element exists
-if (canvas) {
-  const ctx = canvas.getContext('2d');
-  if (ctx) {
-    // Assuming predictions is properly defined
-    detectAreas(predictions);
-
-    // Assuming 'canvas' is defined
-    requestAnimationFrame(() => detectObjects(canvas, ctx));
-  } else {
-    console.error('Canvas 2D context not found.');
-  }
-} else {
-  console.error('Canvas element not found.');
-}
+detectAreas(predictions);
+requestAnimationFrame(() => detectObjects(canvas, ctx));
 
 // Call the async function to start object detection
 startObjectDetection();
