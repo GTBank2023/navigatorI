@@ -118,9 +118,9 @@ async function setupCamera() {
         console.error('Error accessing the camera:', error);
     }
 
-    const canvas = document.createElement('canvas');
+  const canvas = document.getElementById('CanvasId');
     console.log('Creating canvas element...');  // Log a message indicating canvas creation
-    canvas.id = 'canvas';
+    canvas.id = 'CanvasId';
     document.body.appendChild(canvas);
     console.log('Canvas element added to the DOM.');  // Log a message indicating canvas addition to the DOM
 
@@ -419,7 +419,7 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   });
 }
 
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('CanvasId');
 
 if (!canvas) {
   console.error('Canvas element not found.');
@@ -921,9 +921,9 @@ async function setupCamera() {
         console.error('Error accessing the camera:', error);
     }
 
-    const canvas = document.createElement('canvas');
+  const canvas = document.getElementById('CanvasId');
     console.log('Creating canvas element...');  // Log a message indicating canvas creation
-    canvas.id = 'canvas';
+    canvas.id = 'CanvasId';
     document.body.appendChild(canvas);
     console.log('Canvas element added to the DOM.');  // Log a message indicating canvas addition to the DOM
 
@@ -1325,7 +1325,7 @@ console.log('Handling of the areas detected');
 }
 
 async function detectObjects(tensor) {
-  const canvas = document.getElementById('canvas');
+ const canvas = document.getElementById('CanvasId');
   const ctx = canvas.getContext('2d'); // Define ctx here
 
   // Ensure ctx is defined
