@@ -451,12 +451,6 @@ async function startObjectDetection(tensor) {
 // Assuming predictions is properly defined
 function detectAreas(predictions) {
   // Your code to detect areas using predictions
-
-  // Use the globally declared detectAreas function here
-  detectedAreas = predictions.map(prediction => {
-    // Process each prediction and return the detected areas
-    // Example: return someProcessedData(prediction);
-  });
 }
 
 // Call your area detection function here
