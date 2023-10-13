@@ -1325,8 +1325,8 @@ console.log('Handling of the areas detected');
 }
 
 async function detectObjects(tensor) {
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d'); // Define ctx here
+const canvas = document.getElementById('CanvasId');
+ const ctx = canvas.getContext('2d'); // Define ctx here
 
   // Ensure ctx is defined
   if (!ctx) {
