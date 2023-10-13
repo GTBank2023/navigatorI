@@ -1186,7 +1186,7 @@ document.getElementById('get-started-button').addEventListener('click', () => {
 });
  
 console.log('Loading the model...');
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('CanvasId');
 const ctx = canvas.getContext('2d'); // Define ctx here
 
 async function loadModelAndStartSystem() {
