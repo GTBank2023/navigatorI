@@ -1,12 +1,6 @@
-TRY NEW 
-
-
 let DetectionRules = {}; // Define DetectionRules as a global variable
-
 let cocoSsdModel; // Declare cocoSsdModel as a global variable
-
 let detectedAreas;  // Initialize the variable
-
 let predictions;  // Initialize the predictions variable at a global scope
 
 function startSystem() {
@@ -48,11 +42,9 @@ videoElement.addEventListener('loadeddata', async () => {
     await detectObjects();
 });
 
-
 console.log('Loading the model...');
 
 let classIndexMap = {};  // This will store the mapping of class names to indices
-
 async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
@@ -86,7 +78,6 @@ async function loadCocoSsdModel() {
 }
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
-
 console.log('Camera setup in progress...');  // Log a message indicating camera setup
 async function setupCamera() {
     console.log('Setting up camera...');  // Log a message indicating camera setup
@@ -169,7 +160,6 @@ function initializeDetectionRules() {
 };
 
 } 
-
 
 function detectAreas(predictionsArray, DetectionRules) {
     const areas = [];
@@ -283,7 +273,6 @@ if (detectedAreasResult.length > 0) {
 } else {
   console.error('No detected areas.');
 }
-
 
 // Call the function to update the detected areas display
 updateDetectedAreasDisplay(detectedAreasResult);
@@ -495,8 +484,6 @@ async function processImage() {
   requestAnimationFrame(() => processImage());
 }
 
-
-
 console.log('Process predictions obatined frrom COCO- SSD');
 // Function to process predictions from COCO-SSD
 async function processPredictions(predictions) {
@@ -512,8 +499,6 @@ console.log('Handling of the areas detected');
 
   // Continue video frame processing or rendering as needed...
 }
-
-
 
 async function detectObjects() {
 const canvas = document.getElementById('CanvasId');
