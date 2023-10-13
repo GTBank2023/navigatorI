@@ -844,8 +844,6 @@ console.log('Loading the model...');
 
 // Assuming detectedAreas is already globally declared elsewhere in your code
 
-let classIndexMap = {};  // This will store the mapping of class names to indices
-
 function displayErrorMessageToUser(message) {
   // You can implement this function to display the error message to the user
   console.error('Error:', message);
