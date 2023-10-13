@@ -451,7 +451,6 @@ async function startObjectDetection(tensor) {
 
 // Assuming predictions is properly defined
   // Your code to detect areas using predictions
-}
 
 // Call your area detection function here
 console.log('Area detection in progress...');
