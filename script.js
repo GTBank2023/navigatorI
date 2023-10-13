@@ -718,7 +718,6 @@ async function loadImageAreas() {
     'https://drive.google.com/uc?id=1KOWnc9kEr0LjOycPLVcbJAQryoiI5bW7',
     'https://drive.google.com/uc?id=1Acx3vnTlB1MALcDIfQ937UNYaTZApfqM',
     'https://drive.google.com/uc?id=1RwlE8rrpoJMlPVcwQ1_dPkaRM8Dx_AyO',
-    'https://drive.google.com/uc?id=1l
 
  // Define a function to load images for a given area
 async function loadImages(areaImages) {
