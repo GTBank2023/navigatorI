@@ -815,6 +815,3 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM content loaded. Launching the system.');
   startSystem ();
 }); 
-
-
-DONE SO FAR
