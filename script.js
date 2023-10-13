@@ -737,7 +737,6 @@ async function loadImages(areaImages) {
   return loadedImages;
 }
 
-console.log('Calling The Functions To Load Images For Each Area');
 await loadImages(StaircaseImages);
 await loadImages(RelationshipDeskImages);
 await loadImages(OperationsAreaImages);
