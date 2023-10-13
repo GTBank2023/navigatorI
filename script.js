@@ -436,6 +436,7 @@ if (!canvas) {
 }
 
 console.log('Starting object detection...');
+
 // Assuming tensor is properly defined
 async function startObjectDetection(tensor) {
   try {
@@ -447,9 +448,12 @@ async function startObjectDetection(tensor) {
   }
 }
 
-// Assuming predictions is properly defined
-function detectAreas(predictions) {
-  // Your code to detect areas using predictions
+// Check if detectAreas is already defined before declaring
+if (typeof detectAreas === 'undefined') {
+  // Assuming predictions is properly defined
+  function detectAreas(predictions) {
+    // Your code to detect areas using predictions
+  }
 }
 
 // Call your area detection function here
