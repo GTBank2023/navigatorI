@@ -510,7 +510,7 @@ console.log('Handling of the areas detected');
 }
 
 async function detectObjects() {
-  const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('CanvasId');
   const ctx = canvas.getContext('2d'); // Define ctx here
 
   // Ensure ctx is defined
