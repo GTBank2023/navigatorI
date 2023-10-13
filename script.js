@@ -7,6 +7,17 @@ let detectedAreas;  // Initialize the variable
 
 let predictions;  // Initialize the predictions variable at a global scope
 
+function startSystem() {
+    setupCamera();  // Set up the camera
+    
+    // Call any additional actions needed to start the system
+let DetectionRules = {}; // Define DetectionRules as a global variable
+
+let cocoSsdModel; // Declare cocoSsdModel as a global variable
+
+let detectedAreas;  // Initialize the variable
+
+let predictions;  // Initialize the predictions variable at a global scope
 
 function startSystem() {
     setupCamera();  // Set up the camera
@@ -450,7 +461,9 @@ async function startObjectDetection(tensor) {
 }
 
 // Assuming predictions is properly defined
+function detectAreas(predictions) {
   // Your code to detect areas using predictions
+}
 
 // Call your area detection function here
 console.log('Area detection in progress...');
@@ -497,7 +510,7 @@ console.log('Handling of the areas detected');
 }
 
 async function detectObjects() {
-const canvas = document.getElementById('CanvasId');
+  const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d'); // Define ctx here
 
   // Ensure ctx is defined
@@ -811,6 +824,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Now you can call detectObjects() after initializing the variable
     detectedAreas = detectObjects();
+}
 
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -823,6 +837,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Define videoElement
+
+const videoElement = document.getElementById('video-feed');
  console.log('Video feed is showing');
 // Event listener to start detection when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
@@ -843,6 +859,8 @@ videoElement.addEventListener('loadeddata', async () => {
 console.log('Loading the model...');
 
 // Assuming detectedAreas is already globally declared elsewhere in your code
+
+let classIndexMap = {};  // This will store the mapping of class names to indices
 
 function displayErrorMessageToUser(message) {
   // You can implement this function to display the error message to the user
@@ -1307,7 +1325,7 @@ console.log('Handling of the areas detected');
 }
 
 async function detectObjects(tensor) {
- const canvas = document.getElementById('CanvasId');
+  const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d'); // Define ctx here
 
   // Ensure ctx is defined
