@@ -432,12 +432,13 @@ if (!canvas) {
 }
 
 console.log('Starting object detection...');
-
 // Assuming tensor is properly defined
-async function startObjectDetection(tensor) {
+async function startObjectDetection(tensor, canvas) {
   try {
+    const ctx = canvas.getContext('2d');  // Define ctx here
+
     // Assuming detectObjects is a function that takes tensor as an argument
-    predictions = await detectObjects(tensor);
+    predictions = await detectObjects(tensor, ctx);
     console.log('Predictions:', predictions);
   } catch (error) {
     console.error('Error in object detection:', error);
@@ -456,6 +457,7 @@ if (typeof detectAreas === 'undefined') {
 console.log('Area detection in progress...');
 detectAreas(predictions);
 requestAnimationFrame(() => detectObjects(canvas, ctx));
+
 
 // Call the async function to start object detection
 startObjectDetection();
