@@ -7,15 +7,6 @@ let detectedAreas;  // Initialize the variable
 
 let predictions;  // Initialize the predictions variable at a global scope
   
-    // Call any additional actions needed to start the system
-let DetectionRules = {}; // Define DetectionRules as a global variable
-
-let cocoSsdModel; // Declare cocoSsdModel as a global variable
-
-let detectedAreas;  // Initialize the variable
-
-let predictions;  // Initialize the predictions variable at a global scope
-
 function startSystem() {
     setupCamera();  // Set up the camera
     
