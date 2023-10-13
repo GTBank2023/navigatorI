@@ -823,8 +823,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Define videoElement
-
-const videoElement = document.getElementById('video-feed');
  console.log('Video feed is showing');
 // Event listener to start detection when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
