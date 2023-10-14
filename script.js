@@ -100,9 +100,9 @@ async function setupCamera() {
         console.error('Error accessing the camera:', error);
     }
 
- const canvas = document.getElementById('CanvasId');
+    const canvas = document.createElement('canvas');
     console.log('Creating canvas element...');  // Log a message indicating canvas creation
-    canvas.id = 'CanvasId';
+    canvas.id = 'canvas';
     document.body.appendChild(canvas);
     console.log('Canvas element added to the DOM.');  // Log a message indicating canvas addition to the DOM
 
