@@ -96,6 +96,26 @@ async function setupCamera() {
         videoElement.srcObject = stream;
         await videoElement.play();
         console.log('Video playback started.');
+
+        // Add an event listener to capture frames and render them on the canvas
+        videoElement.addEventListener('play', function () {
+            const canvas = document.createElement('canvas');
+            canvas.id = 'canvas';
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+
+            function renderFrame() {
+                if (!videoElement.paused && !videoElement.ended) {
+                    // Draw the current frame from the video element onto the canvas
+                    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                    requestAnimationFrame(renderFrame);
+                }
+            }
+            renderFrame();
+        });
+
     } catch (error) {
         console.error('Error accessing the camera:', error.name, error.message);
     }
@@ -104,12 +124,6 @@ async function setupCamera() {
 // Call the setupCamera function
 setupCamera();
 
-function initializeDetectionRules() {
-  // Check if DetectionRules is already populated
-  if (Object.keys(DetectionRules).length !== 0) {
-    console.log('DetectionRules is already populated.');
-    return;
-  }
 
   // Initialize DetectionRules based on your predictions logic
   DetectionRules = {
