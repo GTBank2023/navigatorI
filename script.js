@@ -169,9 +169,6 @@ setupCamera();
 
 };
 
-} 
-
-
 function detectAreas(predictionsArray, DetectionRules) {
     const areas = [];
 
