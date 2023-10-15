@@ -81,35 +81,28 @@ async function loadCocoSsdModel() {
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
-console.log('Camera setup in progress...');  // Log a message indicating camera setup
+console.log('Camera setup in progress...');
+
 async function setupCamera() {
-    console.log('Setting up camera...');  // Log a message indicating camera setup
+    console.log('Setting up camera...');
     const videoElement = document.createElement('video');
-    console.log('Video element is being loaded');  // Log a message indicating video element creation
     videoElement.id = 'video-feed';
     document.body.appendChild(videoElement);
 
     try {
-        console.log('Requesting camera access...');  // Log a message indicating camera access request
+        console.log('Requesting camera access...');
         const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
-        console.log('Camera access granted.');  // Log a message indicating successful camera access
+        console.log('Camera access granted.');
         videoElement.srcObject = stream;
         await videoElement.play();
-        console.log('Video playback started.');  // Log a message indicating video playback start
+        console.log('Video playback started.');
     } catch (error) {
-        console.error('Error accessing the camera:', error);
+        console.error('Error accessing the camera:', error.name, error.message);
     }
-
-    const canvas = document.createElement('canvas');
-    console.log('Creating canvas element...');  // Log a message indicating canvas creation
-    canvas.id = 'canvas';
-    document.body.appendChild(canvas);
-    console.log('Canvas element added to the DOM.');  // Log a message indicating canvas addition to the DOM
-
-    const ctx = canvas.getContext('2d');
-
-    // Start object detection when video metadata is loaded
 }
+
+// Call the setupCamera function
+setupCamera();
 
 function initializeDetectionRules() {
   // Check if DetectionRules is already populated
