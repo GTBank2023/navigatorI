@@ -46,6 +46,13 @@ videoElement.addEventListener('loadeddata', async () => {
 
 console.log('Loading the model...');
 let classIndexMap = {};  // This will store the mapping of class names to indices
+
+// Define the displayErrorMessageToUser function
+function displayErrorMessageToUser(message) {
+  console.error('Error:', message);
+  // Add your code to display the message to the user (e.g., show it in a modal, alert, or log)
+}
+
 async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
