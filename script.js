@@ -404,7 +404,7 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   });
 }
 
-  const canvas = document.getElementById('CanvasId');
+const canvas = document.getElementById('CanvasId');
 
 if (!canvas) {
   console.error('Canvas element not found.');
@@ -425,46 +425,23 @@ if (!canvas) {
     // Capture image data
     console.log('Capturing image data...');
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    // Define tensor here
     const tensor = tf.browser.fromPixels(imgData).expandDims();
 
     // Call your updated area detection function here
     console.log('Objects detected. Calling the area detection function.');
     detectAreas(tensor);
+    
+    // Call the function to detect objects and pass the canvas and context
+    requestAnimationFrame(() => detectObjects(canvas, ctx));
+    
+    // Call the async function to start object detection
+    startObjectDetection(tensor, ctx);
   }
 }
 
 console.log('Starting object detection...');
-
-// Assuming tensor is properly defined
-async function startObjectDetection(tensor, ctx) {
-  try {
-    // Assuming detectObjects is a function that takes tensor as an argument
-    const predictions = await detectObjects(tensor, ctx);
-    console.log('Predictions:', predictions);
-  } catch (error) {
-    console.error('Error in object detection:', error);
-  }
-}
-
-// Check if detectAreas is already defined before declaring
-if (typeof detectAreas === 'undefined') {
-  // Assuming predictions is properly defined
-  function detectAreas(predictions) {
-    // Your code to detect areas using predictions
-  }
-}
-
-console.log('Area detection in progress...');
-
-// Call your area detection function here
-detectAreas(predictions);
-
-// Call the function to detect objects and pass the canvas and context
-requestAnimationFrame(() => detectObjects(canvas, ctx));
-
-// Call the async function to start object detection
-startObjectDetection(tensor, ctx);
-const tensor = tf.browser.fromPixels(imgData).expandDims();
 
 console.log('Commence Image Processing .');
 async function processImage() {
@@ -485,8 +462,6 @@ async function processImage() {
 
   requestAnimationFrame(() => processImage());
 }
-
-
 
 console.log('Process predictions obatined frrom COCO- SSD');
 // Function to process predictions from COCO-SSD
