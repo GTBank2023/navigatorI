@@ -433,10 +433,6 @@ if (!canvas) {
   }
 }
 
-// Assuming you have a canvas element with id 'CanvasId'
-const canvas = document.getElementById('CanvasId');
-const ctx = canvas.getContext('2d');  // Get 2D context
-
 console.log('Starting object detection...');
 
 // Assuming tensor is properly defined
