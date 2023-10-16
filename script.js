@@ -165,8 +165,8 @@ function initializeDetectionRules() {
     { label: 'Seaside Bridge Painting', score: 0.5 },
     { label: 'Metal Decorative Grill', score: 0.5 },
   ],
-
 };
+}
 
 function detectAreas(predictionsArray, DetectionRules) {
     const areas = [];
