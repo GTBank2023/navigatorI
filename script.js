@@ -123,6 +123,7 @@ async function setupCamera() {
 // Call the setupCamera function
 setupCamera();
 
+function initializeDetectionRules() {
   // Initialize DetectionRules based on your predictions logic
   DetectionRules = {
  'Entrance Area': [
