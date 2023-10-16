@@ -404,7 +404,6 @@ async function detectObjectsFromCanvas(canvas, ctx) {
   });
 }
 
-
   const canvas = document.getElementById('CanvasId');
 
 if (!canvas) {
@@ -456,11 +455,16 @@ if (typeof detectAreas === 'undefined') {
   }
 }
 
-// Call your area detection function here
 console.log('Area detection in progress...');
-detectAreas(predictions);
-requestAnimationFrame(() => detectObjects(canvas, ctx));
 
+  const canvas = document.getElementById('CanvasId'); 
+const ctx = canvas.getContext('2d');  // Get 2D context
+
+// Call your area detection function here
+detectAreas(predictions);
+
+// Call the function to detect objects and pass the canvas and context
+requestAnimationFrame(() => detectObjects(canvas, ctx));
 
 // Call the async function to start object detection
 startObjectDetection();
