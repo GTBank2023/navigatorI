@@ -44,40 +44,33 @@ videoElement.addEventListener('loadeddata', async () => {
 });
 
 
-console.log('Loading the model...');
-let classIndexMap = {};  // This will store the mapping of class names to indices
-
-// Define the displayErrorMessageToUser function
-function displayErrorMessageToUser(message) {
-  console.error('Error:', message);
-  // Add your code to display the message to the user (e.g., show it in a modal, alert, or log)
-}
-
 async function loadCocoSsdModel() {
     try {
-        cocoSsdModel = await cocoSsd.load();
+        console.log('Loading the model...');
+        cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
 
-        // Check if the model provides classes
-        if (cocoSsdModel && cocoSsdModel.getClasses) {
+        if (cocoSsdModel) {
+            console.log('Coco-SSD model loaded successfully.');
+
             const classes = await cocoSsdModel.getClasses();
-            if (classes) {
+            if (classes && classes.length > 0) {
+                console.log('Classes:', classes);
+
                 // Build the class index map
+                classIndexMap = {};
                 classes.forEach((className, index) => {
                     classIndexMap[className] = index;
                 });
-                console.log('Coco-SSD model loaded successfully.');
 
                 // Assuming detectObjects() returns a Promise that resolves to the detected areas
                 detectedAreas = await detectObjects();  // Initialize detectedAreas
 
                 startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
             } else {
-                console.error('Error: COCO-SSD model did not provide classes.');
-                displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+                throw new Error('Error: COCO-SSD model did not provide valid classes.');
             }
         } else {
-            console.error('Error: COCO-SSD model does not provide classes.');
-            displayErrorMessageToUser('Failed to load the object detection model. Please try again later.');
+            throw new Error('Error: Failed to load the COCO-SSD model.');
         }
     } catch (error) {
         console.error('Error loading the object detection model:', error);
