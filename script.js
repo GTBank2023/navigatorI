@@ -24,12 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /// Define videoElement
-
 const videoElement = document.getElementById('video-feed');
- console.log('Video feed is showing');
+console.log('Video feed is showing');
+
 // Event listener to start detection when video is loaded
 videoElement.addEventListener('loadeddata', async () => {
- console.log('Detection begins as soon as video is loaded ');
+    console.log('Detection begins as soon as video is loaded ');
+
     // Ensure videoElement is defined and ready
     if (!videoElement) {
         console.error('Video element not defined.');
@@ -37,16 +38,14 @@ videoElement.addEventListener('loadeddata', async () => {
     }
 
     // Play the video and start object detection
- console.log('Video is playing and object detection is taking place ');
+    console.log('Video is playing and object detection is taking place ');
     videoElement.play();
     await detectObjects();
 });
 
 
 console.log('Loading the model...');
-
 let classIndexMap = {};  // This will store the mapping of class names to indices
-
 async function loadCocoSsdModel() {
     try {
         cocoSsdModel = await cocoSsd.load();
@@ -94,17 +93,17 @@ async function setupCamera() {
         const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
         console.log('Camera access granted.');
         videoElement.srcObject = stream;
-        await videoElement.play();
-        console.log('Video playback started.');
 
-        // Add an event listener to capture frames and render them on the canvas
-        videoElement.addEventListener('play', function () {
+        // Wait for the metadata to be loaded to set canvas dimensions
+        videoElement.addEventListener('loadedmetadata', () => {
             const canvas = document.createElement('canvas');
             canvas.id = 'canvas';
             document.body.appendChild(canvas);
             const ctx = canvas.getContext('2d');
             canvas.width = videoElement.videoWidth;
             canvas.height = videoElement.videoHeight;
+
+            videoElement.play();
 
             function renderFrame() {
                 if (!videoElement.paused && !videoElement.ended) {
@@ -123,7 +122,6 @@ async function setupCamera() {
 
 // Call the setupCamera function
 setupCamera();
-
 
   // Initialize DetectionRules based on your predictions logic
   DetectionRules = {
