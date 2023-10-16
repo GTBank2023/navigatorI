@@ -36,6 +36,19 @@ body {
     margin-top: 20px; /* Adjust the margin as needed */
 }
 
+
+/* Styles for the video feed */
+#video-feed {
+    width: 100%; /* Fill its parent */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure it's a block element */
+}
+
+.video-section {
+    /* Add any styles for the video section */
+    position: relative; /* Adjust position if needed */
+}
+
 .heading h1 {
     color: #dc4405;
     font-size: 36px; /* Adjust the font size as needed */
