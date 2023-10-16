@@ -621,7 +621,6 @@ function textToSpeech(message) {
 }
 
 console.log('Commence Image Loading from URLs Asynchronously');
-
 async function loadImageAreas() {
   try {
     console.log('Load Image URLs For the Staircase');
@@ -750,7 +749,7 @@ console.log('Calling The Functions To Load Images For Each Area');
 await loadImages(StaircaseImages);
 await loadImages(RelationshipDeskImages);
 await loadImages(OperationsAreaImages);
-await loadImages(LobbyAreaImages);
+await loadImages(LobbyAreaImagesURLs);
 await loadImages(HNIareaImages);
 await loadImages(EntranceAreaImages);
 await loadImages(CustomerInformationServiceImages);
