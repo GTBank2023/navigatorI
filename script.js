@@ -388,7 +388,6 @@ loadModelAndStartSystem();
 
 // Revised detectObjectsFromCanvas function
 console.log('Commence Object Detection.');
-
 async function detectObjectsFromCanvas(canvas, ctx) {
   return new Promise(async (resolve, reject) => {
     if (!cocoSsdModel) {
@@ -417,27 +416,28 @@ if (!canvas) {
   } else {
     console.log('Getting data for the image.');
 
-    // Clear the canvas and draw video feed
-    console.log('Clearing canvas and drawing video feed...');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(videoElement, 0, 0);
+ // Clear the canvas and draw video feed
+console.log('Clearing canvas and drawing video feed...');
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.drawImage(videoElement, 0, 0);
 
-    // Capture image data
-    console.log('Capturing image data...');
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+// Capture image data
+console.log('Capturing image data...');
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    // Define tensor here
-    const tensor = tf.browser.fromPixels(imgData).expandDims();
+// Define tensor here
+const tensor = tf.browser.fromPixels(imgData).expandDims();
 
-    // Call your updated area detection function here
-    console.log('Objects detected. Calling the area detection function.');
-    detectAreas(tensor);
+// Call the async function to start object detection
+startObjectDetection(tensor, ctx);
+
+// Call your updated area detection function here
+console.log('Objects detected. Calling the area detection function.');
+detectAreas(tensor);
+
+  // Call the function to detect objects and pass the canvas and context
+requestAnimationFrame(() => detectObjects(canvas, ctx));
     
-    // Call the function to detect objects and pass the canvas and context
-    requestAnimationFrame(() => detectObjects(canvas, ctx));
-    
-    // Call the async function to start object detection
-    startObjectDetection(tensor, ctx);
   }
 }
 
