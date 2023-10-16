@@ -464,6 +464,7 @@ requestAnimationFrame(() => detectObjects(canvas, ctx));
 
 // Call the async function to start object detection
 startObjectDetection(tensor, ctx);
+const tensor = tf.browser.fromPixels(imgData).expandDims();
 
 console.log('Commence Image Processing .');
 async function processImage() {
