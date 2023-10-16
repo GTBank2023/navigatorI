@@ -433,15 +433,17 @@ if (!canvas) {
   }
 }
 
+// Assuming you have a canvas element with id 'CanvasId'
+const canvas = document.getElementById('CanvasId');
+const ctx = canvas.getContext('2d');  // Get 2D context
+
 console.log('Starting object detection...');
 
 // Assuming tensor is properly defined
-async function startObjectDetection(tensor, canvas) {
+async function startObjectDetection(tensor) {
   try {
-    const ctx = canvas.getContext('2d');  // Define ctx here
-
     // Assuming detectObjects is a function that takes tensor as an argument
-    predictions = await detectObjects(tensor, ctx);
+    const predictions = await detectObjects(tensor, ctx);
     console.log('Predictions:', predictions);
   } catch (error) {
     console.error('Error in object detection:', error);
@@ -455,10 +457,6 @@ if (typeof detectAreas === 'undefined') {
     // Your code to detect areas using predictions
   }
 }
-
-// Assuming you have a canvas element with id 'CanvasId'
-const canvas = document.getElementById('CanvasId');
-const ctx = canvas.getContext('2d');  // Get 2D context
 
 console.log('Area detection in progress...');
 
