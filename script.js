@@ -744,9 +744,9 @@ await loadImages(StaircaseImages);
 await loadImages(RelationshipDeskImages);
 await loadImages(OperationsAreaImages);
 await loadImages(LobbyAreaImagesURLs);
-await loadImages(HNIareaImages);
-await loadImages(EntranceAreaImages);
-await loadImages(CustomerInformationServiceImages);
+await loadImages(HNIareaImagesURLs);
+await loadImages(EntranceAreaImagesURLs);
+await loadImages(CustomerInformationServiceImagesURLs);
 
  } 
   catch (error) {
