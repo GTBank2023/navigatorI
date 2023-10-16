@@ -436,7 +436,7 @@ if (!canvas) {
 console.log('Starting object detection...');
 
 // Assuming tensor is properly defined
-async function startObjectDetection(tensor) {
+async function startObjectDetection(tensor, ctx) {
   try {
     // Assuming detectObjects is a function that takes tensor as an argument
     const predictions = await detectObjects(tensor, ctx);
@@ -463,7 +463,7 @@ detectAreas(predictions);
 requestAnimationFrame(() => detectObjects(canvas, ctx));
 
 // Call the async function to start object detection
-startObjectDetection();
+startObjectDetection(tensor, ctx);
 
 console.log('Commence Image Processing .');
 async function processImage() {
