@@ -50,6 +50,8 @@ function displayErrorMessageToUser(message) {
 }
 
 async function loadCocoSsdModel() {
+    let classIndexMap;  // Declare classIndexMap
+
     try {
         console.log('Loading the model...');
         cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
