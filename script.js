@@ -3,15 +3,21 @@ let cocoSsdModel; // Declare cocoSsdModel as a global variable
 let detectedAreas;  // Initialize the variable
 let predictions;  // Initialize the predictions variable at a global scope
 
-function startSystem() {
-    setupCamera();  // Set up the camera
-    
-    // Call any additional actions needed to start the system
-    // For example, you could call a function to begin object detection
-    
-    // Now you can call detectObjects() after initializing the variable
-    detectedAreas = detectObjects();
+async function setupCamera() {
+    const videoElement = document.createElement('video');
+    videoElement.src = 'path/to/test-video.mp4'; // Replace with the actual path to your test video
+    document.body.appendChild(videoElement);
+
+    try {
+        await videoElement.play();
+        console.log('Video playback successful.');
+    } catch (error) {
+        console.error('Error playing video:', error);
+    }
 }
+
+// Call the setupCamera function
+setupCamera();
 
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -81,7 +87,6 @@ async function loadCocoSsdModel() {
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
 console.log('Camera setup in progress...');
-
 async function setupCamera() {
     console.log('Setting up camera...');
     const videoElement = document.createElement('video');
