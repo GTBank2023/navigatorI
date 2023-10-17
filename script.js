@@ -14,7 +14,6 @@ let predictions;  // Initialize the predictions variable at a global scope
     } catch (error) {
         console.error('Error playing video:', error);
     }
-}
 
 // Call the setupCamera function
 setupCamera();
