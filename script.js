@@ -3,9 +3,9 @@ let cocoSsdModel; // Declare cocoSsdModel as a global variable
 let detectedAreas;  // Initialize the variable
 let predictions;  // Initialize the predictions variable at a global scope
 
-async function setupCamera() {
+
     const videoElement = document.createElement('video');
-    videoElement.src = 'path/to/test-video.mp4'; // Replace with the actual path to your test video
+    videoElement.src = 'https://www.youtube.com/watch?v=A1NGcBX2YDA'; // 
     document.body.appendChild(videoElement);
 
     try {
