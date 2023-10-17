@@ -44,6 +44,11 @@ videoElement.addEventListener('loadeddata', async () => {
 });
 
 
+function displayErrorMessageToUser(message) {
+    // You can customize this function to display the error message to the user
+    console.error('Error:', message);
+}
+
 async function loadCocoSsdModel() {
     try {
         console.log('Loading the model...');
@@ -52,19 +57,16 @@ async function loadCocoSsdModel() {
         if (cocoSsdModel) {
             console.log('Coco-SSD model loaded successfully.');
 
-            // Move the classes definition here
             const classes = ['chair', 'painting', 'banner', 'sofa', 'door', 'stand', 'desk', 'machine', 'cupboard'];
 
             console.log('Classes:', classes);
 
-            // Build the class index map
             classIndexMap = {};
             classes.forEach((className, index) => {
                 classIndexMap[className] = index;
             });
 
-            // Assuming detectObjects() returns a Promise that resolves to the detected areas
-            detectedAreas = await detectObjects();  // Initialize detectedAreas
+            detectedAreas = await detectObjects();  // Assuming detectObjects() returns a Promise that resolves to the detected areas
 
             startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
         } else {
