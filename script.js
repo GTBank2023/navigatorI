@@ -52,25 +52,23 @@ async function loadCocoSsdModel() {
         if (cocoSsdModel) {
             console.log('Coco-SSD model loaded successfully.');
 
-            const classes = await cocoSsdModel.getClasses();
-            if (classes && classes.length > 0) {
-                console.log('Classes:', classes);
+            // Move the classes definition here
+            const classes = ['chair', 'painting', 'banner', 'sofa', 'door', 'stand', 'desk', 'machine', 'cupboard'];
 
-                // Build the class index map
-                classIndexMap = {};
-                classes.forEach((className, index) => {
-                    classIndexMap[className] = index;
-                });
+            console.log('Classes:', classes);
 
-                // Assuming detectObjects() returns a Promise that resolves to the detected areas
-                detectedAreas = await detectObjects();  // Initialize detectedAreas
+            // Build the class index map
+            classIndexMap = {};
+            classes.forEach((className, index) => {
+                classIndexMap[className] = index;
+            });
 
-                startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
-            } else {
-                throw new Error('Error: COCO-SSD model did not provide valid classes.');
-            }
+            // Assuming detectObjects() returns a Promise that resolves to the detected areas
+            detectedAreas = await detectObjects();  // Initialize detectedAreas
+
+            startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
         } else {
-            throw new Error('Error: Failed to load the COCO-SSD model.');
+            throw new Error('Error: COCO-SSD model did not provide valid classes.');
         }
     } catch (error) {
         console.error('Error loading the object detection model:', error);
