@@ -83,6 +83,7 @@ async function loadCocoSsdModel() {
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
 console.log('Camera setup in progress...');
+
 async function setupCamera() {
     console.log('Setting up camera...');
     const videoElement = document.createElement('video');
@@ -97,6 +98,7 @@ async function setupCamera() {
 
         // Wait for the metadata to be loaded to set canvas dimensions
         videoElement.addEventListener('loadedmetadata', () => {
+            console.log('Video metadata loaded.');
             const canvas = document.createElement('canvas');
             canvas.id = 'canvas';
             document.body.appendChild(canvas);
