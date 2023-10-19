@@ -36,6 +36,11 @@ body {
     margin-top: 20px; /* Adjust the margin as needed */
 }
 
+.hide-on-camera {
+    display: none;
+}
+
+
 .video-container {
     width: 100vw;
     height: 100vh;
