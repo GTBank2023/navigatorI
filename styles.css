@@ -36,6 +36,11 @@ body {
     margin-top: 20px; /* Adjust the margin as needed */
 }
 
+.video-container {
+    width: 100vw;
+    height: 100vh;
+    /* Add any other styles as needed */
+}
 
 /* Styles for the video feed */
 #video-feed {
