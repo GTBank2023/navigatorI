@@ -133,6 +133,22 @@ async function switchCamera(cameraId) {
     }
 }
 
+function hideOtherElements() {
+    // Select and hide elements you want to hide (e.g., navigation, buttons, etc.)
+    const elementsToHide = document.querySelectorAll('.hide-on-camera');
+    elementsToHide.forEach((element) => {
+        element.style.display = 'none';
+    });
+}
+
+function showOtherElements() {
+    // Select and show hidden elements
+    const elementsToShow = document.querySelectorAll('.hide-on-camera');
+    elementsToShow.forEach((element) => {
+        element.style.display = 'block'; // or 'initial' based on your original CSS
+    });
+}
+
 // Call the setupCamera function when the "Get Started" button is pressed
 document.getElementById('get-started-button').addEventListener('click', () => {
     setupCamera();
