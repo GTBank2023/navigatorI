@@ -44,9 +44,9 @@ body {
 
 /* Styles for the video feed */
 #video-feed {
-    width: 100%; /* Fill its parent */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Ensure it's a block element */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintains aspect ratio and covers the entire container */
 }
 
 .video-section {
