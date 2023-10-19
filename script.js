@@ -82,45 +82,54 @@ async function loadCocoSsdModel() {
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
-console.log('Camera setup in progress...');
-
-let videoStream = null; // Store the video stream
-
 async function setupCamera() {
-    console.log('Setting up camera...');
     const videoElement = document.createElement('video');
     videoElement.id = 'video-feed';
+    document.body.appendChild(videoElement);
 
     try {
-        console.log('Requesting camera access...');
-        videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        console.log('Camera access granted.');
-        videoElement.srcObject = videoStream;
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
 
-        // Wait for the metadata to be loaded to set canvas dimensions
-        videoElement.addEventListener('loadedmetadata', () => {
-            console.log('Video metadata loaded.');
-            const canvas = document.createElement('canvas');
-            canvas.id = 'canvas';
-            document.body.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
-            canvas.width = videoElement.videoWidth;
-            canvas.height = videoElement.videoHeight;
+        // If there's at least one video input device (camera), display options
+        if (videoDevices.length > 0) {
+            const cameraSelect = document.createElement('select');
+            cameraSelect.id = 'camera-select';
 
-            videoElement.play();
+            // Create options for each available camera
+            videoDevices.forEach((device, index) => {
+                const option = document.createElement('option');
+                option.value = device.deviceId;
+                option.text = `Camera ${index + 1}`;
+                cameraSelect.appendChild(option);
+            });
 
-            function renderFrame() {
-                if (!videoElement.paused && !videoElement.ended) {
-                    // Draw the current frame from the video element onto the canvas
-                    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                    requestAnimationFrame(renderFrame);
-                }
-            }
-            renderFrame();
-        });
+            document.body.appendChild(cameraSelect);
 
+            // Handle camera selection change
+            cameraSelect.addEventListener('change', () => {
+                const selectedCamera = cameraSelect.value;
+                switchCamera(selectedCamera);
+            });
+        } else {
+            // No cameras available
+            console.error('No cameras found.');
+        }
     } catch (error) {
-        console.error('Error accessing the camera:', error.name, error.message);
+        console.error('Error accessing cameras:', error);
+    }
+}
+
+// Function to switch to the selected camera
+async function switchCamera(cameraId) {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: cameraId },
+        });
+        const videoElement = document.getElementById('video-feed');
+        videoElement.srcObject = stream;
+    } catch (error) {
+        console.error('Error switching camera:', error);
     }
 }
 
