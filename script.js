@@ -84,17 +84,18 @@ loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
 console.log('Camera setup in progress...');
 
+let videoStream = null; // Store the video stream
+
 async function setupCamera() {
     console.log('Setting up camera...');
     const videoElement = document.createElement('video');
     videoElement.id = 'video-feed';
-    document.body.appendChild(videoElement);
 
     try {
         console.log('Requesting camera access...');
-        const stream = await navigator.mediaDevices.getUserMedia({ 'video': true });
+        videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
         console.log('Camera access granted.');
-        videoElement.srcObject = stream;
+        videoElement.srcObject = videoStream;
 
         // Wait for the metadata to be loaded to set canvas dimensions
         videoElement.addEventListener('loadedmetadata', () => {
@@ -123,8 +124,11 @@ async function setupCamera() {
     }
 }
 
-// Call the setupCamera function
-setupCamera();
+// Call the setupCamera function when the "Get Started" button is pressed
+document.getElementById('get-started-button').addEventListener('click', () => {
+    setupCamera();
+});
+
 
 function initializeDetectionRules() {
   // Initialize DetectionRules based on your predictions logic
