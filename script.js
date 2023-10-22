@@ -82,7 +82,53 @@ async function loadCocoSsdModel() {
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
-async function setupCamera() {
+// Call the setupCamera function when the "Get Started" button is pressed
+document.getElementById('get-started-button').addEventListener('click', async () => {
+    try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+
+        if (videoDevices.length > 1) {
+            // If there are multiple camera sources, show the camera selection prompt
+            showCameraSelectionPrompt();
+        }
+
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        // If the user grants access, proceed to set up the camera
+        setupCamera();
+    } catch (error) {
+        console.error('Error accessing the camera:', error);
+        // Handle the error, e.g., display an error message to the user
+    }
+});
+
+function showCameraSelectionPrompt() {
+    // Create a modal or a dropdown to display camera options
+    const modal = document.createElement('div');
+    modal.className = 'camera-selection-modal'; // Define CSS styles for the modal
+    // ... Rest of the code for the modal, label, dropdown, and button ...
+
+    // Add elements to the modal
+    modal.appendChild(label);
+    modal.appendChild(cameraSelect);
+    modal.appendChild(confirmButton);
+
+    // Add the modal to the document body
+    document.body.appendChild(modal);
+}
+
+function handleCameraSelection(selectedCamera) {
+    // Logic to handle the selected camera
+    if (selectedCamera === 'front') {
+        // Use the front camera
+        switchToFrontCamera();
+    } else if (selectedCamera === 'back') {
+        // Use the back camera (default)
+        switchToBackCamera();
+    }
+}
+
+async function setupCamera(selectedCameraId = null) {
     const videoElement = document.createElement('video');
     videoElement.id = 'video-feed';
     document.body.appendChild(videoElement);
@@ -91,69 +137,23 @@ async function setupCamera() {
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = devices.filter((device) => device.kind === 'videoinput');
 
-        // If there's at least one video input device (camera), display options
-        if (videoDevices.length > 0) {
-            const cameraSelect = document.createElement('select');
-            cameraSelect.id = 'camera-select';
-
-            // Create options for each available camera
-            videoDevices.forEach((device, index) => {
-                const option = document.createElement('option');
-                option.value = device.deviceId;
-                option.text = `Camera ${index + 1}`;
-                cameraSelect.appendChild(option);
-            });
-
-            document.body.appendChild(cameraSelect);
-
-            // Handle camera selection change
-            cameraSelect.addEventListener('change', () => {
-                const selectedCamera = cameraSelect.value;
-                switchCamera(selectedCamera);
-            });
+        if (videoDevices.length === 1 || !selectedCameraId) {
+            // Automatically use the only available camera or the default choice
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            videoElement.srcObject = stream;
+        } else if (videoDevices.length > 1) {
+            // Use the selected camera
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: selectedCameraId } });
+            videoElement.srcObject = stream;
         } else {
-            // No cameras available
             console.error('No cameras found.');
+            // Handle the case of no cameras found, e.g., display a message to the user
         }
     } catch (error) {
         console.error('Error accessing cameras:', error);
+        // Handle camera access error, e.g., display an error message
     }
 }
-
-// Function to switch to the selected camera
-async function switchCamera(cameraId) {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: { deviceId: cameraId },
-        });
-        const videoElement = document.getElementById('video-feed');
-        videoElement.srcObject = stream;
-    } catch (error) {
-        console.error('Error switching camera:', error);
-    }
-}
-
-function hideOtherElements() {
-    // Select and hide elements you want to hide (e.g., navigation, buttons, etc.)
-    const elementsToHide = document.querySelectorAll('.hide-on-camera');
-    elementsToHide.forEach((element) => {
-        element.style.display = 'none';
-    });
-}
-
-function showOtherElements() {
-    // Select and show hidden elements
-    const elementsToShow = document.querySelectorAll('.hide-on-camera');
-    elementsToShow.forEach((element) => {
-        element.style.display = 'block'; // or 'initial' based on your original CSS
-    });
-}
-
-// Call the setupCamera function when the "Get Started" button is pressed
-document.getElementById('get-started-button').addEventListener('click', () => {
-    setupCamera();
-});
-
 
 function initializeDetectionRules() {
   // Initialize DetectionRules based on your predictions logic
