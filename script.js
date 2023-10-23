@@ -3,32 +3,15 @@ let cocoSsdModel; // Declare cocoSsdModel as a global variable
 let detectedAreas;  // Initialize the variable
 let predictions;  // Initialize the predictions variable at a global scope
 
-// Separate camera setup from the "Get Started" button functionality
-function setupCameraAndStartSystem() {
-    setupCamera(); // Set up the camera
-    loadModelAndStartSystem(); // Initialize object detection
+function startSystem() {
+    setupCamera();  // Set up the camera
+    
+    // Call any additional actions needed to start the system
+    // For example, you could call a function to begin object detection
+    
+    // Now you can call detectObjects() after initializing the variable
+    detectedAreas = detectObjects();
 }
-
-// Call the setupCameraAndStartSystem function when the "Get Started" button is pressed
-document.getElementById('get-started-button').addEventListener('click', async () => {
-    try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
-
-        if (videoDevices.length > 1) {
-            // If there are multiple camera sources, show the camera selection prompt
-            showCameraSelectionPrompt();
-        }
-
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        // If the user grants access, proceed to set up the camera and start the system
-        setupCameraAndStartSystem();
-    } catch (error) {
-        console.error('Error accessing the camera:', error);
-        // Handle the error, e.g., display an error message to the user
-    }
-});
-
 
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
