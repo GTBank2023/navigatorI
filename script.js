@@ -3,6 +3,16 @@ let cocoSsdModel; // Declare cocoSsdModel as a global variable
 let detectedAreas;  // Initialize the variable
 let predictions;  // Initialize the predictions variable at a global scope
 
+function startSystem() {
+    setupCamera();  // Set up the camera
+    
+    // Call any additional actions needed to start the system
+    // For example, you could call a function to begin object detection
+    
+    // Now you can call detectObjects() after initializing the variable
+    detectedAreas = detectObjects();
+}
+
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const getStartedButton = document.querySelector('.get-started-button');
