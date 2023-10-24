@@ -82,78 +82,51 @@ async function loadCocoSsdModel() {
 
 loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
-// Call the setupCamera function when the "Get Started" button is pressed
-document.getElementById('get-started-button').addEventListener('click', async () => {
-    try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+// Separate camera setup from the "Get Started" button functionality
+function setupCameraAndStartSystem() {
+    let selectedCameraId = null; // Initialize with no specific camera selected
 
-        if (videoDevices.length > 1) {
+    // Check if there are multiple video input devices, and prefer the back camera if available
+    const selectBackCamera = (devices) => {
+        for (const device of devices) {
+            if (device.kind === 'videoinput') {
+                if (device.label.toLowerCase().includes('back')) {
+                    selectedCameraId = device.deviceId;
+                    break;
+                }
+            }
+        }
+    };
+
+    // Function to handle success in getting media devices
+    const handleMediaDevices = (devices) => {
+        if (devices.length > 1) {
             // If there are multiple camera sources, show the camera selection prompt
             showCameraSelectionPrompt();
+            selectBackCamera(devices);
         }
 
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        // If the user grants access, proceed to set up the camera
-        setupCamera();
-    } catch (error) {
-        console.error('Error accessing the camera:', error);
-        // Handle the error, e.g., display an error message to the user
-    }
-});
+        // Get the user media based on the selected camera (defaults to the available camera)
+        navigator.mediaDevices.getUserMedia({ video: { deviceId: selectedCameraId } })
+            .then((stream) => {
+                setupCamera(stream);
+                loadModelAndStartSystem(); // Initialize object detection
+            })
+            .catch((error) => {
+                console.error('Error accessing the camera:', error);
+                // Handle the error, e.g., display an error message to the user
+            });
+    };
 
-function showCameraSelectionPrompt() {
-    // Create a modal or a dropdown to display camera options
-    const modal = document.createElement('div');
-    modal.className = 'camera-selection-modal'; // Define CSS styles for the modal
-    // ... Rest of the code for the modal, label, dropdown, and button ...
-
-    // Add elements to the modal
-    modal.appendChild(label);
-    modal.appendChild(cameraSelect);
-    modal.appendChild(confirmButton);
-
-    // Add the modal to the document body
-    document.body.appendChild(modal);
+    // Enumerate media devices
+    navigator.mediaDevices.enumerateDevices()
+        .then(handleMediaDevices)
+        .catch((error) => {
+            console.error('Error accessing the camera:', error);
+            // Handle the error, e.g., display an error message to the user
+        });
 }
 
-function handleCameraSelection(selectedCamera) {
-    // Logic to handle the selected camera
-    if (selectedCamera === 'front') {
-        // Use the front camera
-        switchToFrontCamera();
-    } else if (selectedCamera === 'back') {
-        // Use the back camera (default)
-        switchToBackCamera();
-    }
-}
-
-async function setupCamera(selectedCameraId = null) {
-    const videoElement = document.createElement('video');
-    videoElement.id = 'video-feed';
-    document.body.appendChild(videoElement);
-
-    try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
-
-        if (videoDevices.length === 1 || !selectedCameraId) {
-            // Automatically use the only available camera or the default choice
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            videoElement.srcObject = stream;
-        } else if (videoDevices.length > 1) {
-            // Use the selected camera
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: selectedCameraId } });
-            videoElement.srcObject = stream;
-        } else {
-            console.error('No cameras found.');
-            // Handle the case of no cameras found, e.g., display a message to the user
-        }
-    } catch (error) {
-        console.error('Error accessing cameras:', error);
-        // Handle camera access error, e.g., display an error message
-    }
-}
 
 function initializeDetectionRules() {
   // Initialize DetectionRules based on your predictions logic
