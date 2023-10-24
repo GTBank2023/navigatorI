@@ -373,7 +373,7 @@ async function loadModelAndStartSystem() {
     console.log('Model loaded successfully.');
 
     // Call the function to start the system after the model is loaded
-    startSystem();
+    loadModelAndStartSystem();
   } catch (error) {
     // Handle the error if model loading fails
     console.error('Error loading the object detection model:', error);
