@@ -60,7 +60,7 @@ async function loadCocoSsdModel() {
 
             detectedAreas = await detectObjects();  // Assuming detectObjects() returns a Promise that resolves to the detected areas
 
-            startSystem(); // Call startSystem after the model is loaded and detectedAreas is initialized
+           loadModelAndStartSystem(); // Call loadModelAndStartSystem after the model is loaded and detectedAreas is initialized
         } else {
             throw new Error('Error: COCO-SSD model did not provide valid classes.');
         }
