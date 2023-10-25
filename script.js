@@ -542,7 +542,7 @@ clearCanvas();
     areaInfoDiv.querySelector("p").textContent = detectedArea.description;
     // Call the text-to-speech function here if needed
   }
-});
+);
 
 
 console.log('Fetching JSON data from the given URL');
