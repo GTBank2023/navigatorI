@@ -527,11 +527,6 @@ function clearCanvas() {
 clearCanvas();
 
 
-// Event listener to start detection when video is loaded
-videoElement.addEventListener('loadeddata', async () => {
-  // Play the video and start object detection
-  videoElement.play();
-
   // Call detectObjects and set predictions
   await detectObjects();
 
