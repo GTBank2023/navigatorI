@@ -365,16 +365,15 @@ document.getElementById('get-started-button').addEventListener('click', () => {
     detectAreas(predictions); // Call your area detection function here
 });
  
+console.log('Loading the model...');
 async function loadModelAndStartSystem() {
   try {
-    if (!cocoSsdModel) {
-      // Load the COCO-SSD model only if it hasn't been loaded before
-      console.log('Loading the model...');
-      cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
-      console.log('Model loaded successfully.');
-    }
+       // Load the COCO-SSD model only if it hasn't been loaded before
+    cocoSsdModel = await cocoSsd.load('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd');
+    console.log('Model loaded successfully.');
 
- 
+    // Call the function to start the system after the model is loaded
+    loadModelAndStartSystem();
   } catch (error) {
     // Handle the error if model loading fails
     console.error('Error loading the object detection model:', error);
@@ -542,7 +541,7 @@ clearCanvas();
     areaInfoDiv.querySelector("p").textContent = detectedArea.description;
     // Call the text-to-speech function here if needed
   }
-);
+});
 
 
 console.log('Fetching JSON data from the given URL');
