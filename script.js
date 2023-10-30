@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/// Define videoElement
+// Define videoElement as a global variable
 const videoElement = document.getElementById('video-feed');
 console.log('Video feed is showing');
 
@@ -70,56 +70,79 @@ async function loadCocoSsdModel() {
     }
 }
 
-loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
+//loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
+// Existing code block
 document.getElementById('get-started-button').addEventListener('click', async () => {
     try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+        const container = document.getElementById('camera-feed-container');
+        const videoDevices = await navigator.mediaDevices.enumerateDevices();
 
-        if (videoDevices.length === 2) {
-            // If there are two camera sources, use the back camera (the default)
-            console.log('Accessing the back camera...');
-            setupCamera();
-            document.getElementById('get-started-button').style.display = 'none'; // Hide the button
+        if (videoDevices.length > 0) {
+            // Choose the back camera if available, or the first camera if not
+            let videoDevice = videoDevices.find((device) => device.kind === 'videoinput' && device.label.includes('back')) || videoDevices.find((device) => device.kind === 'videoinput');
 
-            // Add the video feed element to cover the content
-            const videoElement = document.createElement('video');
-            videoElement.id = 'video-feed';
-            videoElement.style.position = 'absolute';
-            videoElement.style.top = '0';
-            videoElement.style.left = '0';
-            videoElement.style.width = '100%';
-            videoElement.style.height = '100%';
-            document.body.appendChild(videoElement);
-        } else if (videoDevices.length === 1) {
-            // If there's only one camera, use it
-            console.log('Accessing the camera...');
-            setupCamera();
-            document.getElementById('get-started-button').style.display = 'none'; // Hide the button
+            if (!videoDevice) {
+                console.error('No video devices found.');
+            } else {
+                console.log('Accessing the camera...');
+                let stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: videoDevice.deviceId } });
 
-            // Add the video feed element to cover the content
-            const videoElement = document.createElement('video');
-            videoElement.id = 'video-feed';
-            videoElement.style.position = 'absolute';
-            videoElement.style.top = '0';
-            videoElement.style.left = '0';
-            videoElement.style.width = '100%';
-            videoElement.style.height = '100%';
-            document.body.appendChild(videoElement);
-        } else if (videoDevices.length > 2) {
-            // If there are more than two camera sources, you can still show the camera selection prompt
-            showCameraSelectionPrompt();
+                // Create the video element and set its display style to "block"
+                let videoElement = document.createElement('video');
+                videoElement.id = 'video-feed';
+                videoElement.style.width = '100%';
+                videoElement.style.height = '100%';
+                videoElement.style.display = 'block'; // Show the video element
+                videoElement.autoplay = true;
+                container.appendChild(videoElement);
+                videoElement.srcObject = stream;
+                videoElement.parentNode.style.display = 'block'; // Show the container
+                setupCamera();
+                document.getElementById('get-started-button').style.display = 'none'; // Hide the button
+            }
         } else {
-            // If there's no camera, handle the situation accordingly
             console.error('No cameras found.');
-            // You can handle this case, e.g., display an error message to the user
         }
     } catch (error) {
         console.error('Error accessing the camera:', error);
         // Handle the error, e.g., display an error message to the user
     }
 });
+
+const switchToFrontCameraButton = document.getElementById('switch-to-front-camera');
+const switchToRearCameraButton = document.getElementById('switch-to-rear-camera');
+
+let currentCamera = 'environment'; // 'user' for front camera, 'environment' for rear camera
+
+switchToFrontCameraButton.addEventListener('click', () => {
+    if (currentCamera === 'environment') {
+        currentCamera = 'user';
+        switchCamera(currentCamera);
+    }
+});
+
+switchToRearCameraButton.addEventListener('click', () => {
+    if (currentCamera === 'user') {
+        currentCamera = 'environment';
+        switchCamera(currentCamera);
+    }
+});
+
+function switchCamera(camera) {
+    if (videoElement.srcObject) {
+        videoElement.srcObject.getTracks().forEach(track => track.stop());
+    }
+
+    navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: camera } })
+        .then(stream => {
+            videoElement.srcObject = stream;
+        })
+        .catch(error => {
+            console.error('Error accessing camera:', error);
+        });
+}
 
 
 function initializeDetectionRules() {
@@ -359,11 +382,11 @@ areas.forEach(areaName => {
 });
 
 
-document.getElementById('get-started-button').addEventListener('click', () => {
+/*document.getElementById('get-started-button').addEventListener('click', () => {
     console.log('Button clicked. System launching...');
     console.log('Starting area detection...');
     detectAreas(predictions); // Call your area detection function here
-});
+});*/
  
 console.log('Loading the model...');
 async function loadModelAndStartSystem() {
@@ -373,7 +396,7 @@ async function loadModelAndStartSystem() {
     console.log('Model loaded successfully.');
 
     // Call the function to start the system after the model is loaded
-    loadModelAndStartSystem();
+    //loadModelAndStartSystem();
   } catch (error) {
     // Handle the error if model loading fails
     console.error('Error loading the object detection model:', error);
@@ -383,7 +406,7 @@ async function loadModelAndStartSystem() {
 
 // Call the async function to load the model and start the system
 console.log('Loading the model and starting the system...');
-loadModelAndStartSystem();
+//loadModelAndStartSystem();
 
 console.log('Commence Object Detection.');
 
@@ -798,5 +821,5 @@ videoElement.addEventListener('loadeddata', async () => {
 // Event listener for DOMContentLoaded to launch the system
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM content loaded. Launching the system.');
-  loadModelAndStartSystem();
+  //loadModelAndStartSystem();
 });
