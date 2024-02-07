@@ -3,6 +3,26 @@ let cocoSsdModel; // Declare cocoSsdModel as a global variable
 let detectedAreas;  // Initialize the variable
 let predictions;  // Initialize the predictions variable at a global scope
 
+const container = document.getElementById('camera-feed-container');
+
+// Function to request camera access
+async function requestCameraAccess() {
+    try {
+        // Use the standard getUserMedia API to request camera access
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        // Handle successful camera access
+        console.log('Camera access granted!');
+
+        // Now, you can proceed with the logic you want to execute after getting camera access
+        // For example, you can display the video feed, start object detection, etc.
+
+    } catch (error) {
+        // Handle errors, e.g., display an error message to the user
+        console.error('Error accessing the camera:', error);
+    }
+}
+
 // Event listener to start the system when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const getStartedButton = document.querySelector('.get-started-button');
@@ -13,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Define videoElement as a global variable
+// Define videoElement
 const videoElement = document.getElementById('video-feed');
 console.log('Video feed is showing');
 
@@ -57,7 +77,6 @@ async function loadCocoSsdModel() {
             classes.forEach((className, index) => {
                 classIndexMap[className] = index;
             });
-
             detectedAreas = await detectObjects();  // Assuming detectObjects() returns a Promise that resolves to the detected areas
 
            loadModelAndStartSystem(); // Call loadModelAndStartSystem after the model is loaded and detectedAreas is initialized
@@ -72,78 +91,33 @@ async function loadCocoSsdModel() {
 
 //loadCocoSsdModel(); // Call the async function to load the Coco-SSD model
 
-// Existing code block
-document.getElementById('get-started-button').addEventListener('click', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     try {
         const container = document.getElementById('camera-feed-container');
+        
+        // Use enumerateDevices to find the back camera directly
         const videoDevices = await navigator.mediaDevices.enumerateDevices();
+        const backCamera = videoDevices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'));
+        
+        if (backCamera) {
+            console.log('Accessing the back camera...');
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: backCamera.deviceId } });
 
-        if (videoDevices.length > 0) {
-            // Choose the back camera if available, or the first camera if not
-            let videoDevice = videoDevices.find((device) => device.kind === 'videoinput' && device.label.includes('back')) || videoDevices.find((device) => device.kind === 'videoinput');
+            // Create the video element and set its display style to "block"
+            const videoElement = document.getElementById('video-feed');
+            videoElement.srcObject = stream;
+            videoElement.parentNode.style.display = 'block'; // Show the container
 
-            if (!videoDevice) {
-                console.error('No video devices found.');
-            } else {
-                console.log('Accessing the camera...');
-                let stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: videoDevice.deviceId } });
-
-                // Create the video element and set its display style to "block"
-                let videoElement = document.createElement('video');
-                videoElement.id = 'video-feed';
-                videoElement.style.width = '100%';
-                videoElement.style.height = '100%';
-                videoElement.style.display = 'block'; // Show the video element
-                videoElement.autoplay = true;
-                container.appendChild(videoElement);
-                videoElement.srcObject = stream;
-                videoElement.parentNode.style.display = 'block'; // Show the container
-                setupCamera();
-                document.getElementById('get-started-button').style.display = 'none'; // Hide the button
-            }
+            setupCamera();
+            document.getElementById('get-started-button').style.display = 'none'; // Hide the button
         } else {
-            console.error('No cameras found.');
+            console.error('No back camera found.');
         }
     } catch (error) {
         console.error('Error accessing the camera:', error);
         // Handle the error, e.g., display an error message to the user
     }
 });
-
-const switchToFrontCameraButton = document.getElementById('switch-to-front-camera');
-const switchToRearCameraButton = document.getElementById('switch-to-rear-camera');
-
-let currentCamera = 'environment'; // 'user' for front camera, 'environment' for rear camera
-
-switchToFrontCameraButton.addEventListener('click', () => {
-    if (currentCamera === 'environment') {
-        currentCamera = 'user';
-        switchCamera(currentCamera);
-    }
-});
-
-switchToRearCameraButton.addEventListener('click', () => {
-    if (currentCamera === 'user') {
-        currentCamera = 'environment';
-        switchCamera(currentCamera);
-    }
-});
-
-function switchCamera(camera) {
-    if (videoElement.srcObject) {
-        videoElement.srcObject.getTracks().forEach(track => track.stop());
-    }
-
-    navigator.mediaDevices
-        .getUserMedia({ video: { facingMode: camera } })
-        .then(stream => {
-            videoElement.srcObject = stream;
-        })
-        .catch(error => {
-            console.error('Error accessing camera:', error);
-        });
-}
-
 
 function initializeDetectionRules() {
   // Initialize DetectionRules based on your predictions logic
