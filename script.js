@@ -262,12 +262,6 @@ async function callDetectAreas() {
   }
 }
 
-// Event listener to start detection when video is loaded
-videoElement.addEventListener("loadeddata", async () => {
-  // Play the video and start object detection
-  videoElement.play();
-  predictions = await detectObjects();
-  console.log('Predictions set:', predictions);
 
   // Now that predictions are set, call detectAreas
   console.log('Starting area detection...');
@@ -550,12 +544,6 @@ function clearCanvas() {
 
 // Call this function whenever you want to clear the canvas
 clearCanvas();
-
-
-// Event listener to start detection when video is loaded
-videoElement.addEventListener('loadeddata', async () => {
-  // Play the video and start object detection
-  videoElement.play();
 
   // Call detectObjects and set predictions
   await detectObjects();
