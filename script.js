@@ -275,7 +275,7 @@ async function callDetectAreas() {
     }
   } catch (error) {
     console.error('Error detecting areas:', error);
-  }
+
 });
 
 // Define the function to update the detected areas display
