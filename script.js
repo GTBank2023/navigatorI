@@ -599,9 +599,10 @@ function textToSpeech(message) {
 }
 
 console.log('Commence Image Loading from URLs Asynchronously');
+
 async function loadImageAreas() {
   try {
-    console.log('Load Image URLs For the Staircase');
+  console.log('Load Image URLs For the Staircase');
     const StaircaseImages = [
       'https://drive.google.com/uc?id=1Du6Gs_XaEBdvP7rli4b7CVoY2LMEby-t',
       'https://drive.google.com/uc?id=1ZZDhKY5p23KFPj8JWxOjjfap6qDZy66I',
@@ -704,36 +705,22 @@ async function loadImageAreas() {
     'https://drive.google.com/uc?id=1RwlE8rrpoJMlPVcwQ1_dPkaRM8Dx_AyO',
 
 ];
-      
- // Define a function to load images for a given area
-async function loadImages(areaImages) {
-  // Assume areaImages is an array of image URLs for the specified area
-  
-  const imagePromises = areaImages.map(async (imageUrl) => {
-    const image = new Image();
-    return new Promise((resolve, reject) => {
-      image.onload = () => resolve(image);
-      image.onerror = reject;
-      image.src = imageUrl;
-    });
-  });
 
-  // Wait for all images to load
-  const loadedImages = await Promise.all(imagePromises);
-  return loadedImages;
+    // Call the loadImages function for each area
+    console.log('Calling The Functions To Load Images For Each Area');
+    await loadImages(StaircaseImages);
+    await loadImages(RelationshipDeskImages);
+    await loadImages(OperationsAreaImages);
+    await loadImages(LobbyAreaImagesURLs);
+    await loadImages(HNIareaImagesURLs);
+    await loadImages(EntranceAreaImagesURLs);
+    await loadImages(CustomerInformationServiceImagesURLs);
+  } catch (error) {
+    console.error('Error loading images for areas:', error);
+    displayErrorMessageToUser('Failed to load area images. Please try again later.');
+  }
 }
 
-console.log('Calling The Functions To Load Images For Each Area');
-await loadImages(StaircaseImages);
-await loadImages(RelationshipDeskImages);
-await loadImages(OperationsAreaImages);
-await loadImages(LobbyAreaImagesURLs);
-await loadImages(HNIareaImagesURLs);
-await loadImages(EntranceAreaImagesURLs);
-await loadImages(CustomerInformationServiceImagesURLs);
-
- } 
-      
 async function loadImages(imageUrls) {
   const images = [];
   for (const url of imageUrls) {
@@ -749,6 +736,9 @@ async function loadImages(imageUrls) {
   }
   return images;
 }
+
+console.log('Calling loadImageAreas');
+await loadImageAreas();
 
 console.log('Commence Predictions From Video');
 // Function to predict from video
