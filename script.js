@@ -737,6 +737,16 @@ async function loadImages(imageUrls) {
   return images;
 }
 
+// Define the loadImage function
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(`Failed to load image at ${url}`));
+  });
+}
+
 console.log('Calling loadImageAreas');
 await loadImageAreas();
 
