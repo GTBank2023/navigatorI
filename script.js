@@ -733,22 +733,22 @@ await loadImages(EntranceAreaImagesURLs);
 await loadImages(CustomerInformationServiceImagesURLs);
 
  } 
-  catch (error) {
-    console.error('Error loading images for areas:', error);
-    displayErrorMessageToUser('Failed to load area images. Please try again later.');
+      
+async function loadImages(imageUrls) {
+  const images = [];
+  for (const url of imageUrls) {
+    try {
+      console.log(`Loading image: ${url}`);
+      const img = await loadImage(url);
+      images.push(img);
+      console.log(`Successfully loaded image: ${url}`);
+    } catch (error) {
+      console.error(`Failed to load image at ${url}: ${error.message}`);
+      console.error(`Error stack trace: ${error.stack}`);
+    }
   }
-
- try {
-    // Handle network errors if any
-    // Your code to handle network errors goes here
-  } catch (error) {
-    console.error('Network error occurred while loading images:', error);
-    displayErrorMessageToUser('Failed to load images. Please check your internet connection.');
-  }
+  return images;
 }
-
-// Call the async function
-loadImageAreas();
 
 console.log('Commence Predictions From Video');
 // Function to predict from video
